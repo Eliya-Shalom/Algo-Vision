@@ -1,0 +1,59 @@
+.rect-container {
+  transition: all 1s;
+}
+
+.rect {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: all 1s;
+}
+
+.face {
+  position: absolute;
+  border: 1px solid #181c2f;
+  border-collapse: collapse;
+}
+
+.front {
+  /* border: 0px; */
+  transform: rotateX(0deg) translateZ(0px);
+  transition: all 1s;
+}
+.back {
+  opacity: 0.5;
+  background-color: #40367d;
+  transform: rotateX(180deg) translateZ(30px);
+  transition: all 1s;
+}
+
+.right {
+  opacity: 0.7;
+  width: 30px;
+  background-color: #40367d;
+  transform: rotateY(90deg) translateX(15px);
+  transition: all 1s;
+}
+
+.left {
+  opacity: 0.7;
+  width: 30px;
+  background-color: #40367d;
+  transform: rotateY(-90deg) translateZ(15px) translateX(-15px);
+  transition: all 1s;
+}
+
+.top {
+  opacity: 0.7;
+  height: 30px;
+  background-color: #40367d;
+  transform: rotateX(90deg) translateZ(15px) translateY(-15px);
+  transition: all 1s;
+}
+
+.bottom {
+  opacity: 0.7;
+  height: 30px;
+  background-color: #40367d;
+  transform: rotateX(-90deg) translateY(15px);
+  transition: all 1s;
+}
