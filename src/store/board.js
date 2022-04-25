@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getRandomInt } from "../utils/commonUtils";
 
 const boardConfig = createSlice({
   name: "board",
@@ -50,14 +49,12 @@ const boardConfig = createSlice({
     },
     nodeChanged: (state, { payload }) => {
       const { row, col, change } = payload;
-      if (change === "weight")
-        state.grid[row][col].weight = Math.floor(getRandomInt(2, 50));
+      if (change === "weight") state.grid[row][col].weight++;
       else if (change === "wall")
         state.grid[row][col].isWall = !state.grid[row][col].isWall;
       else if (change === "midway") state.grid[row][col].isMidway = true;
     },
     boundryWallsReset: (state) => {
-      // state.grid.map((row) => row.map((node) => (node.isWall = false)));
       state.grid[0].map((node) => (node.isWall = false));
       state.grid[state.grid.length - 1].map((node) => (node.isWall = false));
       for (let i = 1; i < state.grid.length - 1; i++) {

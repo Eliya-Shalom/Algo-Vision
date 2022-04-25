@@ -56,7 +56,7 @@ const TopBar = () => {
     dynamicMode && <MouseChaseBtn typoStyle={typoStyle} />,
     category === "path" && !dynamicMode && <MazeBtn typoStyle={typoStyle} />,
     category === "path" && <CleanBtn typoStyle={typoStyle} />,
-    category === "path" && <WeightBtn typoStyle={typoStyle} />,
+    category === "path" && !dynamicMode && <WeightBtn typoStyle={typoStyle} />,
     category === "sort" && !dynamicMode && <ShuffleBtn typoStyle={typoStyle} />,
   ];
 
