@@ -1,4 +1,3 @@
-import { isWall } from "../../utils/boardUtils";
 let ops;
 
 export default function depthFirstSearch(grid, startNode, finishNode, isMaze) {
@@ -22,7 +21,7 @@ export default function depthFirstSearch(grid, startNode, finishNode, isMaze) {
       stack.push(nextNode);
 
       nextNode.visitedDFS = true;
-      nextNode.distanceFromStart = currentNode.distanceFromStart + 1;
+      nextNode.distanceFromStart = currentNode.distanceFromStart + nextNode.weight;
       nextNode.prevNode = currentNode;
 
       const { row, col } = nextNode;
@@ -51,43 +50,43 @@ function getNeighbor(node, grid, isMaze) {
     if (row < grid.length - 1 && !walls.bottom) {
       ops++;
       const nodeAtBottom = grid[row + 1][col];
-      if (!nodeAtBottom.visitedDFS && !isWall(nodeAtBottom.id)) return nodeAtBottom;
+      if (!nodeAtBottom.visitedDFS && !nodeAtBottom.isWall) return nodeAtBottom;
     }
     if (col < grid[0].length - 1 && !walls.right) {
       ops++;
       const nodeAtRight = grid[row][col + 1];
-      if (!nodeAtRight.visitedDFS && !isWall(nodeAtRight.id)) return nodeAtRight;
+      if (!nodeAtRight.visitedDFS && !nodeAtRight.isWall) return nodeAtRight;
     }
     if (row > 0 && !walls.top) {
       ops++;
       const nodeAtTop = grid[row - 1][col];
-      if (!nodeAtTop.visitedDFS && !isWall(nodeAtTop.id)) return nodeAtTop;
+      if (!nodeAtTop.visitedDFS && !nodeAtTop.isWall) return nodeAtTop;
     }
     if (col > 0 && !walls.left) {
       ops++;
       const nodeAtLeft = grid[row][col - 1];
-      if (!nodeAtLeft.visitedDFS && !isWall(nodeAtLeft.id)) return nodeAtLeft;
+      if (!nodeAtLeft.visitedDFS && !nodeAtLeft.isWall) return nodeAtLeft;
     }
   } else {
     if (row < grid.length - 1) {
       ops++;
       const nodeAtBottom = grid[row + 1][col];
-      if (!nodeAtBottom.visitedDFS && !isWall(nodeAtBottom.id)) return nodeAtBottom;
+      if (!nodeAtBottom.visitedDFS && !nodeAtBottom.isWall) return nodeAtBottom;
     }
     if (col < grid[0].length - 1) {
       ops++;
       const nodeAtRight = grid[row][col + 1];
-      if (!nodeAtRight.visitedDFS && !isWall(nodeAtRight.id)) return nodeAtRight;
+      if (!nodeAtRight.visitedDFS && !nodeAtRight.isWall) return nodeAtRight;
     }
     if (row > 0) {
       ops++;
       const nodeAtTop = grid[row - 1][col];
-      if (!nodeAtTop.visitedDFS && !isWall(nodeAtTop.id)) return nodeAtTop;
+      if (!nodeAtTop.visitedDFS && !nodeAtTop.isWall) return nodeAtTop;
     }
     if (col > 0) {
       ops++;
       const nodeAtLeft = grid[row][col - 1];
-      if (!nodeAtLeft.visitedDFS && !isWall(nodeAtLeft.id)) return nodeAtLeft;
+      if (!nodeAtLeft.visitedDFS && !nodeAtLeft.isWall) return nodeAtLeft;
     }
   }
   return false;

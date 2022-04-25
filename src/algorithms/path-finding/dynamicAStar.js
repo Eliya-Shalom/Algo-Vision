@@ -1,5 +1,4 @@
 import { calculateDiagonalDistance, getEightNeighbors, MinHeap } from "./aStar";
-import { isMidway, isWall } from "../../utils/boardUtils";
 import { countNodesOrSwapped, getSpeed } from "../../utils/commonUtils";
 import { pauseTimer, resetTimer } from "../../components/layout/topbar/Timer";
 import {
@@ -28,7 +27,6 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
       return { ...node };
     });
     nodesToVisit.nodesIdsToIndicesMap = { ...nodesIdsToIndicesMap };
-    // resetNodes(grid, nodesToVisit.heap[0], window.targets[0]);
   }
 
   let prevFinishNode = window.finishNode;
@@ -72,10 +70,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
     const neighbors = getEightNeighbors(currentNodeWithMinimumF, grid, false);
     for (const neighbor of neighbors) {
       const { row: nRow, col: nCol } = neighbor;
-      if (
-        isWall(neighbor.id) ||
-        (isMidway(neighbor.id) && (nRow !== tRow || nCol !== tCol))
-      )
+      if (neighbor.isWall || (neighbor.isMidway && (nRow !== tRow || nCol !== tCol)))
         continue;
 
       const neighborTentativeG = currentNodeWithMinimumF.distanceFromStart + 1;

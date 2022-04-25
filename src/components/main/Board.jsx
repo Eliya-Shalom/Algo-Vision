@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Node from "./Node";
 import { boardResized } from "../../store/board";
-import { generateGrid } from "../../utils/boardUtils";
+import { initializeGrid } from "../../utils/boardUtils";
 import { getSizeByRef } from "../../utils/commonUtils";
 import "./Board.css";
 
@@ -30,7 +30,10 @@ const Board = () => {
   useEffect(resetTableSize, [view.isReset]);
   useEffect(() => {
     clearTimeout(tableTimeout);
-    tableTimeout = setTimeout(() => generateGrid(height, width, nodeSize, dispatch), 100);
+    tableTimeout = setTimeout(
+      () => initializeGrid(height, width, nodeSize, dispatch),
+      100
+    );
     return () => {
       clearTimeout(tableTimeout);
       clearTimeout(resizeTimeout);
@@ -78,18 +81,17 @@ const Board = () => {
                         key={node.id}
                         row={node.row}
                         col={node.col}
-                        visitedMaze={node.visitedMaze}
-                        visitedDijkstra={node.visitedDijkstra}
                         visitedDFS={node.visitedDFS}
                         visitedBFS={node.visitedBFS}
-                        stacked={node.stacked}
-                        walls={node.walls}
+                        visitedMaze={node.visitedMaze}
+                        visitedDijkstra={node.visitedDijkstra}
                         isWall={node.isWall}
-                        isStart={node.isStart}
-                        isFinish={node.isFinish}
-                        prevNode={node.prevNode}
+                        isMidway={node.isMidway}
+                        walls={node.walls}
                         distanceFromStart={node.distanceFromStart}
                         estimatedDistanceToEnd={node.estimatedDistanceToEnd}
+                        prevNode={node.prevNode}
+                        weight={node.weight}
                       />
                     ))}
                   </tr>

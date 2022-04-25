@@ -1,3 +1,5 @@
+import { getRandomInt } from "./commonUtils";
+
 export function initAxle(numOfBars) {
   const axle = [];
   const width = 100 / numOfBars;
@@ -56,10 +58,6 @@ export function animateShuffleAxle(axle) {
       i++;
     }, 1);
   });
-}
-
-export function getRandomInt(min, max) {
-  return Math.random() * (max - min) + min;
 }
 
 export function copyAxle(axle) {

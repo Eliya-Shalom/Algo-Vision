@@ -18,7 +18,7 @@ const runtimeConfig = createSlice({
     distance: 0,
     instantMode: 0,
     realtime: "0.000",
-    runningFunc: { algo: "", type: "", category: "" },
+    runningFunc: { algo: "", type: "", category: "path" },
     snapshot: {
       path: { visited: [], path: [], indices: [0, 0] },
       sort: { swaps: [], idx: 0 },

@@ -47,6 +47,21 @@ const boardConfig = createSlice({
     gridInitialized: (state, { payload }) => {
       state.grid = payload;
     },
+    nodeChanged: (state, { payload }) => {
+      const { row, col, change } = payload;
+      if (change === "weight") state.grid[row][col].weight++;
+      else if (change === "wall")
+        state.grid[row][col].isWall = !state.grid[row][col].isWall;
+      else if (change === "midway") state.grid[row][col].isMidway = true;
+    },
+    boundryWallsReset: (state) => {
+      state.grid[0].map((node) => (node.isWall = false));
+      state.grid[state.grid.length - 1].map((node) => (node.isWall = false));
+      for (let i = 1; i < state.grid.length - 1; i++) {
+        state.grid[i][0].isWall = false;
+        state.grid[i][state.grid[i].length - 1].isWall = false;
+      }
+    },
     visualSettingsReset: (state) => {
       state.view = {
         perspective: 2500,
@@ -75,9 +90,11 @@ export const {
   tableChanged,
   dimensionsChanged,
   viewChanged,
+  nodeChanged,
   gridChanged,
   gridInitialized,
   visualSettingsReset,
   boardSettingReset,
   boardResized,
+  boundryWallsReset,
 } = boardConfig.actions;

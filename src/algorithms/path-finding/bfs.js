@@ -1,4 +1,3 @@
-import { isWall } from "../../utils/boardUtils";
 let ops;
 
 export default function breadthFirstSearch(grid, startNode, finishNode, isMaze) {
@@ -22,7 +21,7 @@ export default function breadthFirstSearch(grid, startNode, finishNode, isMaze) 
     for (const neighbor of neighbors) {
       ops++;
       neighbor.visitedBFS = true;
-      neighbor.distanceFromStart = currentNode.distanceFromStart + 1;
+      neighbor.distanceFromStart = currentNode.distanceFromStart + neighbor.weight;
       neighbor.prevNode = currentNode;
 
       const { row, col } = neighbor;
@@ -50,45 +49,43 @@ function getUnvisitedNeighbors(node, grid, isMaze) {
     if (row < grid.length - 1 && !walls.bottom) {
       ops++;
       const nodeAtBottom = grid[row + 1][col];
-      if (!nodeAtBottom.visitedBFS && !isWall(nodeAtBottom.id))
-        neighbors.push(nodeAtBottom);
+      if (!nodeAtBottom.visitedBFS && !nodeAtBottom.isWall) neighbors.push(nodeAtBottom);
     }
     if (col < grid[0].length - 1 && !walls.right) {
       ops++;
       const nodeAtRight = grid[row][col + 1];
-      if (!nodeAtRight.visitedBFS && !isWall(nodeAtRight.id)) neighbors.push(nodeAtRight);
+      if (!nodeAtRight.visitedBFS && !nodeAtRight.isWall) neighbors.push(nodeAtRight);
     }
     if (row > 0 && !walls.top) {
       ops++;
       const nodeAtTop = grid[row - 1][col];
-      if (!nodeAtTop.visitedBFS && !isWall(nodeAtTop.id)) neighbors.push(nodeAtTop);
+      if (!nodeAtTop.visitedBFS && !nodeAtTop.isWall) neighbors.push(nodeAtTop);
     }
     if (col > 0 && !walls.left) {
       ops++;
       const nodeAtLeft = grid[row][col - 1];
-      if (!nodeAtLeft.visitedBFS && !isWall(nodeAtLeft.id)) neighbors.push(nodeAtLeft);
+      if (!nodeAtLeft.visitedBFS && !nodeAtLeft.isWall) neighbors.push(nodeAtLeft);
     }
   } else {
     if (row < grid.length - 1) {
       ops++;
       const nodeAtBottom = grid[row + 1][col];
-      if (!nodeAtBottom.visitedBFS && !isWall(nodeAtBottom.id))
-        neighbors.push(nodeAtBottom);
+      if (!nodeAtBottom.visitedBFS && !nodeAtBottom.isWall) neighbors.push(nodeAtBottom);
     }
     if (col < grid[0].length - 1) {
       ops++;
       const nodeAtRight = grid[row][col + 1];
-      if (!nodeAtRight.visitedBFS && !isWall(nodeAtRight.id)) neighbors.push(nodeAtRight);
+      if (!nodeAtRight.visitedBFS && !nodeAtRight.isWall) neighbors.push(nodeAtRight);
     }
     if (row > 0) {
       ops++;
       const nodeAtTop = grid[row - 1][col];
-      if (!nodeAtTop.visitedBFS && !isWall(nodeAtTop.id)) neighbors.push(nodeAtTop);
+      if (!nodeAtTop.visitedBFS && !nodeAtTop.isWall) neighbors.push(nodeAtTop);
     }
     if (col > 0) {
       ops++;
       const nodeAtLeft = grid[row][col - 1];
-      if (!nodeAtLeft.visitedBFS && !isWall(nodeAtLeft.id)) neighbors.push(nodeAtLeft);
+      if (!nodeAtLeft.visitedBFS && !nodeAtLeft.isWall) neighbors.push(nodeAtLeft);
     }
   }
   return neighbors;

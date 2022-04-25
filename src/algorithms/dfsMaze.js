@@ -1,11 +1,17 @@
-export default function dfsMaze(grid, setGrid, setIsMazeRunning, instantMode = false) {
+import { boundryWallsReset, gridChanged } from "../store/board";
+import { runtimeChanged } from "../store/runtime";
+
+let dispatch, grid;
+export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) {
+  dispatch = dispatchAction;
+  grid = tableGrid;
+
   let currentCell = grid[0][0];
 
   const visitedNodes = [currentCell];
   const stack = [currentCell];
 
   currentCell.visitedMaze = true;
-  currentCell.stacked = true;
 
   while (stack.length) {
     const nextCell = getNeighbor(currentCell, grid);
@@ -13,16 +19,11 @@ export default function dfsMaze(grid, setGrid, setIsMazeRunning, instantMode = f
     if (nextCell) {
       visitedNodes.push(nextCell);
       stack.push(nextCell);
-
-      nextCell.stacked = true;
       nextCell.visitedMaze = true;
-
       removeWalls(currentCell, nextCell);
-
       currentCell = nextCell;
     } else {
       currentCell = stack.pop();
-      currentCell.stacked = false;
     }
   }
 
@@ -31,38 +32,26 @@ export default function dfsMaze(grid, setGrid, setIsMazeRunning, instantMode = f
   window.startNode = newStartNode;
   window.finishNode = newFinishNode;
 
-  setGrid(grid);
+  dispatch(gridChanged(grid));
 
   if (instantMode) return instantMaze(visitedNodes);
 
-  // let i = 0;
-  // let animMaze = window.requestAnimationFrame(() =>
-  //   animateMaze(i, animMaze, visitedNodes, setIsMazeRunning)
-  // );
-  animateMaze(visitedNodes, setIsMazeRunning);
+  animateMaze(visitedNodes);
 }
 
-function animateMaze(visitedNodes, setIsMazeRunning) {
+function animateMaze(visitedNodes) {
+  dispatch(runtimeChanged({ att: "isMazeRunning", val: true }));
+  dispatch(boundryWallsReset());
+
   let i = 0;
   const inter = setInterval(() => {
     if (i === visitedNodes.length - 1) {
-      setIsMazeRunning(false);
+      dispatch(runtimeChanged({ att: "isMazeRunning", val: false }));
       return clearInterval(inter);
     }
     paintMazeWalls(visitedNodes[i++]);
   }, 1);
 }
-
-// function animateMaze(i, animMaze, visitedNodes, setIsMazeRunning) {
-//   if (i === visitedNodes.length - 1) {
-//     setIsMazeRunning(false);
-//     return window.cancelAnimationFrame(animMaze);
-//   }
-//   paintMazeWalls(visitedNodes[i++]);
-//   animMaze = window.requestAnimationFrame(() =>
-//     animateMaze(i, animMaze, visitedNodes, setIsMazeRunning)
-//   );
-// }
 
 function instantMaze(visitedNodes) {
   for (const node of visitedNodes) paintMazeWalls(node);
@@ -70,15 +59,15 @@ function instantMaze(visitedNodes) {
 
 export function paintMazeWalls({ row, col, id, walls }) {
   const nodeEle = document.getElementById(id);
+
   const isStart = row === window.startNode.row && col === window.startNode.col;
   const isFinish = row === window.finishNode.row && col === window.finishNode.col;
-
   if (!isStart && !isFinish) nodeEle.className = "node";
 
-  if (walls.top) nodeEle.style.borderTop = "4px solid #4f477e";
-  if (walls.right) nodeEle.style.borderRight = "4px solid #4f477e";
-  if (walls.bottom) nodeEle.style.borderBottom = "4px solid #4f477e";
-  if (walls.left) nodeEle.style.borderLeft = "4px solid #4f477e";
+  if (walls.top) nodeEle.style.borderTop = "5px solid #4f477e";
+  if (walls.right) nodeEle.style.borderRight = "5px solid #4f477e";
+  if (walls.bottom) nodeEle.style.borderBottom = "5px solid #4f477e";
+  if (walls.left) nodeEle.style.borderLeft = "5px solid #4f477e";
 }
 
 function getNeighbor(node, grid) {
