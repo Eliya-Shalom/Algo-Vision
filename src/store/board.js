@@ -87,14 +87,14 @@ const boardConfig = createSlice({
 export default boardConfig.reducer;
 
 export const {
-  tableChanged,
-  dimensionsChanged,
+  boardResized,
   viewChanged,
   nodeChanged,
   gridChanged,
+  tableChanged,
+  dimensionsChanged,
   gridInitialized,
-  visualSettingsReset,
   boardSettingReset,
-  boardResized,
   boundryWallsReset,
+  visualSettingsReset,
 } = boardConfig.actions;
