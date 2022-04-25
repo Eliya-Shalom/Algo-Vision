@@ -121,7 +121,9 @@ export function cleanAndResetGrid(dispatch, grid) {
     for (let col = 0; col < grid[row].length; col++) {
       const node = createNode(row, col, grid.length, grid[0].length);
       cleanMazeWalls(node);
-      if (isBoundryWalls(row, col, grid)) node.isWall = true;
+      if (isBoundryWalls(row, col, grid)) {
+        node.isWall = true;
+      }
       newGrid[row].push(node);
     }
   }

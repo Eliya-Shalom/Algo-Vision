@@ -2,14 +2,14 @@ import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { IconButton, Stack, Typography, Tooltip } from "@mui/material";
 import GridGoldenratioIcon from "@mui/icons-material/GridGoldenratio";
-import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
 import { copyGrid, cleanAndResetGrid } from "../../../utils/boardUtils";
+import { runtimeChanged } from "../../../store/runtime";
 import dfsMaze from "../../../algorithms/dfsMaze";
 
 const MazeBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
-  const { isMaze, isRunning, instantMode, isMazeRunning } = useSelector(
+  const { isMaze, isRunning, isPainted, instantMode, isMazeRunning } = useSelector(
     ({ runtime }) => runtime
   );
 
@@ -17,9 +17,9 @@ const MazeBtn = ({ typoStyle }) => {
     if (isRunning || isMazeRunning || isMaze) return;
 
     batch(() => {
-      cleanAndResetGrid(dispatch, grid);
-      dispatch(visualizingAborted());
+      isPainted && cleanAndResetGrid(dispatch, grid);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));
+      // dispatch(visualizingAborted());
     });
     dfsMaze(dispatch, copyGrid(grid), instantMode);
   };
