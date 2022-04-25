@@ -4,7 +4,7 @@ import { IconButton, Stack, Typography } from "@mui/material";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 import { resetTimer, startTimer } from "./Timer";
 import { runtimeChanged, visualizingPlayed } from "../../../store/runtime";
-import { cleanAndResetGrid, cleanPrevAlgo, copyGrid } from "../../../utils/boardUtils";
+import { cleanPrevAlgo, copyGrid } from "../../../utils/boardUtils";
 import visualizeSort from "../../../algorithms/sorting/visualizeSort";
 import visualizePath from "../../../algorithms/path-finding/visualizePath";
 import dynamicAStar from "../../../algorithms/path-finding/dynamicAStar";

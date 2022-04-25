@@ -9,20 +9,9 @@ import { resetIndicators } from "../../../utils/commonUtils";
 
 const CleanBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
-  const {
-    grid,
-    view: { isBorders },
-  } = useSelector(({ board }) => board);
-  const {
-    pause,
-    abort,
-    isMaze,
-    isDone,
-    isRunning,
-    isPainted,
-    dynamicMode,
-    isMazeRunning,
-  } = useSelector(({ runtime }) => runtime);
+  const { grid } = useSelector(({ board }) => board);
+  const { pause, abort, isMaze, isDone, isRunning, isPainted, isMazeRunning } =
+    useSelector(({ runtime }) => runtime);
 
   const [deg, setDeg] = useState(0);
 
@@ -34,13 +23,12 @@ const CleanBtn = ({ typoStyle }) => {
       dispatch(runtimeChanged({ att: "isPainted", val: false }));
       if (isDone || isRunning || pause || isMaze || abort) {
         !isDone && dispatch(visualizingAborted());
-        cleanAndResetGrid(dispatch, grid, false, true, true, dynamicMode, isBorders);
+        cleanAndResetGrid(dispatch, grid);
         isMaze && dispatch(runtimeChanged({ att: "isMaze", val: false }));
         resetIndicators(dispatch);
         window.hasAborted = true;
       } else {
-        isPainted &&
-          cleanAndResetGrid(dispatch, grid, true, true, true, dynamicMode, isBorders);
+        isPainted && cleanAndResetGrid(dispatch, grid);
       }
     });
   }

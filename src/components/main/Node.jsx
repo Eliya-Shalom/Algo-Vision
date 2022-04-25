@@ -11,7 +11,7 @@ import { nodeChanged } from "../../store/board";
 let targetNum = 0;
 let onChase = false;
 
-const Node = ({ row, col, id, weight, isWall, isMidway }) => {
+const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
   const dispatch = useDispatch();
   const { grid, dimensions, view } = useSelector(({ board }) => board);
   const { mousePressedWall, dragged } = useSelector(({ ui }) => ui);

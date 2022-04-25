@@ -25,9 +25,12 @@ function createGrid(rows, cols) {
   for (let row = 0; row < rows; row++) {
     grid.push([]);
     for (let col = 0; col < cols; col++) {
-      grid[row].push(createNode(row, col));
+      const node = createNode(row, col);
+
       const boundaryWall = row === 0 || row === rows - 1 || col === 0 || col === cols - 1;
-      if (boundaryWall) grid[row][col].isWall = true;
+      if (boundaryWall) node.isWall = true;
+
+      grid[row].push(node);
     }
   }
   return grid;
@@ -61,25 +64,20 @@ export function cleanPaint(nodes, className, idx = 0) {
   for (let i = idx; i < nodes.length; i++) {
     const node = nodes[i];
     if (isStartOrFinish(node) || node.isWall) continue;
-    const nodeEle = document.getElementById(node.id);
-    nodeEle.className = className;
+    document.getElementById(node.id).className = className;
   }
 }
 
 export function paintNodes(nodes, className) {
-  for (const node of nodes) {
-    const nodeEle = document.getElementById(node.id);
-    if (isStartOrFinish(node)) continue;
-    nodeEle.className = className;
+  for (const { row, col, id } of nodes) {
+    if (isStartOrFinish({ row, col })) continue;
+    document.getElementById(id).className = className;
   }
 }
 
 export function paintNode({ row, col, id }, className) {
   if (isStartOrFinish({ row, col })) return;
-
-  const nodeEle = document.getElementById(id);
-  if (!nodeEle) return;
-  nodeEle.className = className;
+  document.getElementById(id).className = className;
 }
 
 export function isStartOrFinish({ row, col }) {
@@ -114,36 +112,21 @@ export function getProgressBarValue() {
   return [+progressEle.value, +progressEle.max];
 }
 
-export function cleanAndResetGrid(
-  dispatch,
-  grid,
-  cleanPaintOnly = false,
-  cleanWalls = true,
-  cleanMaze = true,
-  dynamicMode = false,
-  isBorders = true
-) {
+export function cleanAndResetGrid(dispatch, grid) {
+  cleanPrevAlgo(grid);
+
   const newGrid = [];
-  const { startNode, finishNode } = window;
   for (let row = 0; row < grid.length; row++) {
     newGrid.push([]);
     for (let col = 0; col < grid[row].length; col++) {
       const node = createNode(row, col, grid.length, grid[0].length);
-
-      const isStart = row === startNode.row && col === startNode.col;
-      const isFinish = row === finishNode.row && col === finishNode.col;
-
-      if (node.isStart) window.startNode = node;
-      if (node.isFinish) window.finishNode = node;
-
-      if (cleanMaze) cleanNodeMazeWalls(node, grid);
-      if (!isStart && !isFinish) cleanNode(node, grid, cleanWalls, cleanMaze);
-
+      cleanMazeWalls(node);
+      if (isBoundryWalls(row, col, grid)) node.isWall = true;
       newGrid[row].push(node);
     }
   }
-  if (dynamicMode) removeMidways(isBorders);
-  if (!cleanPaintOnly) dispatch(gridChanged(newGrid));
+  removeMidways(newGrid);
+  dispatch(gridChanged(newGrid));
 }
 
 export function cleanPrevAlgo(grid) {
@@ -157,34 +140,27 @@ export function cleanPrevAlgo(grid) {
   }
 }
 
-function removeMidways(isBorders) {
-  for (const { id } of window.targets) {
+function removeMidways(grid) {
+  if (!window.targets.length) return;
+
+  for (const { row, col, id } of window.targets) {
+    grid[row][col].isMidway = false;
     const nodeEle = document.getElementById(id);
     nodeEle.removeChild(nodeEle.firstChild);
-    nodeEle.className = "node";
-    if (isBorders) nodeEle.style.outline = "0.5px solid #e0e0e0";
   }
   window.targets = [];
 }
 
-export function cleanNode(node, grid, cleanWalls, cleanMaze) {
-  const { row, col, id, isWall } = node;
-  const nodeEle = document.getElementById(id);
-  if (isBoundryWalls(row, col, grid) && cleanMaze) nodeEle.className = "wall";
-  else {
-    if (isWall && !cleanWalls) return;
-    nodeEle.className = "node";
-  }
+export function cleanNode(node, grid) {
+  if (isBoundryWalls(node.row, node.col, grid)) node.isWall = true;
 }
 
 function isBoundryWalls(row, col, grid) {
   return row === 0 || row === grid.length - 1 || col === 0 || col === grid[0].length - 1;
 }
 
-export function cleanNodeMazeWalls(node) {
-  node.walls = { top: true, right: true, bottom: true, left: true };
-  const nodeEle = document.getElementById(node.id);
-  nodeEle.style.border = "0px";
+export function cleanMazeWalls({ id }) {
+  document.getElementById(id).style.border = "0px";
 }
 
 export function weightGrid(grid, dispatch) {

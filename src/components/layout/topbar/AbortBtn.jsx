@@ -9,12 +9,10 @@ import { resetIndicators } from "../../../utils/commonUtils";
 
 const AbortBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
-  const {
-    grid,
-    view: { isBorders },
-  } = useSelector(({ board }) => board);
-  const { isRunning, isMazeRunning, runningFunc, pause, abort, dynamicMode } =
-    useSelector(({ runtime }) => runtime);
+  const { grid } = useSelector(({ board }) => board);
+  const { isRunning, isMazeRunning, runningFunc, pause, abort } = useSelector(
+    ({ runtime }) => runtime
+  );
 
   function handleAbort() {
     if (isRunning && pause) return;
@@ -25,8 +23,7 @@ const AbortBtn = ({ typoStyle }) => {
     batch(() => {
       resetIndicators(dispatch);
       dispatch(visualizingAborted());
-      runningFunc.category === "path" &&
-        cleanAndResetGrid(dispatch, grid, false, false, false, dynamicMode, isBorders);
+      runningFunc.category === "path" && cleanAndResetGrid(dispatch, grid);
     });
   }
   const disabled = (!isRunning && !pause) || isMazeRunning || abort;

@@ -1,4 +1,11 @@
-export default function dfsMaze(grid, setGrid, setIsMazeRunning, instantMode = false) {
+import { gridChanged, nodeChanged } from "../store/board";
+import { runtimeChanged } from "../store/runtime";
+
+let dispatch, grid;
+export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) {
+  dispatch = dispatchAction;
+  grid = tableGrid;
+
   let currentCell = grid[0][0];
 
   const visitedNodes = [currentCell];
@@ -31,49 +38,36 @@ export default function dfsMaze(grid, setGrid, setIsMazeRunning, instantMode = f
   window.startNode = newStartNode;
   window.finishNode = newFinishNode;
 
-  setGrid(grid);
+  dispatch(gridChanged(grid));
 
   if (instantMode) return instantMaze(visitedNodes);
 
-  // let i = 0;
-  // let animMaze = window.requestAnimationFrame(() =>
-  //   animateMaze(i, animMaze, visitedNodes, setIsMazeRunning)
-  // );
-  animateMaze(visitedNodes, setIsMazeRunning);
+  animateMaze(visitedNodes);
 }
 
-function animateMaze(visitedNodes, setIsMazeRunning) {
+function animateMaze(visitedNodes) {
+  dispatch(runtimeChanged({ att: "isMazeRunning", val: true }));
   let i = 0;
   const inter = setInterval(() => {
     if (i === visitedNodes.length - 1) {
-      setIsMazeRunning(false);
+      dispatch(runtimeChanged({ att: "isMazeRunning", val: false }));
       return clearInterval(inter);
     }
     paintMazeWalls(visitedNodes[i++]);
   }, 1);
 }
 
-// function animateMaze(i, animMaze, visitedNodes, setIsMazeRunning) {
-//   if (i === visitedNodes.length - 1) {
-//     setIsMazeRunning(false);
-//     return window.cancelAnimationFrame(animMaze);
-//   }
-//   paintMazeWalls(visitedNodes[i++]);
-//   animMaze = window.requestAnimationFrame(() =>
-//     animateMaze(i, animMaze, visitedNodes, setIsMazeRunning)
-//   );
-// }
-
 function instantMaze(visitedNodes) {
   for (const node of visitedNodes) paintMazeWalls(node);
 }
 
-export function paintMazeWalls({ row, col, id, walls }) {
+export function paintMazeWalls({ row, col, id, walls, isWall }) {
   const nodeEle = document.getElementById(id);
-  const isStart = row === window.startNode.row && col === window.startNode.col;
-  const isFinish = row === window.finishNode.row && col === window.finishNode.col;
 
-  if (!isStart && !isFinish) nodeEle.className = "node";
+  if (isWall) dispatch(nodeChanged({ row, col, change: "wall" }));
+  // const isStart = row === window.startNode.row && col === window.startNode.col;
+  // const isFinish = row === window.finishNode.row && col === window.finishNode.col;
+  // if (!isStart && !isFinish) nodeEle.className = "node";
 
   if (walls.top) nodeEle.style.borderTop = "4px solid #4f477e";
   if (walls.right) nodeEle.style.borderRight = "4px solid #4f477e";

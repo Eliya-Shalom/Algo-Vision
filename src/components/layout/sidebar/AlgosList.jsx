@@ -15,8 +15,8 @@ import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import HighlightAltOutlinedIcon from "@mui/icons-material/HighlightAltOutlined";
 import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
-import { cleanAndResetGrid, cleanPrevAlgo } from "../../../utils/boardUtils";
 import { resetIndicators } from "../../../utils/commonUtils";
+import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import ListButton from "../../common/ListButton";
 
 const styles = {
@@ -31,10 +31,7 @@ const styles = {
 
 const AlgosList = () => {
   const dispatch = useDispatch();
-  const {
-    grid,
-    view: { isBorders },
-  } = useSelector(({ board }) => board);
+  const { grid } = useSelector(({ board }) => board);
   const { runningFunc, dynamicMode, isPainted } = useSelector(({ runtime }) => runtime);
   const [open, setOpen] = useState(false);
 
@@ -95,7 +92,6 @@ const AlgosList = () => {
           );
       }
       category === "path" && isPainted && cleanPrevAlgo(grid);
-      // cleanAndResetGrid(dispatch, grid, false, false, false, dynamicMode, isBorders);
     });
   };
 
