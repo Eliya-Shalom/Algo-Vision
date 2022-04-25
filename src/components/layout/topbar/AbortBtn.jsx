@@ -3,7 +3,7 @@ import { batch, useDispatch, useSelector } from "react-redux";
 import { IconButton, Stack, Typography } from "@mui/material";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import { resetTimer } from "./Timer";
-import { cleanAndResetGrid } from "../../../utils/boardUtils";
+import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import { visualizingAborted } from "../../../store/runtime";
 import { resetIndicators } from "../../../utils/commonUtils";
 
@@ -23,7 +23,7 @@ const AbortBtn = ({ typoStyle }) => {
     batch(() => {
       resetIndicators(dispatch);
       dispatch(visualizingAborted());
-      runningFunc.category === "path" && cleanAndResetGrid(dispatch, grid);
+      runningFunc.category === "path" && cleanPrevAlgo(grid);
     });
   }
   const disabled = (!isRunning && !pause) || isMazeRunning || abort;
