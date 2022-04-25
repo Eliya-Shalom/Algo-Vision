@@ -1,22 +1,22 @@
 import { gridChanged, gridInitialized } from "../store/board";
+import { getRandomInt } from "./commonUtils";
 
-function createNode(row, col, rows, cols) {
+function createNode(row, col) {
   return {
     id: `node-${row}-${col}`,
     row,
     col,
-    walls: { top: true, right: true, bottom: true, left: true },
-    isWall: false,
-    visitedMaze: false,
-    visitedDijkstra: false,
     visitedDFS: false,
     visitedBFS: false,
-    stacked: false,
-    prevNode: null,
+    visitedMaze: false,
+    visitedDijkstra: false,
     distanceFromStart: Infinity,
     estimatedDistanceToEnd: Infinity,
-    isStart: row === 2 && col === 2,
-    isFinish: row === rows - 3 && col === cols - 3,
+    walls: { top: true, right: true, bottom: true, left: true },
+    isWall: false,
+    isMidway: false,
+    prevNode: null,
+    weight: 1,
   };
 }
 
@@ -25,13 +25,15 @@ function createGrid(rows, cols) {
   for (let row = 0; row < rows; row++) {
     grid.push([]);
     for (let col = 0; col < cols; col++) {
-      grid[row].push(createNode(row, col, rows, cols));
+      grid[row].push(createNode(row, col));
+      const boundaryWall = row === 0 || row === rows - 1 || col === 0 || col === cols - 1;
+      if (boundaryWall) grid[row][col].isWall = true;
     }
   }
   return grid;
 }
 
-export const generateGrid = (height, width, nodeSize, dispatch) => {
+export const initializeGrid = (height, width, nodeSize, dispatch) => {
   let currentHeight = height;
   let currentWidth = width;
 
@@ -58,7 +60,7 @@ export function cleanPaint(nodes, className, idx = 0) {
   if (idx < 0) return;
   for (let i = idx; i < nodes.length; i++) {
     const node = nodes[i];
-    if (isStartOrFinish(node) || isWall(node)) continue;
+    if (isStartOrFinish(node) || node.isWall) continue;
     const nodeEle = document.getElementById(node.id);
     nodeEle.className = className;
   }
@@ -85,18 +87,6 @@ export function isStartOrFinish({ row, col }) {
     (row === window.startNode.row && col === window.startNode.col) ||
     (row === window.finishNode.row && col === window.finishNode.col)
   );
-}
-
-export function isWall(id) {
-  const nodeEle = document.getElementById(id);
-  if (!nodeEle) return;
-  return nodeEle.className === "wall";
-}
-
-export function isMidway(id) {
-  const nodeEle = document.getElementById(id);
-  if (!nodeEle) return;
-  return nodeEle.className === "midway";
 }
 
 export function isPath(id) {
@@ -138,36 +128,33 @@ export function cleanAndResetGrid(
   for (let row = 0; row < grid.length; row++) {
     newGrid.push([]);
     for (let col = 0; col < grid[row].length; col++) {
+      const node = createNode(row, col, grid.length, grid[0].length);
+
       const isStart = row === startNode.row && col === startNode.col;
       const isFinish = row === finishNode.row && col === finishNode.col;
-      const node = grid[row][col];
 
-      if (!cleanPaintOnly) {
-        const newNode = { ...grid[row][col] };
+      if (node.isStart) window.startNode = node;
+      if (node.isFinish) window.finishNode = node;
 
-        newNode.prevNode = null;
-        newNode.distanceFromStart = Infinity;
-        newNode.estimatedDistanceToEnd = Infinity;
-        newNode.visitedMaze = false;
-        newNode.visitedDijkstra = false;
-        newNode.visitedDFS = false;
-        newNode.visitedBFS = false;
-        newNode.isStart = isStart;
-        newNode.isFinish = isFinish;
-
-        if (newNode.isStart) window.startNode = newNode;
-        if (newNode.isFinish) window.finishNode = newNode;
-
-        if (cleanMaze) cleanNodeMazeWalls(newNode, grid);
-
-        newGrid[row].push(newNode);
-      }
-
+      if (cleanMaze) cleanNodeMazeWalls(node, grid);
       if (!isStart && !isFinish) cleanNode(node, grid, cleanWalls, cleanMaze);
+
+      newGrid[row].push(node);
     }
   }
   if (dynamicMode) removeMidways(isBorders);
-  !cleanPaintOnly && dispatch(gridChanged(newGrid));
+  if (!cleanPaintOnly) dispatch(gridChanged(newGrid));
+}
+
+export function cleanPrevAlgo(grid) {
+  const { startNode, finishNode } = window;
+
+  for (const node of grid.flat(1)) {
+    const isStart = node.row === startNode.row && node.col === startNode.col;
+    const isFinish = node.row === finishNode.row && node.col === finishNode.col;
+    if (!isStart && !isFinish && !node.isWall)
+      document.getElementById(node.id).className = "node";
+  }
 }
 
 function removeMidways(isBorders) {
@@ -180,11 +167,12 @@ function removeMidways(isBorders) {
   window.targets = [];
 }
 
-export function cleanNode({ row, col, id }, grid, cleanWalls, cleanMaze) {
+export function cleanNode(node, grid, cleanWalls, cleanMaze) {
+  const { row, col, id, isWall } = node;
   const nodeEle = document.getElementById(id);
   if (isBoundryWalls(row, col, grid) && cleanMaze) nodeEle.className = "wall";
   else {
-    if (isWall(id) && !cleanWalls) return;
+    if (isWall && !cleanWalls) return;
     nodeEle.className = "node";
   }
 }
@@ -199,10 +187,10 @@ export function cleanNodeMazeWalls(node) {
   nodeEle.style.border = "0px";
 }
 
-export function setWall(id, overrideWalls = true) {
-  const nodeEle = document.getElementById(id);
-
-  const isWall = nodeEle.className === "wall";
-  if (isWall && overrideWalls) nodeEle.className = "node";
-  else nodeEle.className = "wall";
+export function weightGrid(grid, dispatch) {
+  const gridCopy = copyGrid(grid);
+  for (const node of gridCopy.flat(1)) {
+    node.weight = Math.floor(getRandomInt(2, 50));
+  }
+  dispatch(gridChanged(gridCopy));
 }

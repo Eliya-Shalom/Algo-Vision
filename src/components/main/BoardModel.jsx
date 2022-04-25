@@ -3,7 +3,7 @@ import { useSelector, useDispatch, batch } from "react-redux";
 import NodeModel from "./NodeModel";
 import { runtimeChanged } from "../../store/runtime";
 import { dimensionsChanged } from "../../store/board";
-import { generateGrid } from "../../utils/boardUtils";
+import { initializeGrid } from "../../utils/boardUtils";
 import { getSizeByRef } from "../../utils/commonUtils";
 import "./Board.css";
 
@@ -40,7 +40,7 @@ const Board = () => {
 
   useEffect(() => {
     clearTimeout(tableTimeout);
-    tableTimeout = setTimeout(() => generateGrid(height, width, nodeSize, dispatch), 100);
+    tableTimeout = setTimeout(() => initializeGrid(height, width, nodeSize, dispatch), 100);
     return () => {
       clearTimeout(tableTimeout);
       clearTimeout(resizeTimeout);

@@ -4,19 +4,14 @@ import { resetTimer } from "../layout/topbar/Timer";
 import { uiChanged } from "../../store/ui";
 import { runtimeChanged, snapshotTook, visualizingPlayed } from "../../store/runtime";
 import visualizePath from "../../algorithms/path-finding/visualizePath";
-import {
-  isPath,
-  isWall,
-  setWall,
-  isMidway,
-  cleanAndResetGrid,
-} from "../../utils/boardUtils";
+import { isPath, cleanPrevAlgo } from "../../utils/boardUtils";
 import "./Node.css";
+import { nodeChanged } from "../../store/board";
 
 let targetNum = 0;
 let onChase = false;
 
-const Node = ({ row, col, id }) => {
+const Node = ({ row, col, id, weight, isWall, isMidway }) => {
   const dispatch = useDispatch();
   const { grid, dimensions, view } = useSelector(({ board }) => board);
   const { mousePressedWall, dragged } = useSelector(({ ui }) => ui);
@@ -48,7 +43,7 @@ const Node = ({ row, col, id }) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
-    if (isWall(id) || isMidway(id)) return;
+    if (isWall || isMidway) return;
 
     const [prevRow, prevCol] = e.dataTransfer.getData("text").split("-");
 
@@ -62,7 +57,7 @@ const Node = ({ row, col, id }) => {
 
     if (dynamicMode) return;
 
-    isPainted && cleanAndResetGrid(dispatch, grid, false, false, false);
+    isPainted && cleanPrevAlgo(grid);
 
     if (!runningFunc.algo || window.hasPaused || window.hasAborted) return;
     batch(() => {
@@ -76,22 +71,18 @@ const Node = ({ row, col, id }) => {
   };
 
   function handleClick() {
-    if (!midwayActive || isUnclickable() || isWall(id)) return;
+    if (!midwayActive || isUnclickable() || isWall) return;
     !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
-
-    const nodeEle = document.getElementById(id);
-    nodeEle.appendChild(document.createTextNode(`${++targetNum}`));
-    if (!mouseChaseActive) nodeEle.className = "midway";
-    nodeEle.style.outline = 0;
+    document.getElementById(id).appendChild(document.createTextNode(`${++targetNum}`));
+    dispatch(nodeChanged({ row, col, change: "midway" }));
     window.targets.push({ ...grid[row][col] });
   }
 
   function handleChaseMouseEnter() {
-    if (isUnclickable() || isWall(id) || isPath({ id }) || isDone) return;
+    if (isUnclickable() || isWall || isPath({ id }) || isDone) return;
     document.getElementById(window.finishNode.id).className = "node";
     window.finishNode = grid[row][col];
     document.getElementById(window.finishNode.id).className = "finish";
-
     if (!window.targets.length || !midwayActive) return;
     const { id: tId } = window.targets[window.targets.length - 1];
     document.getElementById(tId).className = "midway";
@@ -99,10 +90,11 @@ const Node = ({ row, col, id }) => {
 
   const handleWallMouseEnter = () => {
     if (isUnclickable() || !mousePressedWall || (isRunning && !dynamicMode)) return;
-    setWall(id);
+    dispatch(nodeChanged({ row, col, change: "wall" }));
   };
 
-  const handleMouseDown = () => {
+  const handleMouseDown = ({ button }) => {
+    if (button === 1) return;
     setDraggable((isStart || isFinish) && !mouseChaseActive);
     if (isUnclickable() || midwayActive || (isRunning && !dynamicMode)) return;
     dispatch(uiChanged({ att: "mousePressedWall", val: true }));
@@ -110,10 +102,11 @@ const Node = ({ row, col, id }) => {
       dispatch(runtimeChanged({ att: "mouseChaseActive", val: false }));
       onChase = true;
     }
-    setWall(id);
+    dispatch(nodeChanged({ row, col, change: "wall" }));
   };
 
-  const handleMouseUp = () => {
+  const handleMouseUp = ({ button }) => {
+    if (button === 1) return;
     setDraggable(isStart || isFinish);
     if (mouseChaseActive || midwayActive || (isRunning && !dynamicMode)) return;
     !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
@@ -131,17 +124,24 @@ const Node = ({ row, col, id }) => {
     ? "start"
     : isFinish
     ? "finish"
-    : boundaryWalls
+    : isWall
     ? "wall"
+    : isMidway
+    ? "midway"
     : "node";
 
   function isUnclickable() {
-    return boundaryWalls || isStart || isFinish || isMaze || isMidway(id);
+    return boundaryWalls || isStart || isFinish || isMaze || isMidway;
+  }
+
+  function handleAuxClick() {
+    dispatch(nodeChanged({ row, col, change: "weight" }));
   }
 
   return (
     <td
       id={id}
+      onAuxClick={handleAuxClick}
       className={className}
       draggable={draggable}
       onClick={handleClick}
@@ -154,8 +154,13 @@ const Node = ({ row, col, id }) => {
       style={{
         width: dimensions.nodeSize,
         height: dimensions.nodeSize,
-        outline: view.isBorders && !isStart && !isFinish ? "0.5px solid #e0e0e0" : "0px",
+        outline:
+          view.isBorders && !isStart && !isFinish && !isMidway
+            ? "0.5px solid #e0e0e0"
+            : "0px",
         userSelect: "none",
+        textAlign: "center",
+        fontSize: 12,
         cursor:
           !isUnclickable() && (!mouseChaseActive || isDone)
             ? "pointer"
@@ -164,8 +169,9 @@ const Node = ({ row, col, id }) => {
             : mouseChaseActive && isDone
             ? "none"
             : "",
-      }}
-    />
+      }}>
+      {weight > 1 && weight}
+    </td>
   );
 };
 

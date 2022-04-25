@@ -1,5 +1,3 @@
-import { isWall } from "../../utils/boardUtils";
-
 let ops;
 
 export default function dijkstra(grid, startNode, finishNode, isMaze) {
@@ -16,7 +14,7 @@ export default function dijkstra(grid, startNode, finishNode, isMaze) {
   while (!minDistancesHeap.isEmpty()) {
     ops++;
     const closestNode = minDistancesHeap.remove();
-    if (isWall(closestNode.id)) continue;
+    if (closestNode.isWall) continue;
 
     if (closestNode.distanceFromStart === Infinity) break;
 
@@ -33,11 +31,9 @@ export default function dijkstra(grid, startNode, finishNode, isMaze) {
     const neighbors = getUnvisitedNeighbors(closestNode, grid, isMaze);
     for (const neighbor of neighbors) {
       ops++;
-      if (isWall(neighbor.id)) {
-        continue;
-      }
+      if (neighbor.isWall) continue;
 
-      neighbor.distanceFromStart = closestNode.distanceFromStart + 1;
+      neighbor.distanceFromStart = closestNode.distanceFromStart + neighbor.weight;
       neighbor.prevNode = closestNode;
 
       minDistancesHeap.update(neighbor, neighbor.distanceFromStart);

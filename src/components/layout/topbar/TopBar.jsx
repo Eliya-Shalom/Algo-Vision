@@ -20,6 +20,7 @@ import ProgressBarPath from "./ProgressBarPath";
 import ProgressBarSort from "./ProgressBarSort";
 import NodesOrSwapsCounter from "./NodesOrSwapsCounter";
 import TitleDivider from "../../common/TitleDivider";
+import WeightBtn from "./WeightBtn";
 
 const TopBar = () => {
   const { runningFunc, dynamicMode } = useSelector(({ runtime }) => runtime);
@@ -39,7 +40,7 @@ const TopBar = () => {
   const style = {
     px:
       category === "path" && !dynamicMode
-        ? { sm: "1vw", md: "0.8vw", lg: "1vw", xl: "1.5vw" }
+        ? { sm: "1vw", md: "0.5vw", lg: "0.8vw", xl: "1.5vw" }
         : category === "sort"
         ? { sm: "1vw", md: "1vw", lg: "1.5vw", xl: "2vw" }
         : dynamicMode
@@ -55,6 +56,7 @@ const TopBar = () => {
     dynamicMode && <MouseChaseBtn typoStyle={typoStyle} />,
     category === "path" && !dynamicMode && <MazeBtn typoStyle={typoStyle} />,
     category === "path" && <CleanBtn typoStyle={typoStyle} />,
+    category === "path" && <WeightBtn typoStyle={typoStyle} />,
     category === "sort" && !dynamicMode && <ShuffleBtn typoStyle={typoStyle} />,
   ];
 

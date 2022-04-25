@@ -2,8 +2,9 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import BarModel from "./BarModel";
 import { axleChanged } from "../../store/axle";
+import { initAxle } from "../../utils/axleUtils";
 import { runtimeChanged } from "../../store/runtime";
-import { getRandomInt, initAxle } from "../../utils/axleUtils";
+import { getRandomInt } from "../../utils/commonUtils";
 
 let i = 0;
 let inter;

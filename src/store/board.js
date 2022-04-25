@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getRandomInt } from "../utils/commonUtils";
 
 const boardConfig = createSlice({
   name: "board",
@@ -47,6 +48,14 @@ const boardConfig = createSlice({
     gridInitialized: (state, { payload }) => {
       state.grid = payload;
     },
+    nodeChanged: (state, { payload }) => {
+      const { row, col, change } = payload;
+      if (change === "weight")
+        state.grid[row][col].weight = Math.floor(getRandomInt(2, 50));
+      else if (change === "wall")
+        state.grid[row][col].isWall = !state.grid[row][col].isWall;
+      else if (change === "midway") state.grid[row][col].isMidway = true;
+    },
     visualSettingsReset: (state) => {
       state.view = {
         perspective: 2500,
@@ -75,6 +84,7 @@ export const {
   tableChanged,
   dimensionsChanged,
   viewChanged,
+  nodeChanged,
   gridChanged,
   gridInitialized,
   visualSettingsReset,

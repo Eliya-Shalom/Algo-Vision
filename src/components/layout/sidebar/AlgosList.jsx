@@ -15,7 +15,7 @@ import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import HighlightAltOutlinedIcon from "@mui/icons-material/HighlightAltOutlined";
 import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
-import { cleanAndResetGrid } from "../../../utils/boardUtils";
+import { cleanAndResetGrid, cleanPrevAlgo } from "../../../utils/boardUtils";
 import { resetIndicators } from "../../../utils/commonUtils";
 import ListButton from "../../common/ListButton";
 
@@ -94,9 +94,8 @@ const AlgosList = () => {
             })
           );
       }
-      category === "path" &&
-        isPainted &&
-        cleanAndResetGrid(dispatch, grid, false, false, false, dynamicMode, isBorders);
+      category === "path" && isPainted && cleanPrevAlgo(grid);
+      // cleanAndResetGrid(dispatch, grid, false, false, false, dynamicMode, isBorders);
     });
   };
 
