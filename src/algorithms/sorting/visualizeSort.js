@@ -28,11 +28,12 @@ export default function visualizeSort(axle, algorithm, snapshot, dispatchAction)
 }
 
 function animateSort(swaps) {
-  commUtils.countNodesOrSwapped(i);
+  const toSwap = !["Merge Sort", "Radix Sort"].includes(algo);
+
+  toSwap && commUtils.countNodesOrSwapped(i);
   utils.setAxleProgressBarValue(i);
 
-  const toSwap = !["Merge Sort", "Radix Sort"].includes(algo);
-  utils.swapProps({ ...swaps[i][0] }, { ...swaps[i][1] }, toSwap);
+  utils.swapProps({ ...swaps[i][0] }, { ...swaps[i][1] }, i, toSwap);
 
   i++;
   if (i === swaps.length) {

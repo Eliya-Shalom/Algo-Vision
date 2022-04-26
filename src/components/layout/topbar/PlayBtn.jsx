@@ -48,7 +48,7 @@ const PlayBtn = ({ typoStyle }) => {
 
     if (category === "path")
       visualizePath(algo, type, grid, snapshot.path, isMaze, dispatch, instantMode);
-    else visualizeSort(axle, algo, snapshot.sort, dispatch, instantMode);
+    else visualizeSort(axle, algo, snapshot.sort, dispatch);
   };
 
   const disabled = (isRunning || !runningFunc.algo || isMazeRunning) && !dynamicMode;
