@@ -79,3 +79,8 @@ export function resetIndicators(dispatch) {
   setPathProgressBarValue(0);
   setAxleProgressBarValue(0);
 }
+
+export function getRandomInt(min, max) {
+  return Math.random() * (max - min) + min;
+}
+

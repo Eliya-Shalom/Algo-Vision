@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { initAxle } from "../../utils/axleUtils";
-import { axleChanged } from "../../store/axle";
 import Bar from "./Bar";
 
 const Axle = () => {
@@ -11,10 +10,7 @@ const Axle = () => {
     ({ board }) => board.view
   );
 
-  useEffect(() => {
-    const newAxle = initAxle(numOfBars);
-    dispatch(axleChanged({ att: "axle", val: newAxle }));
-  }, [numOfBars]);
+  useEffect(() => initAxle(numOfBars, dispatch), [numOfBars]);
 
   return (
     <div

@@ -1,33 +1,31 @@
 .bar {
-  transition: all 0.25s;
   box-shadow: 1px 0px 0 0px #4e5052;
-  background: linear-gradient(0deg, #28214D 0%, #735ed9 35%, #bcb4e4 100%);
+  background: linear-gradient(0deg, #28214d 0%, #735ed9 35%, #bcb4e4 100%);
 }
 
 .swap1 {
-  transition: all 0.25s;
-  box-shadow: 1px 0px 0 0px #4e5052;
-  /* background: linear-gradient(0deg, #28214D 0%, #735ed9 35%, #bcb4e4 100%); */
-  background-color: red;
+  background: linear-gradient(0deg, #28214d 0%, #ef5350 35%, #bcb4e4 110%);
 }
 
 .swap2 {
-  transition: all 0.25s;
-  box-shadow: 1px 0px 0 0px #4e5052;
-  /* background: linear-gradient(0deg, #28214D 0%, #735ed9 35%, #bcb4e4 100%); */
-  background-color: blue;
+  background: linear-gradient(0deg, #28214d 0%, #4caf50 35%, #bcb4e4 110%);
 }
 
 .sorted {
-  /* box-shadow: 1px 0px 0 0px #4e5052; */
-  /* animation-name: sorted-animation; */
+  background: linear-gradient(0deg, #28214d 0%, #4caf50 35%, #bcb4e4 110%);
+}
+
+.sorted {
+  background: linear-gradient(0deg, #28214d 0%, #4caf50 35%, #bcb4e4 110%);
+  box-shadow: 1px 0px 0 0px #4e5052;
+  /* animation-name: sorted-animation;
   animation-duration: 2s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-play-state: running;
+  animation-play-state: running; */
 }
 
 @keyframes sorted-animation {

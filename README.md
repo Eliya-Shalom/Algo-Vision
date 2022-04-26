@@ -28,4 +28,4 @@ I have built this application with: React, Redux, and Material-UI.
 
 I hope you will enjoy it! :blush: [Algo-Vision on Git-Pages](https://eliya-shalom.github.io/Algo-Vision/)
 
-[![board.png](https://i.postimg.cc/k561w0Rw/board.png)](https://postimg.cc/mc4yg6wF)
+[![board.png](https://i.postimg.cc/MGnwnFr1/board.png)](https://postimg.cc/94HKSJ2f)

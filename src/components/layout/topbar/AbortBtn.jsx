@@ -3,18 +3,16 @@ import { batch, useDispatch, useSelector } from "react-redux";
 import { IconButton, Stack, Typography } from "@mui/material";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import { resetTimer } from "./Timer";
-import { cleanAndResetGrid } from "../../../utils/boardUtils";
+import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import { visualizingAborted } from "../../../store/runtime";
 import { resetIndicators } from "../../../utils/commonUtils";
 
 const AbortBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
-  const {
-    grid,
-    view: { isBorders },
-  } = useSelector(({ board }) => board);
-  const { isRunning, isMazeRunning, runningFunc, pause, abort, dynamicMode } =
-    useSelector(({ runtime }) => runtime);
+  const { grid } = useSelector(({ board }) => board);
+  const { isRunning, isMazeRunning, runningFunc, pause, abort } = useSelector(
+    ({ runtime }) => runtime
+  );
 
   function handleAbort() {
     if (isRunning && pause) return;
@@ -25,8 +23,7 @@ const AbortBtn = ({ typoStyle }) => {
     batch(() => {
       resetIndicators(dispatch);
       dispatch(visualizingAborted());
-      runningFunc.category === "path" &&
-        cleanAndResetGrid(dispatch, grid, false, false, false, dynamicMode, isBorders);
+      runningFunc.category === "path" && cleanPrevAlgo(grid);
     });
   }
   const disabled = (!isRunning && !pause) || isMazeRunning || abort;

@@ -9,7 +9,7 @@ const NodesOrSwapsCounter = () => {
 
   const Icon = ({ category, style }) => {
     return (
-      <Tooltip title={category === "path" ? "Visited-Nodes" : "Comparisons"}>
+      <Tooltip title={category === "path" ? "Visited-Nodes" : "Swaps"}>
         {category === "path" || dynamicMode ? (
           <CheckCircleOutlineRoundedIcon sx={style} />
         ) : (

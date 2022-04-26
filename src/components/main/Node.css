@@ -2,6 +2,7 @@
   z-index: 5;
   position: relative;
   background-color: #4caf50;
+  color: #4caf50;
   box-shadow: 2px 5px 0px 0px black;
 }
 
@@ -73,6 +74,7 @@
   z-index: 4;
   position: relative;
   outline: 0.5px solid #9383e2;
+  color: #e8e8e8;
   box-shadow: 2px 5px 0px 0px black;
   border-collapse: collapse;
   transition: all 1s;

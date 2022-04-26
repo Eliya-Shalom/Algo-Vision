@@ -2,33 +2,26 @@ import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { IconButton, Stack, Typography, Tooltip } from "@mui/material";
 import GridGoldenratioIcon from "@mui/icons-material/GridGoldenratio";
-import { gridChanged } from "../../../store/board";
-import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
 import { copyGrid, cleanAndResetGrid } from "../../../utils/boardUtils";
+import { runtimeChanged } from "../../../store/runtime";
 import dfsMaze from "../../../algorithms/dfsMaze";
 
 const MazeBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
-  const { grid, startCoords, finishCoords } = useSelector(({ board }) => board);
-  const { isMaze, isRunning, instantMode, isMazeRunning } = useSelector(
+  const { grid } = useSelector(({ board }) => board);
+  const { isMaze, isRunning, isPainted, instantMode, isMazeRunning } = useSelector(
     ({ runtime }) => runtime
   );
-
-  const setboardGrid = (newGrid) => dispatch(gridChanged(newGrid));
-  const setIsMazeRunning = (val) =>
-    dispatch(runtimeChanged({ att: "isMazeRunning", val }));
 
   const animateMaze = () => {
     if (isRunning || isMazeRunning || isMaze) return;
 
     batch(() => {
-      cleanAndResetGrid(dispatch, grid, startCoords, finishCoords, true, true, true);
-      dispatch(visualizingAborted());
+      isPainted && cleanAndResetGrid(dispatch, grid);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));
-      if (!instantMode) dispatch(runtimeChanged({ att: "isMazeRunning", val: true }));
+      // dispatch(visualizingAborted());
     });
-
-    dfsMaze(copyGrid(grid), setboardGrid, setIsMazeRunning, instantMode);
+    dfsMaze(dispatch, copyGrid(grid), instantMode);
   };
 
   const disabled = isMazeRunning || isRunning || isMaze;

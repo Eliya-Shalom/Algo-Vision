@@ -20,13 +20,11 @@ const ProgressBar = () => {
 
     const currentStep = +value;
     const numOfVisited = visited.length - 1;
-    const visitedClass = numOfVisited < 2000 ? "visited" : "visited-opt";
-    const pathClass = numOfVisited < 2000 ? "path" : "path-opt";
 
     let className;
     if (currentStep <= numOfVisited) {
-      className = currentStep < prevStep ? "node" : visitedClass;
-    } else className = currentStep < prevStep ? visitedClass : pathClass;
+      className = currentStep < prevStep ? "node" : "visited";
+    } else className = currentStep < prevStep ? "visited" : "path";
 
     const visitedIdx = currentStep <= numOfVisited ? currentStep : numOfVisited;
     const pathIdx = currentStep > numOfVisited ? currentStep - numOfVisited : 0;
