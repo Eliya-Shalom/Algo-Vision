@@ -1,7 +1,7 @@
 import { axleChanged } from "../store/axle";
 import { getRandomInt } from "./commonUtils";
 
-export function initAxle(numOfBars, dispatch) {
+export function initAxle(numOfBars, dispatch = null) {
   const axle = [];
   const width = 100 / numOfBars;
   const diffInHeights = +(100 / numOfBars).toFixed(2);
@@ -10,7 +10,10 @@ export function initAxle(numOfBars, dispatch) {
     height += diffInHeights;
     axle.push({ id: `bar-${i}`, height, width });
   }
-  dispatch(axleChanged({ att: "axle", val: shuffleAxle(axle) }));
+  const shuffled = shuffleAxle(axle);
+  if (dispatch) dispatch(axleChanged({ att: "axle", val: shuffled }));
+
+  return shuffled;
 }
 
 export function shuffleAxle(axle) {
@@ -49,7 +52,7 @@ export function animateShuffleAxle(axle) {
         while (j in visited) j = Math.floor(getRandomInt(i, axle.length - 1));
         visited[j] = true;
 
-        swapProps(copy[i], copy[j]);
+        swapHeights(copy[i], copy[j]);
 
         if (Object.keys(visited).length >= axle.length - 1) {
           clearInterval(inter);
@@ -59,6 +62,18 @@ export function animateShuffleAxle(axle) {
       i++;
     }, 1);
   });
+}
+
+export function swapHeights(bar1, bar2) {
+  const bar1Ele = document.getElementById(bar1.id);
+  const bar2Ele = document.getElementById(bar2.id);
+
+  bar1Ele.style.height = `${bar2.height}%`;
+  bar2Ele.style.height = `${bar1.height}%`;
+
+  let temp = bar1.height;
+  bar1.height = bar2.height;
+  if (swap) bar2.height = temp;
 }
 
 export function copyAxle(axle) {
@@ -112,7 +127,7 @@ export function cleanBars(bars) {
   }
 }
 let prev1, prev2;
-export function swapProps(bar1, bar2, i, swap = true) {
+export function swapAndPaint(bar1, bar2, i, swap = true) {
   if (i === 0) [prev1, prev2] = [null, null];
 
   const bar1Ele = document.getElementById(bar1.id);
@@ -135,9 +150,9 @@ export function swapProps(bar1, bar2, i, swap = true) {
   prev1 = bar1;
   prev2 = bar2;
 
-  // let temp = firstBar.height;
-  // firstBar.height = secondBar.height;
-  // if (swap) secondBar.height = temp;
+  let temp = bar1.height;
+  bar1.height = bar2.height;
+  if (swap) bar2.height = temp;
 }
 
 // let prev1, prevSecond;

@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { runtimeChanged, snapshotTook } from "../../../store/runtime";
-import { copySwaps, swapProps } from "../../../utils/axleUtils";
+import { copySwaps, swapAndPaint } from "../../../utils/axleUtils";
 
 let timeout;
 let prevStep = 0;
@@ -52,13 +52,13 @@ const ProgressBar = () => {
 
     if (isReverse) {
       for (let i = prevStep; i > step; i--) {
-        if (!toSwap) swapProps(swaps[i][0], { ...ogSwaps[i][1] }, toSwap);
-        else swapProps(swaps[i][0], swaps[i][1], toSwap);
+        if (!toSwap) swapAndPaint(swaps[i][0], { ...ogSwaps[i][1] }, toSwap);
+        else swapAndPaint(swaps[i][0], swaps[i][1], toSwap);
       }
     } else {
       for (let i = prevStep; i < step; i++) {
-        if (!toSwap) swapProps(swaps[i][0], { ...ogSwaps[i][1] }, toSwap);
-        else swapProps(swaps[i][0], swaps[i][1], toSwap);
+        if (!toSwap) swapAndPaint(swaps[i][0], { ...ogSwaps[i][1] }, toSwap);
+        else swapAndPaint(swaps[i][0], swaps[i][1], toSwap);
       }
     }
   }

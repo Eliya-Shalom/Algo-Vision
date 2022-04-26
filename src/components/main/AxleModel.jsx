@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import BarModel from "./BarModel";
-import { axleChanged } from "../../store/axle";
 import { initAxle } from "../../utils/axleUtils";
 import { runtimeChanged } from "../../store/runtime";
 import { getRandomInt } from "../../utils/commonUtils";
@@ -11,13 +10,13 @@ let inter;
 
 const Axle = () => {
   const dispatch = useDispatch();
-  const { axle } = useSelector(({ axle }) => axle);
+  const [axleModel, setAxleModel] = useState([]);
 
   useEffect(() => {
-    const newAxle = initAxle(100);
-    dispatch(axleChanged({ att: "axle", val: newAxle }));
+    const shuffledAxle = initAxle(100);
+    setAxleModel(shuffledAxle);
 
-    animWave(newAxle);
+    animWave(shuffledAxle);
 
     return () => clearInterval(inter);
   }, []);
@@ -72,7 +71,7 @@ const Axle = () => {
           width: "100%",
           transition: "all 0.5s",
         }}>
-        {axle.map(({ id, _, width }) => (
+        {axleModel.map(({ id, _, width }) => (
           <BarModel key={id} id={id} height={0} width={`${width}%`} />
         ))}
       </div>

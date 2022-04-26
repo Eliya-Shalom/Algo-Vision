@@ -27,7 +27,14 @@ const Board = () => {
     resizeTimeout = setTimeout(resetTableSize, 200);
   });
 
-  useEffect(resetTableSize, [view.isReset]);
+  useEffect(() => {
+    resetTableSize();
+    return () => {
+      clearTimeout(resizeTimeout);
+      clearTimeout(tableTimeout);
+    };
+  }, [view.isReset]);
+
   useEffect(() => {
     clearTimeout(tableTimeout);
     tableTimeout = setTimeout(

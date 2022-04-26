@@ -33,7 +33,7 @@ function animateSort(swaps) {
   toSwap && commUtils.countNodesOrSwapped(i);
   utils.setAxleProgressBarValue(i);
 
-  utils.swapProps({ ...swaps[i][0] }, { ...swaps[i][1] }, i, toSwap);
+  utils.swapAndPaint({ ...swaps[i][0] }, { ...swaps[i][1] }, i, toSwap);
 
   i++;
   if (i === swaps.length) {
@@ -70,6 +70,10 @@ function handlePause(dispatch, swaps, idx) {
 }
 
 function handleFinish(dispatch, swaps) {
+  const [bar1, bar2] = swaps[swaps.length - 1];
+  document.getElementById(bar1.id).className = "bar";
+  document.getElementById(bar2.id).className = "bar";
+
   pauseTimer();
   batch(() => {
     dispatch(visualizingDone());
