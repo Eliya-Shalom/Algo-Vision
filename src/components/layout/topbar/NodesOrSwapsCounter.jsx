@@ -1,40 +1,27 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Stack, Tooltip, Typography } from "@mui/material";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
+import TitleIcon from "../../common/TitleIcon";
 
 const NodesOrSwapsCounter = () => {
-  const { runningFunc, dynamicMode } = useSelector(({ runtime }) => runtime);
+  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
 
-  const Icon = ({ category, style }) => {
-    return (
-      <Tooltip title={category === "path" ? "Visited-Nodes" : "Swaps"}>
-        {category === "path" || dynamicMode ? (
-          <CheckCircleOutlineRoundedIcon sx={style} />
-        ) : (
-          <CompareArrowsIcon sx={style} />
-        )}
-      </Tooltip>
+  const iconStyle = { color: "secondary.main", fontSize: 30 };
+  const tooltip = category === "path" ? "Visited-Nodes" : "Swaps";
+  const Icon =
+    category === "path" ? (
+      <CheckCircleOutlineRoundedIcon sx={iconStyle} />
+    ) : (
+      <CompareArrowsIcon sx={iconStyle} />
     );
-  };
 
   return (
-    <Stack alignItems="center">
-      <Icon
-        category={runningFunc.category}
-        style={{ color: "secondary.main", fontSize: 30 }}
-      />
-
-      <Typography
-        color="primary.light"
-        variant="button"
-        textAlign="center"
-        sx={{ minWidth: 55 }}
-        pt={0.5}>
-        <span id="nodes-or-swaps-counter">0</span>
-      </Typography>
-    </Stack>
+    <TitleIcon
+      Icon={Icon}
+      label={<span id="nodes-or-swaps-counter">0</span>}
+      tooltip={tooltip}
+    />
   );
 };
 

@@ -1,8 +1,8 @@
-import { Stack, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { runtimeChanged, snapshotTook } from "../../../store/runtime";
 import { copySwaps, swapAndPaint } from "../../../utils/axleUtils";
+import RangeInput from "../../common/RangeInput";
 
 let timeout;
 let prevStep = 0;
@@ -52,31 +52,18 @@ const ProgressBar = () => {
 
     if (isReverse) {
       for (let i = prevStep; i > step; i--) {
-        if (!toSwap) swapAndPaint(swaps[i][0], { ...ogSwaps[i][1] }, toSwap);
-        else swapAndPaint(swaps[i][0], swaps[i][1], toSwap);
+        if (!toSwap) swapAndPaint(swaps[i][0], { ...ogSwaps[i][1] }, 1, toSwap);
+        else swapAndPaint(swaps[i][0], swaps[i][1], 1, toSwap);
       }
     } else {
       for (let i = prevStep; i < step; i++) {
-        if (!toSwap) swapAndPaint(swaps[i][0], { ...ogSwaps[i][1] }, toSwap);
-        else swapAndPaint(swaps[i][0], swaps[i][1], toSwap);
+        if (!toSwap) swapAndPaint(swaps[i][0], { ...ogSwaps[i][1] }, 1, toSwap);
+        else swapAndPaint(swaps[i][0], swaps[i][1], 1, toSwap);
       }
     }
   }
 
-  return (
-    <Stack alignItems="center" width="100%">
-      <Typography variant="button" color="initial" fontSize={11} children="Progress" />
-      <input
-        className="slider"
-        id="progress-sort"
-        type="range"
-        min="0"
-        max="0"
-        step={1}
-        onChange={handleChange}
-      />
-    </Stack>
-  );
+  return <RangeInput handleChange={handleChange} />;
 };
 
 export default ProgressBar;

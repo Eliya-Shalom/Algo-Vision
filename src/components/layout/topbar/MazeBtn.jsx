@@ -1,10 +1,10 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { IconButton, Stack, Typography, Tooltip } from "@mui/material";
 import GridGoldenratioIcon from "@mui/icons-material/GridGoldenratio";
 import { copyGrid, cleanAndResetGrid } from "../../../utils/boardUtils";
 import { runtimeChanged } from "../../../store/runtime";
 import dfsMaze from "../../../algorithms/dfsMaze";
+import ActionBtn from "../../common/ActionBtn";
 
 const MazeBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
@@ -13,41 +13,28 @@ const MazeBtn = ({ typoStyle }) => {
     ({ runtime }) => runtime
   );
 
-  const animateMaze = () => {
-    if (isRunning || isMazeRunning || isMaze) return;
-
+  const handleClick = () => {
     batch(() => {
       isPainted && cleanAndResetGrid(dispatch, grid);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));
-      // dispatch(visualizingAborted());
     });
     dfsMaze(dispatch, copyGrid(grid), instantMode);
   };
 
   const disabled = isMazeRunning || isRunning || isMaze;
-
+  const iconStyle = {
+    fontSize: 30,
+    color: disabled ? "grey.500" : "secondary.main",
+  };
   return (
-    <Tooltip title="DFS Maze Generation">
-      <Stack>
-        <IconButton disabled={disabled} onClick={animateMaze} sx={{ p: 0 }}>
-          <GridGoldenratioIcon
-            sx={{
-              fontSize: 30,
-              color: disabled ? "grey.500" : "secondary.main",
-            }}
-          />
-        </IconButton>
-
-        <Typography
-          variant="button"
-          color="primary.light"
-          noWrap
-          sx={typoStyle}
-          pt={0.5}
-          children="Maze"
-        />
-      </Stack>
-    </Tooltip>
+    <ActionBtn
+      children={<GridGoldenratioIcon sx={iconStyle} />}
+      disabled={disabled}
+      handleClick={handleClick}
+      typoStyle={typoStyle}
+      label="Maze"
+      tooltip="DFS Maze Generation"
+    />
   );
 };
 

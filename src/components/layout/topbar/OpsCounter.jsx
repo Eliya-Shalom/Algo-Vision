@@ -1,26 +1,25 @@
 import React from "react";
-import { Stack, Tooltip, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
+import { useSelector } from "react-redux";
+import TitleIcon from "../../common/TitleIcon";
 
 const OpsCounter = () => {
+  const { opsCounter } = useSelector(({ ui }) => ui);
+  const iconStyle = { color: "secondary.main", fontSize: 30 };
   return (
-    <Stack alignItems="center">
-      <Tooltip
-        title={
-          <div style={{ width: 210 }}>
-            <div style={{ textAlign: "center" }}>Operations-Counter</div>
-            <div style={{ textAlign: "start" }}>
-              (loops, arrays accesses, comparisons, recursive calls, etc).
-            </div>
-          </div>
-        }>
-        <AssessmentOutlinedIcon sx={{ color: "secondary.main", fontSize: 30 }} />
-      </Tooltip>
-
-      <Typography color="primary.light" variant="button" noWrap pt={0.5}>
-        <span id="ops-counter">0</span>
-      </Typography>
-    </Stack>
+    <TitleIcon
+      Icon={<AssessmentOutlinedIcon sx={iconStyle} />}
+      label={opsCounter}
+      tooltip={
+        <Box width='190px'>
+          <Box textAlign="center">Operations-Counter</Box>
+          <Box extAlign="start">
+            Loops iterations, arrays accesses, comparisons, recursive calls, etc.
+          </Box>
+        </Box>
+      }
+    />
   );
 };
 

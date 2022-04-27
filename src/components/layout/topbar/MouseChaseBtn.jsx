@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import MouseIcon from "@mui/icons-material/Mouse";
 import { runtimeChanged } from "../../../store/runtime";
+import ActionBtn from "../../common/ActionBtn";
 
 const MouseChaseBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
@@ -19,25 +19,19 @@ const MouseChaseBtn = ({ typoStyle }) => {
   };
 
   return (
-    <Tooltip title={`When active, the algorithm will chase after the user mouse.
-    walls/midway points can be created while active.`}>
-      <Stack alignItems="center">
-        <IconButton sx={{ p: 0 }} onClick={handleClick} disabled={false}>
-          <MouseIcon
-            style={style.main}
-            sx={mouseChaseActive ? style.active : style.notActive}
-          />
-        </IconButton>
-        <Typography
-          variant="button"
-          color="primary.light"
-          noWrap
-          sx={{ ...typoStyle, fontWeight: mouseChaseActive && "bold" }}
-          pt={0.5}
-          children="Chase"
+    <ActionBtn
+      handleClick={handleClick}
+      typoStyle={{ ...typoStyle, fontWeight: mouseChaseActive && "bold" }}
+      label="CHASE"
+      tooltip={`When active, the algorithm will chase after the user mouse.
+                walls/midway points can be created while active.`}
+      children={
+        <MouseIcon
+          style={style.main}
+          sx={mouseChaseActive ? style.active : style.notActive}
         />
-      </Stack>
-    </Tooltip>
+      }
+    />
   );
 };
 

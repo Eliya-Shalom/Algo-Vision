@@ -1,27 +1,22 @@
 import React from "react";
-import { Stack, Tooltip, Typography } from "@mui/material";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
+import TitleIcon from "../../common/TitleIcon";
 
 let timerTimeout;
 let currentTime = 0;
 const Timer = () => {
+  const iconStyle = { color: "secondary.main", fontSize: 30 };
   return (
-    <Stack alignItems="center">
-      <Tooltip title="Animation Time">
-        <TimerOutlinedIcon sx={{ color: "secondary.main", fontSize: 30 }} />
-      </Tooltip>
-      <Typography
-        sx={{ minWidth: 55 }}
-        color="primary.light"
-        variant="button"
-        textAlign="center"
-        pt={0.5}>
+    <TitleIcon
+      Icon={<TimerOutlinedIcon sx={iconStyle} />}
+      tooltip="Animation Time"
+      label={
         <div>
           <span id="timer">0.000</span>
           <strong style={{ fontSize: 10 }}>s</strong>
         </div>
-      </Typography>
-    </Stack>
+      }
+    />
   );
 };
 

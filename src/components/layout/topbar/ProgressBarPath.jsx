@@ -1,8 +1,8 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { Stack, Typography } from "@mui/material";
 import { runtimeChanged, indicesChanged } from "../../../store/runtime";
 import { paintNode } from "../../../utils/boardUtils";
+import RangeInput from "../../common/RangeInput";
 
 let timeout;
 let prevStep;
@@ -52,26 +52,7 @@ const ProgressBar = () => {
     }, 700);
   };
 
-  return (
-    <Stack alignItems="center" width="100%">
-      <Typography
-        variant="button"
-        color="initial"
-        sx={{ fontSize: 11 }}
-        children="Progress"
-      />
-
-      <input
-        className="slider"
-        id="progress-path"
-        type="range"
-        min="0"
-        max="0"
-        step={1}
-        onChange={handleChange}
-      />
-    </Stack>
-  );
+  return <RangeInput handleChange={handleChange} />;
 };
 
 export default ProgressBar;

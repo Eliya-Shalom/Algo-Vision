@@ -146,13 +146,12 @@ export function swapAndPaint(bar1, bar2, i, swap = true) {
     bar2Ele.style.height = `${bar1.height}%`;
     bar2Ele.className = "swap2";
   }
-
-  prev1 = bar1;
-  prev2 = bar2;
-
   let temp = bar1.height;
   bar1.height = bar2.height;
   if (swap) bar2.height = temp;
+
+  prev1 = bar1;
+  prev2 = bar2;
 }
 
 // let prev1, prevSecond;

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
 import { resetTimer } from "./Timer";
+import ActionBtn from "../../common/ActionBtn";
 import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
 import { cleanAndResetGrid } from "../../../utils/boardUtils";
 import { resetIndicators } from "../../../utils/commonUtils";
@@ -34,26 +34,21 @@ const CleanBtn = ({ typoStyle }) => {
   }
 
   const disabled = isRunning || isMazeRunning;
-
+  const iconStyle = {
+    fontSize: 30,
+    transform: `rotate(-${deg}deg)`,
+    transition: "transform 1s",
+    color: disabled ? "grey.300" : "secondary.main",
+  };
   return (
-    <Tooltip title="Clean Board">
-      <Stack>
-        <IconButton disabled={disabled} onClick={handleClick} sx={{ p: 0 }}>
-          <RotateLeftIcon
-            id="rotate"
-            sx={{
-              fontSize: 30,
-              transform: `rotate(-${deg}deg)`,
-              transition: "transform 1s",
-              color: disabled ? "grey.300" : "secondary.main",
-            }}
-          />
-        </IconButton>
-        <Typography variant="button" color="primary.light" noWrap sx={typoStyle} pt={0.5}>
-          Clean
-        </Typography>
-      </Stack>
-    </Tooltip>
+    <ActionBtn
+      children={<RotateLeftIcon sx={iconStyle} />}
+      disabled={disabled}
+      handleClick={handleClick}
+      typoStyle={typoStyle}
+      label="Clean"
+      tooltip="Clean Board"
+    />
   );
 };
 

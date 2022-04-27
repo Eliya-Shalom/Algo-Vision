@@ -10,29 +10,29 @@ import * as utils from "../../utils/axleUtils";
 import * as commUtils from "../../utils/commonUtils";
 import { pauseTimer } from "../../components/layout/topbar/Timer";
 import { snapshotTook, visualizingDone } from "../../store/runtime";
+import { uiChanged } from "../../store/ui";
 
 let i, ops, dispatch, algo, realTime, timeout;
-export default function visualizeSort(axle, algorithm, snapshot, dispatchAction) {
+export default function visualizeSort(axle, algorithm, snapshot, toDispatch) {
   algo = algorithm;
-  dispatch = dispatchAction;
+  dispatch = toDispatch;
   i = snapshot.idx;
   let swaps = utils.copySwaps(snapshot.swaps);
   if (!swaps.length) {
     [swaps, ops, realTime] = getAlgo(algo, utils.copyAxle(axle));
   }
-  commUtils.incrementOpsCounter(ops);
+  dispatch(uiChanged({ att: "opsCounter", val: ops }));
   commUtils.setRealtime(realTime, dispatch);
   utils.setAxleProgressBarMax(swaps.length - 1);
 
-  animateSort(swaps);
-}
-
-function animateSort(swaps) {
   const toSwap = !["Merge Sort", "Radix Sort"].includes(algo);
 
+  animateSort(swaps, toSwap);
+}
+
+function animateSort(swaps, toSwap) {
   toSwap && commUtils.countNodesOrSwapped(i);
   utils.setAxleProgressBarValue(i);
-
   utils.swapAndPaint({ ...swaps[i][0] }, { ...swaps[i][1] }, i, toSwap);
 
   i++;
@@ -45,7 +45,7 @@ function animateSort(swaps) {
   if (window.hasPaused) return handlePause(dispatch, swaps, i);
 
   clearTimeout(timeout);
-  timeout = setTimeout(() => animateSort(swaps), commUtils.getSpeed());
+  timeout = setTimeout(() => animateSort(swaps, toSwap), commUtils.getSpeed());
 }
 
 function getAlgo(algo, axle) {

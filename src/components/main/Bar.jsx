@@ -27,7 +27,7 @@ const Bar = ({ id, height, width }) => {
         height,
         width,
         cursor: "pointer",
-        transform: hover ? "scale(1.2)" : "scale(1)",
+        transform: hover ? "scale(1.1)" : "scale(1)",
         transition: transition && "all 0.25s",
       }}
     />
