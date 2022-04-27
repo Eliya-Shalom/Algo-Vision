@@ -5,11 +5,11 @@
 }
 
 .swap1 {
-  background: linear-gradient(0deg, #28214d 0%, #ef5350 35%, #bcb4e4 110%);
+  background: linear-gradient(0deg, #28214d 0%, #ef50aa 35%, #bcb4e4 110%);
 }
 
 .swap2 {
-  background: linear-gradient(0deg, #28214d 0%, #4caf50 35%, #bcb4e4 110%);
+  background: linear-gradient(0deg, #28214d 0%, #50ef9d 35%, #bcb4e4 110%);
 }
 
 .sorted {
