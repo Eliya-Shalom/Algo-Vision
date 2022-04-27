@@ -166,7 +166,7 @@ const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
             ? "pointer"
             : isStart || isFinish
             ? "grab"
-            : mouseChaseActive && isDone
+            : mouseChaseActive
             ? "none"
             : "",
       }}>

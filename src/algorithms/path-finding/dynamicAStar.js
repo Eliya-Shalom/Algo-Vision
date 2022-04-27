@@ -6,6 +6,7 @@ import {
   visualizingAborted,
   visualizingDone,
 } from "../../store/runtime";
+import { nodeChanged } from "../../store/board";
 
 let lastNode;
 
@@ -60,6 +61,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
       let { id } = window.targets.shift();
       const targetEle = document.getElementById(id);
       targetEle.removeChild(targetEle.firstChild);
+      dispatch(nodeChanged({ row: tRow, col: tCol, change: "midway" }));
 
       if (window.targets.length) currentTarget = window.targets[0];
       else currentTarget = window.finishNode;

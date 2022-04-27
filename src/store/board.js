@@ -52,7 +52,7 @@ const boardConfig = createSlice({
       if (change === "weight") state.grid[row][col].weight++;
       else if (change === "wall")
         state.grid[row][col].isWall = !state.grid[row][col].isWall;
-      else if (change === "midway") state.grid[row][col].isMidway = true;
+      else if (change === "midway") state.grid[row][col].isMidway = !state.grid[row][col].isMidway;
     },
     boundryWallsReset: (state) => {
       state.grid[0].map((node) => (node.isWall = false));
