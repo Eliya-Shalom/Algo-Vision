@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import BarModel from "./BarModel";
-import { initAxle } from "../../utils/axleUtils";
-import { runtimeChanged } from "../../store/runtime";
-import { getRandomInt } from "../../utils/commonUtils";
+import { initAxle } from "../../../utils/axleUtils";
+import { runtimeChanged } from "../../../store/runtime";
+import { getRandomInt } from "../../../utils/commonUtils";
 
 let i = 0;
 let inter;

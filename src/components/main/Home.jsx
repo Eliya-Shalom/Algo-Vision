@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import BoardModel from "./BoardModel";
-import AxleModel from "./AxleModel";
+import BoardModel from "./Board/BoardModel";
+import AxleModel from "./Axle/AxleModel";
 
 const Home = () => {
   const [showBoard, setShowBoard] = useState(false);

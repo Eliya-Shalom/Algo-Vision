@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { resetTimer } from "../layout/topbar/Timer";
-import { uiChanged } from "../../store/ui";
-import { runtimeChanged, snapshotTook, visualizingPlayed } from "../../store/runtime";
-import visualizePath from "../../algorithms/path-finding/visualizePath";
-import { isPath, cleanPrevAlgo } from "../../utils/boardUtils";
+import { resetTimer } from "../../layout/topbar/Timer";
+import { uiChanged } from "../../../store/ui";
+import { runtimeChanged, snapshotTook, visualizingPlayed } from "../../../store/runtime";
+import visualizePath from "../../../algorithms/path-finding/visualizePath";
+import { isPath, cleanPrevAlgo } from "../../../utils/boardUtils";
+import { nodeChanged } from "../../../store/board";
 import "./Node.css";
-import { nodeChanged } from "../../store/board";
 
 let targetNum = 0;
 let onChase = false;

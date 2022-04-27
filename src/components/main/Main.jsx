@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import Home from "./Home";
-import Board from "./Board";
-import Axle from "./Axle";
+import Board from "./Board/Board";
+import Axle from "./Axle/Axle";
 import Legend from "../layout/Legend";
 import { viewChanged } from "../../store/board";
 

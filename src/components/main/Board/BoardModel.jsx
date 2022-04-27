@@ -1,30 +1,40 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import Node from "./Node";
-import { boardResized } from "../../store/board";
-import { initializeGrid } from "../../utils/boardUtils";
-import { getSizeByRef } from "../../utils/commonUtils";
+import React, { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch, batch } from "react-redux";
+import NodeModel from "./NodeModel";
+import { runtimeChanged } from "../../../store/runtime";
+import { dimensionsChanged } from "../../../store/board";
+import { initializeGrid } from "../../../utils/boardUtils";
+import { getSizeByRef } from "../../../utils/commonUtils";
 import "./Board.css";
 
 let resizeTimeout;
 let tableTimeout;
+let animFrame;
+let deg = 0;
 
 const Board = () => {
   const dispatch = useDispatch();
-  const { dimensions, grid, view } = useSelector(({ board }) => board);
-  const { rotateX, rotateY, rotateZ, perspective, scale } = view;
-  const { height, width, nodeSize } = dimensions;
-
+  const {
+    grid,
+    view: { perspective, isReset },
+    dimensions: { height, width, nodeSize },
+  } = useSelector(({ board }) => board);
+  const tableRef = useRef();
   const tableContainerRef = useRef();
+
+  const [rotate, setRotate] = useState(deg);
 
   const resetTableSize = () => {
     const [currentMaxHeight, currentMaxWidth] = getSizeByRef(tableContainerRef);
-    dispatch(boardResized({ height: currentMaxHeight, width: currentMaxWidth }));
+    batch(() => {
+      dispatch(dimensionsChanged({ att: "height", val: currentMaxHeight }));
+      dispatch(dimensionsChanged({ att: "width", val: currentMaxWidth }));
+    });
   };
 
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resetTableSize, 200);
+    resizeTimeout = setTimeout(() => resetTableSize(), 200);
   });
 
   useEffect(() => {
@@ -33,7 +43,7 @@ const Board = () => {
       clearTimeout(resizeTimeout);
       clearTimeout(tableTimeout);
     };
-  }, [view.isReset]);
+  }, [isReset]);
 
   useEffect(() => {
     clearTimeout(tableTimeout);
@@ -45,7 +55,27 @@ const Board = () => {
       clearTimeout(tableTimeout);
       clearTimeout(resizeTimeout);
     };
-  }, [height, width, nodeSize]);
+  }, [height, width]);
+
+  useEffect(() => {
+    animFrame = window.requestAnimationFrame(spinBoard);
+    return () => window.cancelAnimationFrame(animFrame);
+  }, [grid]);
+
+  function spinBoard() {
+    deg += 0.5;
+    setRotate(deg);
+    animFrame = window.requestAnimationFrame(spinBoard);
+  }
+
+  function handleClick() {
+    dispatch(
+      runtimeChanged({
+        att: "runningFunc",
+        val: { algo: "", type: "", category: "path" },
+      })
+    );
+  }
 
   return (
     <div
@@ -60,46 +90,27 @@ const Board = () => {
       }}>
       <div
         className="rect-container"
+        ref={tableContainerRef}
         style={{
           width,
           height,
           perspective,
-          transform: `scale(${scale})`,
+          transform: `scale(${0.5})`,
         }}>
         <div
           className="rect"
+          onClick={handleClick}
           style={{
-            transform: `rotateX(${rotateX}deg)
-                        rotateY(${rotateY}deg)
-                        rotateZ(${rotateZ}deg)`,
+            transform: `rotateX(${30}deg) rotateY(${rotate}deg)`,
+            cursor: "pointer",
           }}>
           <div className="face front" style={{ width, height }}>
-            <table
-              className="table"
-              style={{ height, width }}
-              cellPadding="0"
-              cellSpacing="0">
-              <tbody>
+            <table className="table" style={{ height, width }}>
+              <tbody ref={tableRef}>
                 {grid.map((row, i) => (
                   <tr key={i}>
                     {row.map((node) => (
-                      <Node
-                        id={node.id}
-                        key={node.id}
-                        row={node.row}
-                        col={node.col}
-                        visitedDFS={node.visitedDFS}
-                        visitedBFS={node.visitedBFS}
-                        visitedMaze={node.visitedMaze}
-                        visitedDijkstra={node.visitedDijkstra}
-                        isWall={node.isWall}
-                        isMidway={node.isMidway}
-                        walls={node.walls}
-                        distanceFromStart={node.distanceFromStart}
-                        estimatedDistanceToEnd={node.estimatedDistanceToEnd}
-                        prevNode={node.prevNode}
-                        weight={node.weight}
-                      />
+                      <NodeModel key={node.id} row={node.row} col={node.col} />
                     ))}
                   </tr>
                 ))}
@@ -129,4 +140,4 @@ const Board = () => {
   );
 };
 
-export default React.memo(Board);
+export default Board;

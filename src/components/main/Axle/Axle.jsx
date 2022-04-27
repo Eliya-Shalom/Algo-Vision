@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { initAxle } from "../../utils/axleUtils";
+import { initAxle } from "../../../utils/axleUtils";
 import Bar from "./Bar";
 
 const Axle = () => {
