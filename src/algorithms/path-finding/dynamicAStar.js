@@ -72,7 +72,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
     const neighbors = getEightNeighbors(currentNodeWithMinimumF, grid, false);
     for (const neighbor of neighbors) {
       const { row: nRow, col: nCol } = neighbor;
-      if (isWall(neighbor) || (neighbor.isMidway && (nRow !== tRow || nCol !== tCol)))
+      if (isWall(neighbor) || (isMidway(neighbor) && (nRow !== tRow || nCol !== tCol)))
         continue;
 
       const neighborTentativeG = currentNodeWithMinimumF.distanceFromStart + 1;
@@ -147,4 +147,8 @@ function paint({ row, col, id }, isBorders, className = "chase") {
 
 function isWall(node) {
   return document.getElementById(node.id).className === "wall";
+}
+
+function isMidway(node) {
+  return document.getElementById(node.id).className === "midway";
 }
