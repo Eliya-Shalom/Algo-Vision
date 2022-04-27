@@ -19,7 +19,7 @@ Here are some features that my application has to offer:
 
 - Displaying useful information about the algorithm's actions.
 
-- Adjusting the animation's environment and customizing the visualization playground to your flavor.
+- Adjusting the animation environment and customizing the visualization playground to your flavor.
 
 - Code implementation of each algorithm in Javascript.
 
