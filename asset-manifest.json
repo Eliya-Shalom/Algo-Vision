@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/Algo-Vision/static/css/main.24d9e6bb.css",
-    "main.js": "/Algo-Vision/static/js/main.ae688274.js",
+    "main.css": "/Algo-Vision/static/css/main.4e43b5a5.css",
+    "main.js": "/Algo-Vision/static/js/main.0a1c78de.js",
     "static/media/example.png": "/Algo-Vision/static/media/example.313fca60c432e360762e.png",
     "index.html": "/Algo-Vision/index.html",
-    "main.24d9e6bb.css.map": "/Algo-Vision/static/css/main.24d9e6bb.css.map",
-    "main.ae688274.js.map": "/Algo-Vision/static/js/main.ae688274.js.map"
+    "main.4e43b5a5.css.map": "/Algo-Vision/static/css/main.4e43b5a5.css.map",
+    "main.0a1c78de.js.map": "/Algo-Vision/static/js/main.0a1c78de.js.map"
   },
   "entrypoints": [
-    "static/css/main.24d9e6bb.css",
-    "static/js/main.ae688274.js"
+    "static/css/main.4e43b5a5.css",
+    "static/js/main.0a1c78de.js"
   ]
 }
