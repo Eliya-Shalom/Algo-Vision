@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import { axleChanged } from "../../../store/axle";
 import { runtimeChanged, snapshotTook } from "../../../store/runtime";
 import { animateShuffleAxle } from "../../../utils/axleUtils";
 import { resetIndicators } from "../../../utils/commonUtils";
+import ActionBtn from "../../common/ActionBtn";
 
 const ShuffleBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
@@ -30,29 +30,23 @@ const ShuffleBtn = ({ typoStyle }) => {
       dispatch(runtimeChanged({ category: "sort", att: "isShuffling", val: false }));
     });
   }
+  const disabled = isRunning || isShuffling;
+  const iconStyle = {
+    fontSize: 30,
+    transform: `rotate(-${deg}deg)`,
+    transition: "transform 1.5s",
+    color: isRunning || isShuffling ? "grey.300" : "secondary.main",
+  };
 
   return (
-    <Tooltip title="Shuffle Axle">
-      <Stack>
-        <IconButton
-          disabled={isRunning || isShuffling}
-          onClick={handleClick}
-          sx={{ p: 0 }}>
-          <ShuffleIcon
-            id="rotate"
-            sx={{
-              fontSize: 30,
-              transform: `rotate(-${deg}deg)`,
-              transition: "transform 1.5s",
-              color: isRunning || isShuffling ? "grey.300" : "secondary.main",
-            }}
-          />
-        </IconButton>
-        <Typography variant="button" color="primary.light" noWrap sx={typoStyle} pt={0.5}>
-          Shuffle
-        </Typography>
-      </Stack>
-    </Tooltip>
+    <ActionBtn
+      children={<ShuffleIcon sx={iconStyle} />}
+      disabled={disabled}
+      handleClick={handleClick}
+      typoStyle={typoStyle}
+      label="Shuffle"
+      tooltip="Shuffle Axle"
+    />
   );
 };
 

@@ -1,7 +1,7 @@
-import { resetTimer } from "../components/layout/topbar/Timer";
-import { runtimeChanged } from "../store/runtime";
 import { setAxleProgressBarValue } from "./axleUtils";
 import { setPathProgressBarValue } from "./boardUtils";
+import { resetTimer } from "../components/layout/topbar/Timer";
+import { uiChanged } from "../store/ui";
 
 export function getSpeed() {
   const speedSpan = document.getElementById("speed");
@@ -40,11 +40,6 @@ export function resetNodesOrSwapsCounter() {
   setTimeout(() => (countEle.textContent = 0), 100);
 }
 
-export function incrementOpsCounter(count) {
-  const countEle = document.getElementById("ops-counter");
-  countEle.textContent = count;
-}
-
 export function resetOpsCounter() {
   const counterSpan = document.getElementById("ops-counter");
   if (!counterSpan) return;
@@ -58,7 +53,7 @@ export function setRealtime(time, dispatch) {
     if (Number.isInteger(+time)) time = time + ".";
     time = time + new Array(5 - time.length).fill(0).join("");
   }
-  dispatch(runtimeChanged({ att: "realtime", val: time }));
+  dispatch(uiChanged({ att: "realtime", val: time }));
 }
 
 export function getSizeByRef(ref) {
@@ -73,9 +68,14 @@ export function getSizeByRef(ref) {
 
 export function resetIndicators(dispatch) {
   resetTimer();
-  resetOpsCounter();
+  dispatch(uiChanged({ att: "distance", val: 0 }));
+  dispatch(uiChanged({ att: "opsCounter", val: 0 }));
   setRealtime(0, dispatch);
   resetNodesOrSwapsCounter();
   setPathProgressBarValue(0);
   setAxleProgressBarValue(0);
+}
+
+export function getRandomInt(min, max) {
+  return Math.random() * (max - min) + min;
 }

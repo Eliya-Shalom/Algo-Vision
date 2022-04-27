@@ -1,9 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Box, Checkbox, Stack, Typography } from "@mui/material";
-import TableSlider from "./TableSlider";
-import { viewChanged } from "../../../store/board";
+import { Box, Stack } from "@mui/material";
+import { dimensionsChanged, viewChanged } from "../../../store/board";
+import TitleSlider from "../../common/TitleSlider";
+import TitleCheckbox from "../../common/TitleCheckbox";
 
+let timeout;
 const TableView = () => {
   const dispatch = useDispatch();
   const { dimensions, view } = useSelector(({ board }) => board);
@@ -13,7 +15,25 @@ const TableView = () => {
   function handleCheck() {
     dispatch(viewChanged({ att: "isBorders", val: !view.isBorders }));
   }
+  const { isRunning, runningFunc } = useSelector(({ runtime }) => runtime);
 
+  const handleChange = (e, label) => {
+    const { value } = e.target;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      let att;
+      if (label === "Cell Size") att = "nodeSize";
+      else att = label.toLowerCase();
+      dispatch(dimensionsChanged({ att, val: +value }));
+    }, 100);
+  };
+
+  const disabled = isRunning || !runningFunc.category;
+  const sliders = [
+    { label: "Height", defVal: height, min: 100, max: maxHeight },
+    { label: "Width", defVal: width, min: 100, max: maxWidth },
+    { label: "Cell Size", defVal: 35, min: 20, max: 50 },
+  ];
   return (
     <Stack
       sx={{
@@ -23,48 +43,25 @@ const TableView = () => {
         py: 2,
       }}>
       <Box>
-        <TableSlider label="Height" defaultValue={height} min={100} max={maxHeight} />
-        <TableSlider label="Width" defaultValue={width} min={100} max={maxWidth} />
-        <TableSlider label="Cell Size" defaultValue={35} min={20} max={50} />
-
-        <Box
-          sx={{
-            display: "flex",
-            width: "100%",
-          }}>
-          <Box
-            sx={{
-              display: "flex",
-              width: "40%",
-              justifyContent: "center",
-              alignItems: "center",
-            }}>
-            <Typography
-              variant="button"
-              sx={{ fontSize: 13, color: "secondary.lighter" }}>
-              Borders
-            </Typography>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              width: "70%",
-              justifyContent: "center",
-            }}>
-            <Checkbox
-              disabled={!category}
-              onClick={handleCheck}
-              checked={view.isBorders}
-              color="secondary"
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                color: "secondary.lighter",
-              }}
-            />
-          </Box>
-        </Box>
+        {sliders.map(({ label, defVal, min, max }) => (
+          <TitleSlider
+            key={label}
+            label={label}
+            defaultValue={defVal}
+            min={min}
+            max={max}
+            step={1}
+            disabled={disabled}
+            handleChange={handleChange}
+            unit="px"
+          />
+        ))}
+        <TitleCheckbox
+          label="Borders"
+          disabled={!category}
+          handleCheck={handleCheck}
+          checked={view.isBorders}
+        />
       </Box>
     </Stack>
   );

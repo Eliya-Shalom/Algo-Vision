@@ -47,13 +47,28 @@ const boardConfig = createSlice({
     gridInitialized: (state, { payload }) => {
       state.grid = payload;
     },
-    visualSettingsReset: (state) => {
+    nodeChanged: (state, { payload }) => {
+      const { row, col, change } = payload;
+      if (change === "weight") state.grid[row][col].weight++;
+      else if (change === "wall")
+        state.grid[row][col].isWall = !state.grid[row][col].isWall;
+      else if (change === "midway") state.grid[row][col].isMidway = true;
+    },
+    boundryWallsReset: (state) => {
+      state.grid[0].map((node) => (node.isWall = false));
+      state.grid[state.grid.length - 1].map((node) => (node.isWall = false));
+      for (let i = 1; i < state.grid.length - 1; i++) {
+        state.grid[i][0].isWall = false;
+        state.grid[i][state.grid[i].length - 1].isWall = false;
+      }
+    },
+    visualSettingsReset: (state, { payload }) => {
       state.view = {
         perspective: 2500,
         rotateX: 0,
         rotateY: 0,
         rotateZ: 0,
-        scale: 0.9,
+        scale: payload === "path" ? 0.9 : 1,
         isBorders: true,
         isReset: !state.view.isReset,
       };
@@ -72,12 +87,14 @@ const boardConfig = createSlice({
 export default boardConfig.reducer;
 
 export const {
+  boardResized,
+  viewChanged,
+  nodeChanged,
+  gridChanged,
   tableChanged,
   dimensionsChanged,
-  viewChanged,
-  gridChanged,
   gridInitialized,
-  visualSettingsReset,
   boardSettingReset,
-  boardResized,
+  boundryWallsReset,
+  visualSettingsReset,
 } = boardConfig.actions;

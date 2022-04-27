@@ -1,12 +1,13 @@
+import { batch } from "react-redux";
 import aStar from "./aStar";
+import dijkstra from "./dijkstra";
 import depthFirstSearch from "./dfs";
 import breadthFirstSearch from "./bfs";
-import dijkstra from "./dijkstra";
 import * as utils from "../../utils/boardUtils";
 import * as commUtils from "../../utils/commonUtils";
+import { uiChanged } from "../../store/ui";
+import { snapshotTook, visualizingDone } from "../../store/runtime";
 import { pauseTimer, resetTimer } from "../../components/layout/topbar/Timer";
-import { runtimeChanged, snapshotTook, visualizingDone } from "../../store/runtime";
-import { batch } from "react-redux";
 
 // global variables
 let dispatch, grid, visited, path, visitedIdx, pathIdx, ops, realtime, isMaze;
@@ -17,10 +18,10 @@ export default function visualizePath(
   tableGrid,
   snapshot,
   maze,
-  dispatchAction,
+  toDispatch,
   instantMode
 ) {
-  dispatch = dispatchAction;
+  dispatch = toDispatch;
   grid = tableGrid;
   isMaze = maze;
   path = snapshot.path;
@@ -29,9 +30,9 @@ export default function visualizePath(
   [visited, path, ops, realtime] = getAlgo(algo, type);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
-  dispatch(runtimeChanged({ att: "distance", val: distance }));
+  dispatch(uiChanged({ att: "distance", val: distance }));
+  dispatch(uiChanged({ att: "opsCounter", val: ops }));
   commUtils.setRealtime(realtime, dispatch);
-  commUtils.incrementOpsCounter(ops);
 
   if (instantMode) {
     commUtils.countNodesOrSwapped(visited.length - 1);
@@ -91,12 +92,6 @@ function handlePause() {
 
 function handleAbort() {
   resetTimer();
-  // dispatch(
-  //   snapshotTook({
-  //     category: "path",
-  //     val: { visited: [], path: [], indices: [0, 0] },
-  //   })
-  // );
 }
 
 function handleFinish() {

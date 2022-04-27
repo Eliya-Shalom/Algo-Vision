@@ -4,7 +4,7 @@ import { Stack, Tooltip, Typography } from "@mui/material";
 import RouteIcon from "@mui/icons-material/Route";
 
 const Distance = () => {
-  const { distance } = useSelector(({ runtime }) => runtime);
+  const { distance } = useSelector(({ ui }) => ui);
 
   return (
     <Stack alignItems="center">

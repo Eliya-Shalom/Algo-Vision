@@ -1,22 +1,20 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { IconButton, Stack, Typography } from "@mui/material";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
 import { resetTimer } from "./Timer";
-import { cleanAndResetGrid } from "../../../utils/boardUtils";
+import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import { visualizingAborted } from "../../../store/runtime";
 import { resetIndicators } from "../../../utils/commonUtils";
+import ActionBtn from "../../common/ActionBtn";
 
 const AbortBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
-  const {
-    grid,
-    view: { isBorders },
-  } = useSelector(({ board }) => board);
-  const { isRunning, isMazeRunning, runningFunc, pause, abort, dynamicMode } =
-    useSelector(({ runtime }) => runtime);
+  const { grid } = useSelector(({ board }) => board);
+  const { isRunning, isMazeRunning, runningFunc, pause, abort } = useSelector(
+    ({ runtime }) => runtime
+  );
 
-  function handleAbort() {
+  function handleClick() {
     if (isRunning && pause) return;
 
     window.hasAborted = true;
@@ -25,26 +23,23 @@ const AbortBtn = ({ typoStyle }) => {
     batch(() => {
       resetIndicators(dispatch);
       dispatch(visualizingAborted());
-      runningFunc.category === "path" &&
-        cleanAndResetGrid(dispatch, grid, false, false, false, dynamicMode, isBorders);
+      runningFunc.category === "path" && cleanPrevAlgo(grid);
     });
   }
   const disabled = (!isRunning && !pause) || isMazeRunning || abort;
-  return (
-    <Stack alignItems="center">
-      <IconButton sx={{ p: 0 }} id="abort-btn" onClick={handleAbort} disabled={disabled}>
-        <StopCircleOutlinedIcon
-          sx={{
-            fontSize: 30,
-            color: disabled ? "grey.500" : "error.light",
-          }}
-        />
-      </IconButton>
+  const iconStyle = {
+    fontSize: 30,
+    color: disabled ? "grey.500" : "error.light",
+  };
 
-      <Typography variant="button" color="primary.light" noWrap sx={typoStyle} pt={0.5}>
-        ABORT
-      </Typography>
-    </Stack>
+  return (
+    <ActionBtn
+      children={<StopCircleOutlinedIcon sx={iconStyle} />}
+      disabled={disabled}
+      handleClick={handleClick}
+      typoStyle={typoStyle}
+      label="ABORT"
+    />
   );
 };
 

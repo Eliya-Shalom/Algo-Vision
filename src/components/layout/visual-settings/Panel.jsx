@@ -21,7 +21,8 @@ import { boardSettingReset, visualSettingsReset } from "../../../store/board";
 
 const Panel = () => {
   const dispatch = useDispatch();
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
+  const { runningFunc, isRunning } = useSelector(({ runtime }) => runtime);
+  const { category } = runningFunc;
   const [open, setOpen] = useState(false);
   const [rotateDeg, setRotateDeg] = useState(360);
 
@@ -32,12 +33,13 @@ const Panel = () => {
       if (category === "path") {
         dispatch(boardSettingReset());
       } else {
-        dispatch(axleChanged({ att: "numOfBars", val: 100 }));
-        dispatch(axleChanged({ att: "align", val: "flex-end" }));
+        // dispatch(axleChanged({ att: "numOfBars", val: 100 }));
+        // dispatch(axleChanged({ att: "align", val: "flex-end" }));
       }
     });
   };
 
+  const disabled = isRunning && category === 'path';
   const styles = {
     drawer: {
       transition: "0.3s",
@@ -63,7 +65,7 @@ const Panel = () => {
     },
     resetBtn: {
       transition: "all 0.25s",
-      bgcolor: "secondary.main",
+      bgcolor: disabled ? "#BDBDBD" : "secondary.main",
       color: "secondary.dark",
       "&:hover": {
         bgcolor: "secondary.light",
@@ -97,7 +99,7 @@ const Panel = () => {
                 sx={{ fontWeight: "fontWeightLight", color: "grey.300", fontSize: 11 }}>
                 RESET
               </Typography>
-              <Button onClick={resetAll} sx={styles.resetBtn}>
+              <Button onClick={resetAll} sx={styles.resetBtn} disabled={disabled}>
                 <ReplayIcon
                   sx={{
                     transform: `rotate(-${rotateDeg}deg)`,

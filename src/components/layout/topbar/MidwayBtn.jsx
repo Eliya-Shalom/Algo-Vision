@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { IconButton, Stack, Tooltip, Typography } from "@mui/material";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
 import { runtimeChanged } from "../../../store/runtime";
+import ActionBtn from "../../common/ActionBtn";
 
 const MidwayBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
@@ -19,26 +19,19 @@ const MidwayBtn = ({ typoStyle }) => {
   };
 
   return (
-    <Tooltip
-      title={`When active, new midway nodes can be placed across the grid, to be
-       reached by the algorithm. new points can be created before/during the animation.`}>
-      <Stack alignItems="center">
-        <IconButton sx={{ p: 0 }} onClick={handleClick} disabled={false}>
-          <AddLocationIcon
-            style={style.main}
-            sx={midwayActive ? style.active : style.notActive}
-          />
-        </IconButton>
-        <Typography
-          variant="button"
-          color="primary.light"
-          noWrap
-          sx={{ ...typoStyle, fontWeight: midwayActive && "bold" }}
-          pt={0.5}
-          children="Midway"
+    <ActionBtn
+      handleClick={handleClick}
+      typoStyle={{ ...typoStyle, fontWeight: midwayActive && "bold" }}
+      label="MIDWAY"
+      tooltip={`When active, new midway nodes can be placed across the grid, to be
+                reached by the algorithm. new points can be created before/during the animation.`}
+      children={
+        <AddLocationIcon
+          style={style.main}
+          sx={midwayActive ? style.active : style.notActive}
         />
-      </Stack>
-    </Tooltip>
+      }
+    />
   );
 };
 

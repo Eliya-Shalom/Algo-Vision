@@ -1,13 +1,19 @@
-export function initAxle(numOfBars) {
+import { axleChanged } from "../store/axle";
+import { getRandomInt } from "./commonUtils";
+
+export function initAxle(numOfBars, dispatch = null) {
   const axle = [];
   const width = 100 / numOfBars;
-  const h = 100 / numOfBars;
+  const diffInHeights = +(100 / numOfBars).toFixed(2);
   let height = 0;
-  for (let i = 0; i < numOfBars - 1; i++) {
-    height = +(height + h).toFixed(2);
+  for (let i = 0; i < numOfBars; i++) {
+    height += diffInHeights;
     axle.push({ id: `bar-${i}`, height, width });
   }
-  return shuffleAxle(axle);
+  const shuffled = shuffleAxle(axle);
+  if (dispatch) dispatch(axleChanged({ att: "axle", val: shuffled }));
+
+  return shuffled;
 }
 
 export function shuffleAxle(axle) {
@@ -46,7 +52,7 @@ export function animateShuffleAxle(axle) {
         while (j in visited) j = Math.floor(getRandomInt(i, axle.length - 1));
         visited[j] = true;
 
-        swapProps(copy[i], copy[j]);
+        swapHeights(copy[i], copy[j]);
 
         if (Object.keys(visited).length >= axle.length - 1) {
           clearInterval(inter);
@@ -58,8 +64,16 @@ export function animateShuffleAxle(axle) {
   });
 }
 
-export function getRandomInt(min, max) {
-  return Math.random() * (max - min) + min;
+export function swapHeights(bar1, bar2) {
+  const bar1Ele = document.getElementById(bar1.id);
+  const bar2Ele = document.getElementById(bar2.id);
+
+  bar1Ele.style.height = `${bar2.height}%`;
+  bar2Ele.style.height = `${bar1.height}%`;
+
+  let temp = bar1.height;
+  bar1.height = bar2.height;
+  if (swap) bar2.height = temp;
 }
 
 export function copyAxle(axle) {
@@ -112,15 +126,69 @@ export function cleanBars(bars) {
     barEle.style.backgroundColor = bar.color;
   }
 }
+let prev1, prev2;
+export function swapAndPaint(bar1, bar2, i, swap = true) {
+  if (i === 0) [prev1, prev2] = [null, null];
 
-export function swapProps(firstBar, secondBar, swap = true) {
-  const firstBarEle = document.getElementById(firstBar.id);
-  const secondBarEle = document.getElementById(secondBar.id);
+  const bar1Ele = document.getElementById(bar1.id);
+  const bar2Ele = document.getElementById(bar2.id);
 
-  firstBarEle.style.height = `${secondBar.height}%`;
-  if (swap) secondBarEle.style.height = `${firstBar.height}%`;
+  if (prev1 !== bar1 && prev1 !== bar2) {
+    if (prev1) document.getElementById(prev1.id).className = "bar";
+  }
+  if (prev2 !== bar1 && prev2 !== bar2) {
+    if (prev2) document.getElementById(prev2.id).className = "bar";
+  }
 
-  let temp = firstBar.height;
-  firstBar.height = secondBar.height;
-  if (swap) secondBar.height = temp;
+  bar1Ele.style.height = `${bar2.height}%`;
+  bar1Ele.className = "swap1";
+  if (swap) {
+    bar2Ele.style.height = `${bar1.height}%`;
+    bar2Ele.className = "swap2";
+  }
+  let temp = bar1.height;
+  bar1.height = bar2.height;
+  if (swap) bar2.height = temp;
+
+  prev1 = bar1;
+  prev2 = bar2;
 }
+
+// let prev1, prevSecond;
+// export function swapProps(firstBar, secondBar, swap = true) {
+//   const firstBarEle = document.getElementById(firstBar.id);
+//   const secondBarEle = document.getElementById(secondBar.id);
+
+//   // if ((firstBarEle.className !== "sorted1")) firstBarEle.className = "swap1";
+//   if (swap) {
+//     //  if (secondBarEle.className !== "sorted1") secondBarEle.className = "swap2";
+//   }
+
+//   firstBarEle.style.height = `${secondBar.height}%`;
+//   if (swap) secondBarEle.style.height = `${firstBar.height}%`;
+
+//   let temp = firstBar.height;
+//   firstBar.height = secondBar.height;
+//   if (swap) secondBar.height = temp;
+
+//   // if (firstBarEle.style.height === `${firstBar.sortedHeight}%`)
+//   //   firstBarEle.className = "sorted1";
+//   // else {
+//   //   // firstBar.height = secondBar.height;
+//   // }
+//   // if (secondBarEle.style.height === `${secondBar.sortedHeight}%`)
+//   //   secondBarEle.className = "sorted1";
+//   // else {
+//   //   // if (swap) secondBar.height = temp;
+//   // }
+
+//   // if (firstBar.height === firstBar.sortedHeight) {
+//   //   firstBarEle.className = "sorted1";
+//   // }
+//   if (secondBar.height === secondBar.sortedHeight) {
+//     secondBarEle.className = "sorted1";
+//   }
+
+//   // prevFirst = firstBar;
+//   // prevSecond = secondBar;
+// }

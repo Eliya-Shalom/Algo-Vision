@@ -3,7 +3,7 @@ import { useSelector, useDispatch, batch } from "react-redux";
 import NodeModel from "./NodeModel";
 import { runtimeChanged } from "../../store/runtime";
 import { dimensionsChanged } from "../../store/board";
-import { generateGrid } from "../../utils/boardUtils";
+import { initializeGrid } from "../../utils/boardUtils";
 import { getSizeByRef } from "../../utils/commonUtils";
 import "./Board.css";
 
@@ -31,7 +31,6 @@ const Board = () => {
       dispatch(dimensionsChanged({ att: "width", val: currentMaxWidth }));
     });
   };
-  useEffect(resetTableSize, [isReset]);
 
   window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
@@ -39,8 +38,19 @@ const Board = () => {
   });
 
   useEffect(() => {
+    resetTableSize();
+    return () => {
+      clearTimeout(resizeTimeout);
+      clearTimeout(tableTimeout);
+    };
+  }, [isReset]);
+
+  useEffect(() => {
     clearTimeout(tableTimeout);
-    tableTimeout = setTimeout(() => generateGrid(height, width, nodeSize, dispatch), 100);
+    tableTimeout = setTimeout(
+      () => initializeGrid(height, width, nodeSize, dispatch),
+      100
+    );
     return () => {
       clearTimeout(tableTimeout);
       clearTimeout(resizeTimeout);
@@ -100,26 +110,7 @@ const Board = () => {
                 {grid.map((row, i) => (
                   <tr key={i}>
                     {row.map((node) => (
-                      <NodeModel
-                        key={node.id}
-                        row={node.row}
-                        col={node.col}
-                        visitedMaze={node.visitedMaze}
-                        visitedDijkstra={node.visitedDijkstra}
-                        visitedDFS={node.visitedDFS}
-                        visitedBFS={node.visitedBFS}
-                        stacked={node.stacked}
-                        walls={node.walls}
-                        isWall={node.isWall}
-                        isStart={node.isStart}
-                        isFinish={node.isFinish}
-                        prevNode={node.prevNode}
-                        distanceFromStart={node.distanceFromStart}
-                        estimatedDistanceToEnd={node.estimatedDistanceToEnd}
-                        handleMouseDown={() => {}}
-                        handleMouseEnter={() => {}}
-                        handleMouseUp={() => {}}
-                      />
+                      <NodeModel key={node.id} row={node.row} col={node.col} />
                     ))}
                   </tr>
                 ))}

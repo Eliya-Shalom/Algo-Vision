@@ -3,9 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const axleConfig = createSlice({
   name: "axle",
   initialState: {
-    numOfBars: 100,
     axle: [],
+    numOfBars: 100,
     align: "flex-end",
+    transition: true,
   },
   reducers: {
     axleChanged: (state, { payload }) => {

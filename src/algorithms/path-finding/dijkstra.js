@@ -1,5 +1,3 @@
-import { isWall } from "../../utils/boardUtils";
-
 let ops;
 
 export default function dijkstra(grid, startNode, finishNode, isMaze) {
@@ -16,7 +14,7 @@ export default function dijkstra(grid, startNode, finishNode, isMaze) {
   while (!minDistancesHeap.isEmpty()) {
     ops++;
     const closestNode = minDistancesHeap.remove();
-    if (isWall(closestNode.id)) continue;
+    if (closestNode.isWall) continue;
 
     if (closestNode.distanceFromStart === Infinity) break;
 
@@ -33,11 +31,9 @@ export default function dijkstra(grid, startNode, finishNode, isMaze) {
     const neighbors = getUnvisitedNeighbors(closestNode, grid, isMaze);
     for (const neighbor of neighbors) {
       ops++;
-      if (isWall(neighbor.id)) {
-        continue;
-      }
+      if (neighbor.isWall) continue;
 
-      neighbor.distanceFromStart = closestNode.distanceFromStart + 1;
+      neighbor.distanceFromStart = closestNode.distanceFromStart + neighbor.weight;
       neighbor.prevNode = closestNode;
 
       minDistancesHeap.update(neighbor, neighbor.distanceFromStart);
@@ -165,3 +161,63 @@ class MinHeap {
     ];
   }
 }
+
+
+// function dijkstrasAlgorithm(grid, startNode, finishNode) {
+//   const allNodes = grid.flat(1);
+
+//   const minDistancesHeap = new MinHeap(allNodes);
+
+//   startNode.distanceFromStart = 0;
+
+//   while (!minDistancesHeap.isEmpty()) {
+//     const closestNode = minDistancesHeap.remove();
+
+//     if (closestNode.isWall) continue;
+//     if (closestNode.distanceFromStart === Infinity) break;
+
+//     closestNode.visited = true;
+
+//     if (closestNode === finishNode) {
+//       finishNode.prevNode = closestNode;
+//       break;
+//     }
+
+//     const neighbors = getUnvisitedNeighbors(closestNode, grid);
+//     for (const neighbor of neighbors) {
+//       if (neighbor.isWall) continue;
+
+//       neighbor.distanceFromStart = closestNode.distanceFromStart + neighbor.weight;
+//       neighbor.prevNode = closestNode;
+
+//       minDistancesHeap.update(neighbor, neighbor.distanceFromStart);
+//     }
+//   }
+//   const pathNodes = reconstructPath(finishNode);
+
+//   return pathNodes;
+// }
+
+// function getUnvisitedNeighbors(node, grid) {
+//   const neighbors = [];
+//   const { row, col } = node;
+
+//   if (row > 0) neighbors.push(grid[row - 1][col]);
+//   if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+//   if (col > 0) neighbors.push(grid[row][col - 1]);
+//   if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
+
+//   return neighbors.filter((neighbor) => !neighbor.visited);
+// }
+
+// function reconstructPath(finishNode) {
+//   if (!finishNode.prevNode) return [];
+
+//   const pathNodes = [];
+//   let currentNode = finishNode;
+//   while (currentNode) {
+//     pathNodes.push(currentNode);
+//     currentNode = currentNode.prevNode;
+//   }
+//   return pathNodes.reverse();
+// }

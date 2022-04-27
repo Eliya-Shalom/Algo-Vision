@@ -1,5 +1,3 @@
-import { isWall } from "../../utils/boardUtils";
-
 let ops;
 export default function aStar(grid, startNode, finishNode, HEURISTIC, isMaze) {
   ops = 0;
@@ -30,9 +28,10 @@ export default function aStar(grid, startNode, finishNode, HEURISTIC, isMaze) {
 
     for (const neighbor of neighbors) {
       ops++;
-      if (isWall(neighbor.id)) continue;
+      if (neighbor.isWall) continue;
 
-      const neighborTentativeG = currentNodeWithMinimumF.distanceFromStart + 1;
+      const neighborTentativeG =
+        currentNodeWithMinimumF.distanceFromStart + neighbor.weight;
 
       if (neighborTentativeG >= neighbor.distanceFromStart) continue;
 
