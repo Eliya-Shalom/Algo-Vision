@@ -23,6 +23,7 @@ const PlayBtn = ({ typoStyle }) => {
     dynamicMode,
     isMazeRunning,
     dynamicSnapshot,
+    isShuffling,
   } = useSelector(({ runtime }) => runtime);
   const { axle } = useSelector(({ axle }) => axle);
 
@@ -51,7 +52,8 @@ const PlayBtn = ({ typoStyle }) => {
     else visualizeSort(axle, algo, snapshot.sort, dispatch);
   };
 
-  const disabled = (isRunning || !runningFunc.algo || isMazeRunning) && !dynamicMode;
+  const disabled =
+    ((isRunning || !runningFunc.algo || isMazeRunning) && !dynamicMode) || isShuffling;
 
   const iconStyle = {
     fontSize: 30,
@@ -64,7 +66,7 @@ const PlayBtn = ({ typoStyle }) => {
       disabled={disabled}
       handleClick={handleClick}
       typoStyle={typoStyle}
-      label='PLAY'
+      label="PLAY"
     />
   );
 };

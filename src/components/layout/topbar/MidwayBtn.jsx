@@ -23,7 +23,7 @@ const MidwayBtn = ({ typoStyle }) => {
       handleClick={handleClick}
       typoStyle={{ ...typoStyle, fontWeight: midwayActive && "bold" }}
       label="MIDWAY"
-      tooltip={`When active, new midway nodes can be placed across the grid, to be
+      tooltip={`When active, new midway nodes can be placed across the grid to be
                 reached by the algorithm. new points can be created before/during the animation.`}
       children={
         <AddLocationIcon

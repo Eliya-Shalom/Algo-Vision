@@ -50,7 +50,8 @@ const steps = [
   {
     label: "Indicators",
     icon: <Looks4Icon sx={styles.icon} />,
-    description: `Get live information about the visualiztion progress.`,
+    description: `Get live information about the visualiztion progress.\n
+                  *Hover with your mouse on the icons for description.`,
     img: indicatorsImg, 
   },
   {
