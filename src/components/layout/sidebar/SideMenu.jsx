@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
-import FitbitIcon from "@mui/icons-material/Fitbit";
+import { Box, Drawer, Toolbar, Typography } from "@mui/material";
 import AlgosList from "./AlgosList";
 import { runtimeChanged } from "../../../store/runtime";
+import Logo from "../../common/Logo";
 
 const SideMenu = () => {
   const dispatch = useDispatch();
@@ -36,15 +36,7 @@ const SideMenu = () => {
           bgcolor: "secondary.main",
           minHeight: ({ custom }) => custom.topBarHeight,
         }}>
-        <Typography variant="h5" color="white" sx={{ fontSize: 34, mr: 0.5 }}>
-          <sup>
-            <ins style={{ fontWeight: 200, fontSize: 22 }}>Algo</ins>
-          </sup>
-          <strong style={{ fontSize: 34 }}>Vision</strong>
-        </Typography>
-        <IconButton onClick={handleClick} sx={{ p: 0 }}>
-          <FitbitIcon sx={{ color: "white", fontSize: 50 }} />
-        </IconButton>
+        <Logo handleClick={handleClick} />
       </Toolbar>
 
       <AlgosList />
@@ -57,8 +49,7 @@ const SideMenu = () => {
         bottom={0}
         p={0.5}
         height="52px"
-        width="100%"
-      >
+        width="100%">
         <Typography
           fontWeight="light"
           fontSize={18}
