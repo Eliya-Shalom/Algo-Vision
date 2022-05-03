@@ -15,7 +15,7 @@ Here are some features that my application has to offer:
   In this mode, the algorithm can chase your mouse movement, if enabled.
   \*\*for this purpose, I used the A\* algorithm with 'Diagonal' heuristic.
 
-- Full control of the visualization progress such as Pause & Play, Running speed, Player-Bar (reverse/forward the animation and continue from there), and more.
+- Full control over the visualization progress such as Pause & Play, Running speed, Player-Bar (reverse/forward the animation and continue from there), and more.
 
 - Displaying useful information about the algorithm's actions.
 
