@@ -54,6 +54,16 @@ const boardConfig = createSlice({
         nodeSize: 35,
       };
     },
+    removeMidways: (state) => {
+      if (!window.targets.length) return;
+
+      for (const { row, col, id } of window.targets) {
+        state.grid[row][col].isMidway = false;
+        const nodeEle = document.getElementById(id);
+        nodeEle.removeChild(nodeEle.firstChild);
+      }
+      window.targets = [];
+    },
   },
 });
 
@@ -69,4 +79,5 @@ export const {
   gridInitialized,
   boardDimensionsReset,
   boundryWallsReset,
+  removeMidways,
 } = boardConfig.actions;

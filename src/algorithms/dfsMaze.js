@@ -34,6 +34,8 @@ export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) 
 
   dispatch(gridChanged(grid));
 
+  dispatch(boundryWallsReset());
+
   if (instantMode) return instantMaze(visitedNodes);
 
   animateMaze(visitedNodes);
@@ -41,7 +43,6 @@ export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) 
 
 function animateMaze(visitedNodes) {
   dispatch(runtimeChanged({ att: "isMazeRunning", val: true }));
-  dispatch(boundryWallsReset());
 
   let i = 0;
   const inter = setInterval(() => {
@@ -59,10 +60,6 @@ function instantMaze(visitedNodes) {
 
 export function paintMazeWalls({ row, col, id, walls }) {
   const nodeEle = document.getElementById(id);
-
-  const isStart = row === window.startNode.row && col === window.startNode.col;
-  const isFinish = row === window.finishNode.row && col === window.finishNode.col;
-  if (!isStart && !isFinish) nodeEle.className = "node";
 
   if (walls.top) nodeEle.style.borderTop = "5px solid #4f477e";
   if (walls.right) nodeEle.style.borderRight = "5px solid #4f477e";

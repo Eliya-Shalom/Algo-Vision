@@ -1,4 +1,12 @@
-## Quick Introduction
+### Update - Changelog :clipboard: 09.05.2022
+
+> - AlgoVision is now fully mobile-responsive with all its features.
+> - On mobile, the 'Mouse Chase' option in Dynamic Mode became 'Finger Chase'.
+> - The left menu can be closed by clicking on the logo's icon, thus extending the visualization environment.
+> - Performance improvement.
+> - Code is more readable and cleaner.
+
+# Quick Introduction
 
 ### Welcome to my Path-finding & Sorting algorithms Visualizer, **Algo-Vision**!
 

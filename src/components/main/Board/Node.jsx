@@ -60,7 +60,6 @@ const Node = ({
   const handleDrop = (e) => {
     e.preventDefault();
     if (isWall || isMidway || isStart || isFinish) return;
-
     const [prevRow, prevCol] = prevStartOrEnd;
     const { row: sRow, col: sCol } = window.startNode;
     let att;
@@ -80,7 +79,7 @@ const Node = ({
 
     if (dynamicMode) return;
 
-    isPainted && cleanPrevAlgo(grid);
+    isPainted && cleanPrevAlgo(grid, dispatch);
 
     if (!runningFunc.algo || window.hasPaused || window.hasAborted) return;
     batch(() => {

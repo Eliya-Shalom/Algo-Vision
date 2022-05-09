@@ -23,12 +23,12 @@ const CleanBtn = () => {
       dispatch(runtimeChanged({ att: "isPainted", val: false }));
       if (isDone || isRunning || pause || isMaze || abort) {
         !isDone && dispatch(visualizingAborted());
-        cleanAndResetGrid(dispatch, grid);
+        cleanAndResetGrid(grid, dispatch);
         isMaze && dispatch(runtimeChanged({ att: "isMaze", val: false }));
         resetIndicators(dispatch);
         window.hasAborted = true;
       } else {
-        isPainted && cleanAndResetGrid(dispatch, grid);
+        isPainted && cleanAndResetGrid(grid, dispatch);
       }
     });
   }

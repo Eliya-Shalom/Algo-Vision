@@ -87,7 +87,7 @@ const AlgosList = () => {
             })
           );
       }
-      category === "path" && isPainted && cleanPrevAlgo(grid);
+      category === "path" && isPainted && cleanPrevAlgo(grid, dispatch);
     });
   };
 

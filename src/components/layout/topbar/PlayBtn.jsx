@@ -34,7 +34,8 @@ const PlayBtn = () => {
 
     isDone && resetTimer();
     if (isPainted) {
-      if (category === "path" && !dynamicMode && !window.hasPaused) cleanPrevAlgo(grid);
+      if (category === "path" && !dynamicMode && !window.hasPaused)
+        cleanPrevAlgo(grid, dispatch);
     }
 
     if (!instantMode) {

@@ -23,7 +23,7 @@ const AbortBtn = () => {
     batch(() => {
       resetIndicators(dispatch);
       dispatch(visualizingAborted());
-      runningFunc.category === "path" && cleanPrevAlgo(grid);
+      runningFunc.category === "path" && cleanPrevAlgo(grid, dispatch);
     });
   }
   const disabled = (!isRunning && !pause) || isMazeRunning || abort;

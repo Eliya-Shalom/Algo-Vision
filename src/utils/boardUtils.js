@@ -1,4 +1,5 @@
-import { gridChanged, gridInitialized } from "../store/board";
+import { gridChanged, gridInitialized, removeMidways } from "../store/board";
+import { runtimeChanged } from "../store/runtime";
 import { getRandomInt } from "./commonUtils";
 
 function createNode(row, col) {
@@ -117,8 +118,8 @@ export function getProgressBarValue() {
   return [+progressEle.value, +progressEle.max];
 }
 
-export function cleanAndResetGrid(dispatch, grid) {
-  cleanPrevAlgo(grid);
+export function cleanAndResetGrid(grid, dispatch) {
+  cleanPrevAlgo(grid, dispatch);
 
   const newGrid = [];
   for (let row = 0; row < grid.length; row++) {
@@ -133,11 +134,10 @@ export function cleanAndResetGrid(dispatch, grid) {
       newGrid[row].push(node);
     }
   }
-  removeMidways(newGrid);
   dispatch(gridChanged(newGrid));
 }
 
-export function cleanPrevAlgo(grid) {
+export function cleanPrevAlgo(grid, dispatch) {
   const { startNode, finishNode } = window;
 
   for (const node of grid.flat(1)) {
@@ -146,17 +146,8 @@ export function cleanPrevAlgo(grid) {
     if (!isStart && !isFinish && !node.isWall)
       document.getElementById(node.id).className = "node";
   }
-}
-
-function removeMidways(grid) {
-  if (!window.targets.length) return;
-
-  for (const { row, col, id } of window.targets) {
-    grid[row][col].isMidway = false;
-    const nodeEle = document.getElementById(id);
-    nodeEle.removeChild(nodeEle.firstChild);
-  }
-  window.targets = [];
+  dispatch(runtimeChanged({ att: "midwayActive", val: false }));
+  dispatch(removeMidways());
 }
 
 export function cleanNode(node, grid) {

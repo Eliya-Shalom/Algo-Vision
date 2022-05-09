@@ -15,7 +15,7 @@ const MazeBtn = () => {
 
   const handleClick = () => {
     batch(() => {
-      isPainted && cleanAndResetGrid(dispatch, grid);
+      isPainted && cleanAndResetGrid(grid, dispatch);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));
     });
     dfsMaze(dispatch, copyGrid(grid), instantMode);
