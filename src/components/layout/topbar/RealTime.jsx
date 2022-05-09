@@ -5,16 +5,16 @@ import SpeedIcon from "@mui/icons-material/Speed";
 import TitleIcon from "../../common/TitleIcon";
 
 const Realtime = () => {
-  const { realtime } = useSelector(({ ui }) => ui);
+  const { realtime } = useSelector(({ ui }) => ui.topBar);
   const iconStyle = { color: "secondary.main", fontSize: 30 };
   return (
     <TitleIcon
-      Icon={<SpeedIcon sx={iconStyle} />}
+      icon={<SpeedIcon sx={iconStyle} />}
       tooltip={
         <Box width="200px">
           <Box textAlign="center">Realtime-Execution</Box>
           <Box extAlign="start">
-            How long does it really take for this machine to execute the algorithm.
+            How long does it really takes for this machine to execute the algorithm.
           </Box>
         </Box>
       }

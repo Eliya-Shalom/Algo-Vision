@@ -17,6 +17,8 @@ function createNode(row, col) {
     isMidway: false,
     prevNode: null,
     weight: 1,
+    isStart: false,
+    isFinish: false,
   };
 }
 
@@ -47,6 +49,9 @@ export const initializeGrid = (height, width, nodeSize, dispatch) => {
 
   window.startNode = { ...initGrid[2][2] };
   window.finishNode = { ...initGrid[rows - 3][cols - 3] };
+
+  initGrid[2][2].isStart = true;
+  initGrid[rows - 3][cols - 3].isFinish = true;
 
   dispatch(gridInitialized(initGrid));
 };
@@ -121,9 +126,10 @@ export function cleanAndResetGrid(dispatch, grid) {
     for (let col = 0; col < grid[row].length; col++) {
       const node = createNode(row, col, grid.length, grid[0].length);
       cleanMazeWalls(node);
-      if (isBoundryWalls(row, col, grid)) {
-        node.isWall = true;
-      }
+      node.isWall = isBoundryWalls(row, col, grid);
+      node.isStart = row === window.startNode.row && col === window.startNode.col;
+      node.isFinish = row === window.finishNode.row && col === window.finishNode.col;
+
       newGrid[row].push(node);
     }
   }

@@ -35,8 +35,16 @@ const Speed = () => {
   const disabled = isMazeRunning || (isRunning && dynamicMode);
 
   return (
-    <Box display="flex" justifyContent="center">
-      <Stack mr={1.5}>
+    <Box
+      sx={{
+        position: "relative",
+        display: "flex",
+        justifyContent: "center",
+        height: "100%",
+        ml: 1,
+        mt: 0.5,
+      }}>
+      <Stack mr={1}>
         <Typography variant="button" color="primary.light" fontSize={11}>
           Speed
         </Typography>
@@ -46,7 +54,7 @@ const Speed = () => {
           sx={{
             position: "absolute",
             fontSize: 18,
-            mt: 2.5,
+            mt: 2,
             ml: -1,
             transform: scale,
             transition: "1s",
@@ -57,7 +65,6 @@ const Speed = () => {
       </Stack>
       <Stack
         sx={{
-          mt: "2px",
           width: 22,
           height: 42,
           justifyContent: "center",

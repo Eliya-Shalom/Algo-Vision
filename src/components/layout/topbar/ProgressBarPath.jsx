@@ -1,6 +1,7 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { runtimeChanged, indicesChanged } from "../../../store/runtime";
+import { uiChanged } from "../../../store/ui";
 import { paintNode } from "../../../utils/boardUtils";
 import RangeInput from "../../common/RangeInput";
 
@@ -17,6 +18,8 @@ const ProgressBar = () => {
     window.hasPaused = true;
 
     if (!visited.length) return;
+
+    dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "hidden" }));
 
     const currentStep = +value;
     const numOfVisited = visited.length - 1;
@@ -48,6 +51,7 @@ const ProgressBar = () => {
         dispatch(runtimeChanged({ att: "isRunning", value: false }));
         dispatch(indicesChanged({ category: "path", val: [visitedIdx, pathIdx] }));
         isDone && dispatch(runtimeChanged({ att: "isDone", val: false }));
+        dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "auto" }));
       });
     }, 700);
   };

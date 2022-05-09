@@ -7,7 +7,7 @@ import { animateShuffleAxle } from "../../../utils/axleUtils";
 import { resetIndicators } from "../../../utils/commonUtils";
 import ActionBtn from "../../common/ActionBtn";
 
-const ShuffleBtn = ({ typoStyle }) => {
+const ShuffleBtn = () => {
   const dispatch = useDispatch();
   const { isRunning, isShuffling, isDone } = useSelector(({ runtime }) => runtime);
   const { axle } = useSelector(({ axle }) => axle);
@@ -43,7 +43,6 @@ const ShuffleBtn = ({ typoStyle }) => {
       children={<ShuffleIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="Shuffle"
       tooltip="Shuffle Axle"
     />

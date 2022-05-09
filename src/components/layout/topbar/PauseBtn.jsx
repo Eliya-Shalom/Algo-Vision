@@ -4,7 +4,7 @@ import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
 import { visualizingPaused } from "../../../store/runtime";
 import ActionBtn from "../../common/ActionBtn";
 
-const PauseBtn = ({ typoStyle }) => {
+const PauseBtn = () => {
   const dispatch = useDispatch();
   const { isRunning } = useSelector(({ runtime }) => runtime);
 
@@ -23,7 +23,6 @@ const PauseBtn = ({ typoStyle }) => {
       children={<PauseCircleOutlineIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="PAUSE"
     />
   );

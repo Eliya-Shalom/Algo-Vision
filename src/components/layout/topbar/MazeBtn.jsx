@@ -6,7 +6,7 @@ import { runtimeChanged } from "../../../store/runtime";
 import dfsMaze from "../../../algorithms/dfsMaze";
 import ActionBtn from "../../common/ActionBtn";
 
-const MazeBtn = ({ typoStyle }) => {
+const MazeBtn = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
   const { isMaze, isRunning, isPainted, instantMode, isMazeRunning } = useSelector(
@@ -31,7 +31,6 @@ const MazeBtn = ({ typoStyle }) => {
       children={<GridGoldenratioIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="Maze"
       tooltip="DFS Maze Generation"
     />

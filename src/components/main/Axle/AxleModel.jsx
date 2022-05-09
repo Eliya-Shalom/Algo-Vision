@@ -58,7 +58,7 @@ const Axle = () => {
         alignItems: "center",
         justifyContent: "center",
         marginTop: 5,
-        transform: `scale(${0.8})`,
+        transform: `scale(${1})`,
         transition: "all 0.5s",
       }}>
       <div

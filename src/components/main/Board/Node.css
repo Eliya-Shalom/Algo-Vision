@@ -1,5 +1,6 @@
 .start {
-  z-index: 5;
+  z-index: 4;
+  border-radius: 2px;
   position: relative;
   background-color: #4caf50;
   color: #4caf50;
@@ -8,6 +9,7 @@
 
 .finish {
   z-index: 5;
+  border-radius: 2px;
   position: relative;
   background-color: #ef5350;
   color: #ef5350;
@@ -45,7 +47,7 @@
   z-index: 1;
   box-shadow: 2px 2px 0px 1px #28292b;
   animation-name: not-found-animation;
-  animation-duration: 1s;
+  animation-duration: 1.5s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
@@ -151,7 +153,7 @@
     background-color: #ef5350;
   }
   40% {
-    background-color: #bcb4e4;
+    background-color: #919ffc;
   }
   60% {
     background-color: #4caf50;
@@ -160,7 +162,7 @@
     background-color: #ef5350;
   }
   100% {
-    background-color: #bcb4e4;
+    background-color: #c6ceff;
   }
 }
 

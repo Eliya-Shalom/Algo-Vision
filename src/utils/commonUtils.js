@@ -53,7 +53,7 @@ export function setRealtime(time, dispatch) {
     if (Number.isInteger(+time)) time = time + ".";
     time = time + new Array(5 - time.length).fill(0).join("");
   }
-  dispatch(uiChanged({ att: "realtime", val: time }));
+  dispatch(uiChanged({ prop: "topBar", att: "realtime", val: time }));
 }
 
 export function getSizeByRef(ref) {
@@ -68,12 +68,12 @@ export function getSizeByRef(ref) {
 
 export function resetIndicators(dispatch) {
   resetTimer();
-  dispatch(uiChanged({ att: "distance", val: 0 }));
-  dispatch(uiChanged({ att: "opsCounter", val: 0 }));
   setRealtime(0, dispatch);
   resetNodesOrSwapsCounter();
   setPathProgressBarValue(0);
   setAxleProgressBarValue(0);
+  dispatch(uiChanged({ prop: "topBar", att: "distance", val: 0 }));
+  dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: 0 }));
 }
 
 export function getRandomInt(min, max) {

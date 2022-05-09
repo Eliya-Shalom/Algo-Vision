@@ -10,15 +10,6 @@ const boardConfig = createSlice({
       maxWidth: null,
       nodeSize: 35,
     },
-    view: {
-      isBorders: true,
-      perspective: 2500,
-      rotateX: 0,
-      rotateY: 0,
-      rotateZ: 0,
-      scale: 0.9,
-      isReset: false,
-    },
     grid: [],
   },
   reducers: {
@@ -31,15 +22,11 @@ const boardConfig = createSlice({
       state.dimensions[att] = val;
     },
     boardResized: (state, { payload }) => {
-      const { height, width } = payload;
+      const { height, width, maxWidth } = payload;
+      state.dimensions.width = width;
+      state.dimensions.maxWidth = maxWidth;
       state.dimensions.height = height;
       state.dimensions.maxHeight = height;
-      state.dimensions.width = width - 200;
-      state.dimensions.maxWidth = width;
-    },
-    viewChanged: (state, { payload }) => {
-      const { att, val } = payload;
-      state.view[att] = val;
     },
     gridChanged: (state, { payload }) => {
       state.grid = payload;
@@ -48,11 +35,8 @@ const boardConfig = createSlice({
       state.grid = payload;
     },
     nodeChanged: (state, { payload }) => {
-      const { row, col, change } = payload;
-      if (change === "weight") state.grid[row][col].weight++;
-      else if (change === "wall")
-        state.grid[row][col].isWall = !state.grid[row][col].isWall;
-      else if (change === "midway") state.grid[row][col].isMidway = !state.grid[row][col].isMidway;
+      const { row, col, att, val } = payload;
+      state.grid[row][col][att] = val;
     },
     boundryWallsReset: (state) => {
       state.grid[0].map((node) => (node.isWall = false));
@@ -62,18 +46,7 @@ const boardConfig = createSlice({
         state.grid[i][state.grid[i].length - 1].isWall = false;
       }
     },
-    visualSettingsReset: (state, { payload }) => {
-      state.view = {
-        perspective: 2500,
-        rotateX: 0,
-        rotateY: 0,
-        rotateZ: 0,
-        scale: payload === "path" ? 0.9 : 1,
-        isBorders: true,
-        isReset: !state.view.isReset,
-      };
-    },
-    boardSettingReset: (state) => {
+    boardDimensionsReset: (state) => {
       state.dimensions = {
         ...state.dimensions,
         height: state.dimensions.maxHeight,
@@ -88,13 +61,12 @@ export default boardConfig.reducer;
 
 export const {
   boardResized,
-  viewChanged,
+  boardChanged,
   nodeChanged,
   gridChanged,
   tableChanged,
   dimensionsChanged,
   gridInitialized,
-  boardSettingReset,
+  boardDimensionsReset,
   boundryWallsReset,
-  visualSettingsReset,
 } = boardConfig.actions;

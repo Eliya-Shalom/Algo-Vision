@@ -1,61 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch, batch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { Box } from "@mui/material";
 import NodeModel from "./NodeModel";
 import { runtimeChanged } from "../../../store/runtime";
-import { dimensionsChanged } from "../../../store/board";
-import { initializeGrid } from "../../../utils/boardUtils";
-import { getSizeByRef } from "../../../utils/commonUtils";
+import useResizeGrid from "../../../hooks/useResizeGrid";
 import "./Board.css";
 
-let resizeTimeout;
-let tableTimeout;
 let animFrame;
 let deg = 0;
 
 const Board = () => {
   const dispatch = useDispatch();
-  const {
-    grid,
-    view: { perspective, isReset },
-    dimensions: { height, width, nodeSize },
-  } = useSelector(({ board }) => board);
-  const tableRef = useRef();
-  const tableContainerRef = useRef();
+  const { grid, dimensions } = useSelector(({ board }) => board);
+  const { perspective } = useSelector(({ ui }) => ui.threeD);
+  const { isMobile, screen } = useSelector(({ ui }) => ui);
+  const { height, width } = dimensions;
 
+  const containerRef = useRef();
   const [rotate, setRotate] = useState(deg);
 
-  const resetTableSize = () => {
-    const [currentMaxHeight, currentMaxWidth] = getSizeByRef(tableContainerRef);
-    batch(() => {
-      dispatch(dimensionsChanged({ att: "height", val: currentMaxHeight }));
-      dispatch(dimensionsChanged({ att: "width", val: currentMaxWidth }));
-    });
-  };
-
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => resetTableSize(), 200);
-  });
-
-  useEffect(() => {
-    resetTableSize();
-    return () => {
-      clearTimeout(resizeTimeout);
-      clearTimeout(tableTimeout);
-    };
-  }, [isReset]);
-
-  useEffect(() => {
-    clearTimeout(tableTimeout);
-    tableTimeout = setTimeout(
-      () => initializeGrid(height, width, nodeSize, dispatch),
-      100
-    );
-    return () => {
-      clearTimeout(tableTimeout);
-      clearTimeout(resizeTimeout);
-    };
-  }, [height, width]);
+  useResizeGrid(containerRef);
 
   useEffect(() => {
     animFrame = window.requestAnimationFrame(spinBoard);
@@ -78,19 +42,21 @@ const Board = () => {
   }
 
   return (
-    <div
+    <Box
       id="table-container"
-      ref={tableContainerRef}
-      style={{
-        height: "100%",
-        width: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
+      ref={containerRef}
+      sx={{
+        position: "absolute",
+        left: 0,
+        right: 0,
+        width: "110%",
+        height: isMobile ? "110%" : "90%",
+        m: "0 auto",
+        mt: !isMobile || screen.orientation === "landscape" ? 0 : "-15vh",
       }}>
       <div
+        id="rect-container"
         className="rect-container"
-        ref={tableContainerRef}
         style={{
           width,
           height,
@@ -106,7 +72,7 @@ const Board = () => {
           }}>
           <div className="face front" style={{ width, height }}>
             <table className="table" style={{ height, width }}>
-              <tbody ref={tableRef}>
+              <tbody>
                 {grid.map((row, i) => (
                   <tr key={i}>
                     {row.map((node) => (
@@ -136,7 +102,7 @@ const Board = () => {
           />
         </div>
       </div>
-    </div>
+    </Box>
   );
 };
 

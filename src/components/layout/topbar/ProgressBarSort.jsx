@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { runtimeChanged, snapshotTook } from "../../../store/runtime";
+import { uiChanged } from "../../../store/ui";
 import { copySwaps, swapAndPaint } from "../../../utils/axleUtils";
 import RangeInput from "../../common/RangeInput";
 
@@ -24,6 +25,8 @@ const ProgressBar = () => {
 
     if (!swaps.length) return;
 
+    dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "hidden" }));
+
     if (!copied) {
       swapsCopy = copySwaps(swaps);
       copied = true;
@@ -43,6 +46,7 @@ const ProgressBar = () => {
         dispatch(runtimeChanged({ att: "isRunning", value: false }));
         isDone && dispatch(runtimeChanged({ att: "isDone", val: false }));
         isSorted && dispatch(runtimeChanged({ att: "isSort", val: false }));
+        dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "auto" }));
       });
     }, 500);
   }

@@ -6,9 +6,8 @@ import Bar from "./Bar";
 const Axle = () => {
   const dispatch = useDispatch();
   const { axle, numOfBars, align } = useSelector(({ axle }) => axle);
-  const { rotateX, rotateY, rotateZ, perspective, scale } = useSelector(
-    ({ board }) => board.view
-  );
+  const { threeD, visualPanel } = useSelector(({ ui }) => ui);
+  const { rotateX, rotateY, rotateZ, perspective, scale } = threeD;
 
   useEffect(() => initAxle(numOfBars, dispatch), [numOfBars]);
 

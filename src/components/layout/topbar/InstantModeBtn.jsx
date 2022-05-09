@@ -1,37 +1,69 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BoltSharpIcon from "@mui/icons-material/BoltSharp";
-import { Box, Slider, Tooltip, Typography } from "@mui/material";
+import { Box, Slider, Switch, Tooltip, Typography } from "@mui/material";
 import { runtimeChanged } from "../../../store/runtime";
 
-const InstantModeBtn = ({ typoStyle }) => {
+const InstantModeBtn = () => {
   const dispatch = useDispatch();
   const { instantMode, isRunning } = useSelector(({ runtime }) => runtime);
 
   function handleChange() {
-    dispatch(runtimeChanged({ att: "instantMode", val: instantMode ? 0 : 1 }));
+    dispatch(runtimeChanged({ att: "instantMode", val: !instantMode }));
   }
+
+  const styles = {
+    icon: {
+      p: 0,
+      mt: "-2px",
+      fontSize: 20,
+      borderRadius: "100%",
+      transform: "rotate(90deg)",
+      position: "relative",
+    },
+  };
 
   return (
     <Tooltip title="Instant-Mode (no animation)">
-      <Box display="flex" justifyContent="center" alignItems="center" height="100%">
-        <BoltSharpIcon sx={{ fontSize: 26, color: "warning.main" }} />
+      <Box display="flex" justifyContent="center" mt={1} ml={1} height="100%">
         <Typography
-          sx={typoStyle}
+          sx={{ fontSize: 11, lineHeight: 1.4 }}
           variant="button"
           color="primary.light"
           textAlign="center">
           {"Instant"} <br /> {"Mode"}
         </Typography>
-        <Slider
-          min={0}
-          max={1}
-          value={instantMode}
-          orientation="vertical"
+        <Switch
           color="secondary"
+          checked={instantMode}
           onChange={handleChange}
           disabled={isRunning}
-          sx={{ height: 30 }}
+          icon={
+            <BoltSharpIcon
+              sx={{
+                ...styles.icon,
+                color: "warning.main",
+                bgcolor: "secondary.main",
+              }}
+            />
+          }
+          checkedIcon={
+            <BoltSharpIcon
+              sx={{
+                ...styles.icon,
+                color: "secondary.main",
+                bgcolor: "warning.main",
+              }}
+            />
+          }
+          size="small"
+          sx={{
+            transform: "rotate(90deg)",
+            position: "relative",
+            ml: -1,
+            width: 44,
+            bottom: -4,
+          }}
         />
       </Box>
     </Tooltip>

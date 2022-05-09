@@ -11,7 +11,7 @@ import snippets from "../../algorithms/snippets";
 const SourceCode = () => {
   const dispatch = useDispatch();
   const { runningFunc } = useSelector(({ runtime }) => runtime);
-  const { isSnippetOpen } = useSelector(({ ui }) => ui);
+  const { snippet, isMobile } = useSelector(({ ui }) => ui);
   const { algo, type } = runningFunc;
 
   const editorEle = document.getElementById("editor");
@@ -24,15 +24,14 @@ const SourceCode = () => {
   }
 
   function handleClick() {
-    dispatch(uiChanged({ att: "isSnippetOpen", val: false }));
+    dispatch(uiChanged({ prop: "snippet", att: "open", val: false }));
   }
-
   return (
     <Drawer
       variant="persistent"
       anchor="right"
-      open={isSnippetOpen}
       transitionDuration={1000}
+      open={snippet.open}
       sx={{
         "& .MuiDrawer-paper": {
           border: 0,
@@ -46,7 +45,7 @@ const SourceCode = () => {
             sx={{
               fontSize: 30,
               color: "grey.300",
-              opacity: isSnippetOpen ? 1 : 0,
+              opacity: snippet.open ? 1 : 0,
               transition: "1s",
             }}
           />
@@ -63,6 +62,7 @@ const SourceCode = () => {
         }}>
         <CodeMirror
           id="code"
+          style={{ fontSize: isMobile && 12 }}
           value={getSnippet()}
           height={editorEle ? window.getComputedStyle(editorEle).height : "100%"}
           extensions={[javascript()]}

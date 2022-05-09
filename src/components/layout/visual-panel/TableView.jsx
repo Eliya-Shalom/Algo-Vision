@@ -1,19 +1,21 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Box, Stack } from "@mui/material";
-import { dimensionsChanged, viewChanged } from "../../../store/board";
+import { dimensionsChanged } from "../../../store/board";
 import TitleSlider from "../../common/TitleSlider";
 import TitleCheckbox from "../../common/TitleCheckbox";
+import { uiChanged } from "../../../store/ui";
 
 let timeout;
 const TableView = () => {
   const dispatch = useDispatch();
-  const { dimensions, view } = useSelector(({ board }) => board);
+  const { dimensions } = useSelector(({ board }) => board);
+  const { isBorders } = useSelector(({ ui }) => ui.board);
   const { category } = useSelector(({ runtime }) => runtime.runningFunc);
   const { height, width, maxHeight, maxWidth } = dimensions;
 
   function handleCheck() {
-    dispatch(viewChanged({ att: "isBorders", val: !view.isBorders }));
+    dispatch(uiChanged({ prop: "board", att: "isBorders", val: !isBorders }));
   }
   const { isRunning, runningFunc } = useSelector(({ runtime }) => runtime);
 
@@ -35,13 +37,7 @@ const TableView = () => {
     { label: "Cell Size", defVal: 35, min: 20, max: 50 },
   ];
   return (
-    <Stack
-      sx={{
-        width: { md: "70%", sm: "100%", xs: "100%" },
-        display: "flex",
-        textAlign: "center",
-        py: 2,
-      }}>
+    <Stack width="100%">
       <Box>
         {sliders.map(({ label, defVal, min, max }) => (
           <TitleSlider
@@ -60,7 +56,7 @@ const TableView = () => {
           label="Borders"
           disabled={!category}
           handleCheck={handleCheck}
-          checked={view.isBorders}
+          checked={isBorders}
         />
       </Box>
     </Stack>

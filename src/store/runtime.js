@@ -15,7 +15,7 @@ const runtimeConfig = createSlice({
     midwayActive: false,
     isMazeRunning: false,
     mouseChaseActive: false,
-    instantMode: 0,
+    instantMode: false,
     runningFunc: { algo: "", type: "", category: "" },
     snapshot: {
       path: { visited: [], path: [], indices: [0, 0] },

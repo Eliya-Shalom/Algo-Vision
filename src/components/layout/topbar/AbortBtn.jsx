@@ -7,7 +7,7 @@ import { visualizingAborted } from "../../../store/runtime";
 import { resetIndicators } from "../../../utils/commonUtils";
 import ActionBtn from "../../common/ActionBtn";
 
-const AbortBtn = ({ typoStyle }) => {
+const AbortBtn = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
   const { isRunning, isMazeRunning, runningFunc, pause, abort } = useSelector(
@@ -37,7 +37,6 @@ const AbortBtn = ({ typoStyle }) => {
       children={<StopCircleOutlinedIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="ABORT"
     />
   );

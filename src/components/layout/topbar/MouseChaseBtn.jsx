@@ -4,7 +4,7 @@ import MouseIcon from "@mui/icons-material/Mouse";
 import { runtimeChanged } from "../../../store/runtime";
 import ActionBtn from "../../common/ActionBtn";
 
-const MouseChaseBtn = ({ typoStyle }) => {
+const MouseChaseBtn = () => {
   const dispatch = useDispatch();
   const { mouseChaseActive } = useSelector(({ runtime }) => runtime);
 
@@ -21,7 +21,7 @@ const MouseChaseBtn = ({ typoStyle }) => {
   return (
     <ActionBtn
       handleClick={handleClick}
-      typoStyle={{ ...typoStyle, fontWeight: mouseChaseActive && "bold" }}
+      typoStyle={{ fontWeight: mouseChaseActive && "bold" }}
       label="CHASE"
       tooltip={`When active, the algorithm will chase after the user mouse.
                 walls/midway points can be created while active.`}

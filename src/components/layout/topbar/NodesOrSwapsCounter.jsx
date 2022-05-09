@@ -9,7 +9,7 @@ const NodesOrSwapsCounter = () => {
 
   const iconStyle = { color: "secondary.main", fontSize: 30 };
   const tooltip = category === "path" ? "Visited-Nodes" : "Swaps";
-  const Icon =
+  const icon =
     category === "path" ? (
       <CheckCircleOutlineRoundedIcon sx={iconStyle} />
     ) : (
@@ -18,7 +18,7 @@ const NodesOrSwapsCounter = () => {
 
   return (
     <TitleIcon
-      Icon={Icon}
+      icon={icon}
       label={<span id="nodes-or-swaps-counter">0</span>}
       tooltip={tooltip}
     />

@@ -7,7 +7,7 @@ import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
 import { cleanAndResetGrid } from "../../../utils/boardUtils";
 import { resetIndicators } from "../../../utils/commonUtils";
 
-const CleanBtn = ({ typoStyle }) => {
+const CleanBtn = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
   const { pause, abort, isMaze, isDone, isRunning, isPainted, isMazeRunning } =
@@ -45,7 +45,6 @@ const CleanBtn = ({ typoStyle }) => {
       children={<RotateLeftIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="Clean"
       tooltip="Clean Board"
     />

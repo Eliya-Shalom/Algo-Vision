@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { resetTimer } from "../../layout/topbar/Timer";
 import { uiChanged } from "../../../store/ui";
@@ -10,11 +10,25 @@ import "./Node.css";
 
 let targetNum = 0;
 let onChase = false;
+let prevStartOrEnd = [0, 0];
+let pRow;
+let pCol;
 
-const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
+const Node = ({
+  id,
+  row,
+  col,
+  weight,
+  isWall,
+  isStart,
+  isFinish,
+  isMidway,
+  isBoundaryWall,
+}) => {
   const dispatch = useDispatch();
-  const { grid, dimensions, view } = useSelector(({ board }) => board);
-  const { mousePressedWall, dragged } = useSelector(({ ui }) => ui);
+  const { grid, dimensions } = useSelector(({ board }) => board);
+  const { board, isMobile } = useSelector(({ ui }) => ui);
+  const { mousePressedWall, isDragging, isBorders } = board;
   const {
     isMaze,
     isDone,
@@ -30,8 +44,10 @@ const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
 
   useEffect(() => (targetNum = window.targets.length), [isDone, isPainted]);
 
-  const handleDragStart = (e) => {
-    e.dataTransfer.setData("text", `${row}-${col}`);
+  const handleDragStart = () => {
+    prevStartOrEnd = [row, col];
+    dispatch(uiChanged({ prop: "board", att: "isDragging", val: true }));
+
     resetTimer();
     dispatch(
       snapshotTook({
@@ -43,17 +59,24 @@ const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
 
   const handleDrop = (e) => {
     e.preventDefault();
-    if (isWall || isMidway) return;
+    if (isWall || isMidway || isStart || isFinish) return;
 
-    const [prevRow, prevCol] = e.dataTransfer.getData("text").split("-");
+    const [prevRow, prevCol] = prevStartOrEnd;
+    const { row: sRow, col: sCol } = window.startNode;
+    let att;
 
-    if (+prevRow === window.startNode.row && +prevCol === window.startNode.col) {
+    if (prevRow === sRow && prevCol === sCol) {
       window.startNode = grid[row][col];
-      dispatch(uiChanged({ att: "dragged", val: !dragged }));
-    } else if (+prevRow === window.finishNode.row && +prevCol === window.finishNode.col) {
+      att = "isStart";
+    } else {
       window.finishNode = grid[row][col];
-      dispatch(uiChanged({ att: "dragged", val: !dragged }));
+      att = "isFinish";
     }
+    batch(() => {
+      dispatch(nodeChanged({ row, col, att, val: true }));
+      dispatch(nodeChanged({ row: prevRow, col: prevCol, att, val: false }));
+    });
+    prevStartOrEnd = [row, col];
 
     if (dynamicMode) return;
 
@@ -74,7 +97,7 @@ const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
     if (!midwayActive || isUnclickable() || isWall) return;
     !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
     document.getElementById(id).appendChild(document.createTextNode(`${++targetNum}`));
-    dispatch(nodeChanged({ row, col, change: "midway" }));
+    dispatch(nodeChanged({ row, col, att: "isMidway", val: !isMidway }));
     window.targets.push({ ...grid[row][col] });
   }
 
@@ -90,36 +113,61 @@ const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
 
   const handleWallMouseEnter = () => {
     if (isUnclickable() || !mousePressedWall || (isRunning && !dynamicMode)) return;
-    dispatch(nodeChanged({ row, col, change: "wall" }));
+    dispatch(nodeChanged({ row, col, att: "isWall", val: !isWall }));
   };
 
   const handleMouseDown = ({ button }) => {
     if (button === 1) return;
-    setDraggable((isStart || isFinish) && !mouseChaseActive);
+
     if (isUnclickable() || midwayActive || (isRunning && !dynamicMode)) return;
-    dispatch(uiChanged({ att: "mousePressedWall", val: true }));
+    dispatch(uiChanged({ prop: "board", att: "mousePressedWall", val: true }));
     if (mouseChaseActive) {
       dispatch(runtimeChanged({ att: "mouseChaseActive", val: false }));
       onChase = true;
     }
-    dispatch(nodeChanged({ row, col, change: "wall" }));
+    dispatch(nodeChanged({ row, col, att: "isWall", val: !isWall }));
   };
 
   const handleMouseUp = ({ button }) => {
     if (button === 1) return;
-    setDraggable(isStart || isFinish);
+
     if (mouseChaseActive || midwayActive || (isRunning && !dynamicMode)) return;
     !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
-    dispatch(uiChanged({ att: "mousePressedWall", val: false }));
+    dispatch(uiChanged({ prop: "board", att: "mousePressedWall", val: false }));
     onChase && dispatch(runtimeChanged({ att: "mouseChaseActive", val: true }));
     onChase = false;
   };
 
-  const boundaryWalls =
-    row === 0 || row === grid.length - 1 || col === 0 || col === grid[0].length - 1;
-  const isStart = row === window.startNode.row && col === window.startNode.col;
-  const isFinish = row === window.finishNode.row && col === window.finishNode.col;
-  const [draggable, setDraggable] = useState(isStart || isFinish);
+  function handleAuxClick() {
+    dispatch(nodeChanged({ row, col, att: "weight", val: weight + 1 }));
+  }
+
+  // Mobile events
+
+  function handlePointerDown(e) {
+    if (pRow === row && pCol === col) return;
+    [pRow, pCol] = [row, col];
+    e.target.releasePointerCapture(e.pointerId);
+
+    if (isStart || isFinish) return handleDragStart(e);
+    handleMouseDown(e);
+  }
+  function handlePointerEnter(e) {
+    e.target.releasePointerCapture(e.pointerId);
+
+    if (isDragging) handleDrop(e);
+    else mouseChaseActive ? handleChaseMouseEnter(e) : handleWallMouseEnter(e);
+  }
+
+  function handlePointerUp(e) {
+    e.target.releasePointerCapture(e.pointerId);
+
+    if (isDragging) dispatch(uiChanged({ prop: "board", att: "isDragging", val: false }));
+
+    handleMouseUp(e);
+  }
+
+  const isUnclickable = () => isBoundaryWall || isStart || isFinish || isMaze || isMidway;
   const className = isStart
     ? "start"
     : isFinish
@@ -130,34 +178,28 @@ const Node = ({ row, col, id, weight, isWall, isMidway, walls }) => {
     ? "midway"
     : "node";
 
-  function isUnclickable() {
-    return boundaryWalls || isStart || isFinish || isMaze || isMidway;
-  }
-
-  function handleAuxClick() {
-    dispatch(nodeChanged({ row, col, change: "weight" }));
-  }
-
   return (
     <td
       id={id}
       onAuxClick={handleAuxClick}
       className={className}
-      draggable={draggable}
+      draggable={isStart || isFinish}
       onClick={handleClick}
+      onMouseDown={handleMouseDown}
+      onMouseEnter={mouseChaseActive ? handleChaseMouseEnter : handleWallMouseEnter}
+      onMouseUp={handleMouseUp}
       onDragStart={handleDragStart}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
-      onMouseEnter={mouseChaseActive ? handleChaseMouseEnter : handleWallMouseEnter}
-      onMouseDown={handleMouseDown}
-      onMouseUp={handleMouseUp}
+      onPointerDown={isMobile ? handlePointerDown : () => {}}
+      onPointerEnter={isMobile ? handlePointerEnter : () => {}}
+      onPointerUp={isMobile ? handlePointerUp : () => {}}
       style={{
+        touchAction: "none",
         width: dimensions.nodeSize,
         height: dimensions.nodeSize,
         outline:
-          view.isBorders && !isStart && !isFinish && !isMidway
-            ? "0.5px solid #e0e0e0"
-            : "0px",
+          isBorders && !isStart && !isFinish && !isMidway ? "0.5px solid #e0e0e0" : "0px",
         userSelect: "none",
         textAlign: "center",
         fontSize: 12,

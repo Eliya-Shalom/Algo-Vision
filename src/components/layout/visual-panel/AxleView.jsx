@@ -19,6 +19,7 @@ const AxleView = () => {
   const dispatch = useDispatch();
   const { isRunning, snapshot } = useSelector(({ runtime }) => runtime);
   const { numOfBars, align, transition } = useSelector(({ axle }) => axle);
+  const { isMobile } = useSelector(({ ui }) => ui);
 
   const [val, setVal] = useState(numOfBars);
 
@@ -46,41 +47,49 @@ const AxleView = () => {
   }
 
   return (
-    <Stack display="flex" justifyContent="center" alignItems="center" width="70%">
-      <Box display="flex" width="100%">
-        <TitleSlider
-          label="Density"
-          defaultValue={val}
-          min={20}
-          max={1500}
-          step={1}
-          disabled={isRunning}
-          handleChange={handleChange}
-          unit=" Bars"
-        />
-      </Box>
+    <Stack width="100%">
+      <TitleSlider
+        label="Density"
+        defaultValue={val}
+        min={20}
+        max={1500}
+        step={1}
+        disabled={isRunning}
+        handleChange={handleChange}
+        unit=" Bars"
+      />
 
-      <Box display="flex" width="100%" alignItems="center">
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="start"
+        mt={1}
+        flexDirection={isMobile && "column"}>
         <Typography
-          width="30%"
           variant="button"
-          color="secondary.lighter"
-          textAlign="center">
+          sx={{
+            width: "30%",
+            fontSize: 13,
+            textAlign: "center",
+            color: "secondary.lighter",
+          }}>
           Align
         </Typography>
-        <FormControl sx={{ width: "70%", alignItems: "start", justifyContent: "center" }}>
+        <FormControl>
           <RadioGroup row value={align} onChange={handleClick}>
             {["start", "center", "end"].map((val) => (
               <FormControlLabel
                 key={val}
                 label={val}
+                labelPlacement={isMobile ? "top" : "start"}
                 value={val === "center" ? "center" : `flex-${val}`}
                 defaultChecked={val === "start"}
                 disableTypography={true}
                 sx={{
-                  fontSize: 12,
+                  fontSize: 10,
                   color: "secondary.lighter",
                   textTransform: "uppercase",
+                  px: 0.5,
                   m: 0,
                 }}
                 control={<Radio color="secondary" />}

@@ -35,11 +35,4 @@ export default createTheme({
     fontWeightRegular: 400,
     fontWeightBold: 500,
   },
-  breakpoints: { values: { xs: 400, sm: 600, md: 900, lg: 1200, xl: 1536 } },
-  custom: {
-    leftMenuWidth: 250,
-    sourceCodeWidth: 450,
-    topBarHeight: 80,
-    visualPanelHeight: 50,
-  },
 });

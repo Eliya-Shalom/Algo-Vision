@@ -8,7 +8,7 @@ const Timer = () => {
   const iconStyle = { color: "secondary.main", fontSize: 30 };
   return (
     <TitleIcon
-      Icon={<TimerOutlinedIcon sx={iconStyle} />}
+      icon={<TimerOutlinedIcon sx={iconStyle} />}
       tooltip="Animation Time"
       label={
         <div>

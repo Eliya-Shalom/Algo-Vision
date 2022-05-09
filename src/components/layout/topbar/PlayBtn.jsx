@@ -9,9 +9,11 @@ import visualizePath from "../../../algorithms/path-finding/visualizePath";
 import dynamicAStar from "../../../algorithms/path-finding/dynamicAStar";
 import ActionBtn from "../../common/ActionBtn";
 
-const PlayBtn = ({ typoStyle }) => {
+const PlayBtn = () => {
   const dispatch = useDispatch();
-  const { grid, view } = useSelector(({ board }) => board);
+  const { isBorders } = useSelector(({ ui }) => ui.board);
+  const { grid } = useSelector(({ board }) => board);
+  const { axle } = useSelector(({ axle }) => axle);
   const {
     isDone,
     isMaze,
@@ -25,7 +27,6 @@ const PlayBtn = ({ typoStyle }) => {
     dynamicSnapshot,
     isShuffling,
   } = useSelector(({ runtime }) => runtime);
-  const { axle } = useSelector(({ axle }) => axle);
 
   const handleClick = () => {
     if (isMazeRunning) return;
@@ -45,7 +46,7 @@ const PlayBtn = ({ typoStyle }) => {
     window.hasAborted = false;
 
     if (dynamicMode)
-      return dynamicAStar(copyGrid(grid), dynamicSnapshot, view.isBorders, dispatch);
+      return dynamicAStar(copyGrid(grid), dynamicSnapshot, isBorders, dispatch);
 
     if (category === "path")
       visualizePath(algo, type, grid, snapshot.path, isMaze, dispatch, instantMode);
@@ -65,7 +66,6 @@ const PlayBtn = ({ typoStyle }) => {
       children={<PlayCircleOutlineIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="PLAY"
     />
   );

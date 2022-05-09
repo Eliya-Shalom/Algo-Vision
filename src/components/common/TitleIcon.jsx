@@ -1,19 +1,20 @@
-import { Stack, Tooltip, Typography } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
+import { Stack, Tooltip, Typography } from "@mui/material";
 
-const TitleIcon = ({ Icon, tooltip, label }) => {
+const TitleIcon = ({ icon, tooltip, label }) => {
+  const { isMobile } = useSelector(({ ui }) => ui);
+
   return (
-    <Stack alignItems="center">
-      <Tooltip title={tooltip}>{Icon}</Tooltip>
-      {/* <Tooltip title="" ><span></span></Tooltip> */}
+    <Stack alignItems="center" px={0.5}>
+      <Tooltip title={tooltip}>{icon}</Tooltip>
       <Typography
-        sx={{ minWidth: 55 }}
         color="primary.light"
         variant="button"
         textAlign="center"
-        pt={0.5}>
-        <div>{label}</div>
-      </Typography>
+        children={label}
+        sx={{ minWidth: 55, pt: 0.25, fontSize: 13 }}
+      />
     </Stack>
   );
 };

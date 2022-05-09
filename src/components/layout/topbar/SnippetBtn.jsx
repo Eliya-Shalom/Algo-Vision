@@ -4,12 +4,12 @@ import CodeIcon from "@mui/icons-material/Code";
 import { uiChanged } from "../../../store/ui";
 import ActionBtn from "../../common/ActionBtn";
 
-const CodeBtn = ({ typoStyle }) => {
+const SnippetBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
   const { algo } = useSelector(({ runtime }) => runtime.runningFunc);
 
   function handleClick() {
-    dispatch(uiChanged({ att: "isSnippetOpen", val: true }));
+    dispatch(uiChanged({ prop: "snippet", att: "open", val: true }));
   }
 
   return (
@@ -25,4 +25,4 @@ const CodeBtn = ({ typoStyle }) => {
   );
 };
 
-export default CodeBtn;
+export default SnippetBtn;

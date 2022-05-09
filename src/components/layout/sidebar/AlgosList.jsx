@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { Box, Collapse, List, ListItem, ListItemText, Tooltip } from "@mui/material";
+import { Box, Collapse, List, Tooltip } from "@mui/material";
+import ApiIcon from "@mui/icons-material/Api";
 import OpenWithIcon from "@mui/icons-material/OpenWith";
 import ReadMoreIcon from "@mui/icons-material/ReadMore";
 import TimelineIcon from "@mui/icons-material/Timeline";
@@ -18,16 +19,7 @@ import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
 import { resetIndicators } from "../../../utils/commonUtils";
 import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import ListButton from "../../common/ListButton";
-
-const styles = {
-  icon: { fontSize: 20, ml: 1 },
-  subheader: {
-    bgcolor: "primary.main",
-    color: "grey.500",
-    fontSize: 12,
-    pl: 1,
-  },
-};
+import ListHeader from "./ListHeader";
 
 const AlgosList = () => {
   const dispatch = useDispatch();
@@ -35,8 +27,12 @@ const AlgosList = () => {
   const { runningFunc, dynamicMode, isPainted } = useSelector(({ runtime }) => runtime);
   const [open, setOpen] = useState(false);
 
+  const styles = {
+    icon: { fontSize: 20 },
+  };
+
   const pathAlgos = [
-    { algo: "Dijkstra Algorithm", icon: <OpenWithIcon sx={styles.icon} /> },
+    { algo: "Dijkstra Algorithm", icon: <ApiIcon sx={styles.icon} /> },
     { algo: "Depth-First-Search", icon: <LowPriorityIcon sx={styles.icon} /> },
     { algo: "Breadth-First-Search", icon: <ReadMoreIcon sx={styles.icon} /> },
   ];
@@ -97,34 +93,29 @@ const AlgosList = () => {
 
   return (
     <List>
-      <ListItem>
-        <ListItemText primary="Path Finding" primaryTypographyProps={styles.subheader} />
-      </ListItem>
-      <Box>
-        <ListButton
-          label="A* Algorithm"
-          handleClick={() => setOpen(!open)}
-          startIcon={<StarBorderIcon sx={styles.icon} />}
-          endIcon={
-            <KeyboardArrowDown
-              sx={{ transform: open ? "rotate(-180deg)" : "rotate(0)" }}
-            />
-          }
-        />
-      </Box>
+      <ListHeader label="Path Finding" />
 
-      <Box sx={{ bgcolor: "primary.light", transition: { py: 1 } }}>
-        <Collapse in={open}>
+      <ListButton
+        label="A* Algorithm"
+        handleClick={() => setOpen(!open)}
+        startIcon={<StarBorderIcon sx={styles.icon} />}
+        endIcon={
+          <KeyboardArrowDown sx={{ transform: open ? "rotate(-180deg)" : "rotate(0)" }} />
+        }
+      />
+
+      <Collapse in={open}>
+        {["Manhattan", "Diagonal"].map((huristic, i) => (
           <ListButton
-            label="Manhattan Distance"
-            handleClick={() => setAlgo("aStar", "path", "Manhattan")}
+            key={huristic}
+            label={huristic + " Distance"}
+            startIcon={
+              <OpenWithIcon sx={{ ...styles.icon, transform: i && "rotate(45deg)" }} />
+            }
+            handleClick={() => setAlgo("aStar", "path", huristic)}
           />
-          <ListButton
-            label="Diagonal Distance"
-            handleClick={() => setAlgo("aStar", "path", "Diagonal")}
-          />
-        </Collapse>
-      </Box>
+        ))}
+      </Collapse>
 
       {pathAlgos.map(({ algo, icon }) => (
         <ListButton
@@ -135,9 +126,7 @@ const AlgosList = () => {
         />
       ))}
 
-      <ListItem>
-        <ListItemText primary="Sorting" primaryTypographyProps={styles.subheader} />
-      </ListItem>
+      <ListHeader label="Sorting" />
 
       {sortAlgos.map(({ algo, icon }) => (
         <ListButton
@@ -148,12 +137,7 @@ const AlgosList = () => {
         />
       ))}
 
-      <ListItem>
-        <ListItemText
-          primary="Special"
-          primaryTypographyProps={{ ...styles.subheader, color: "secondary.light" }}
-        />
-      </ListItem>
+      <ListHeader label="Special" />
 
       <Tooltip title="Put obstacles/midways points in live mode.">
         <Box>
@@ -164,6 +148,7 @@ const AlgosList = () => {
           />
         </Box>
       </Tooltip>
+      <Box height="100px" bgcolor="primary.main" />
     </List>
   );
 };

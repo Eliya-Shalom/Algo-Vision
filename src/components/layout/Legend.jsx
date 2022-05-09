@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Typography, Box, IconButton, Stack, Collapse } from "@mui/material";
+import { Typography, Box, IconButton, Stack, Collapse, Tooltip } from "@mui/material";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 const Legend = () => {
   const { dynamicMode } = useSelector(({ runtime }) => runtime);
+  const { topBar } = useSelector(({ ui }) => ui);
   const [open, setOpen] = useState(false);
 
   const legend = [
@@ -21,52 +22,56 @@ const Legend = () => {
   }
 
   return (
-    <Stack position="absolute" right={20}>
-      <Stack ml={20} mt={2} alignItems="center">
-        <Typography children="LEGEND" fontSize={14} mb={1} color="secondary.main" />
+    <Stack
+      sx={{
+        position: "absolute",
+        right: 10,
+        top: 10,
+        display: "flex",
+        alignItems: "flex-end",
+      }}>
+      <Tooltip title="Legend">
         <IconButton
           onClick={handleClick}
           sx={{
-            width: 50,
-            height: 50,
+            height: { md: 50, sm: 40, xs: 40 },
+            width: { md: 50, sm: 40, xs: 40 },
             border: "4px solid",
             borderColor: "secondary.main",
             color: "secondary.main",
             bgcolor: "#FFFFFF",
             "&:hover": { bgcolor: "#FFFFFF" },
             borderRadius: 50,
-            mb: 2,
+            mb: 1,
+            zIndex: 102,
           }}>
-          <TextSnippetIcon />
+          <TextSnippetIcon sx={{ fontSize: { md: 30, sm: 22, xs: 22 } }} />
         </IconButton>
-      </Stack>
+      </Tooltip>
       <Collapse in={open}>
         {legend.map((item) => {
           if (!item) return null;
           const { label, color } = item;
           return (
-            <Box key={label} display="flex" justifyContent="flex-end" pr={1.5}>
+            <Box key={label} display="flex" justifyContent="flex-end" pr={1} mb={2}>
               <Box
-                alignItems="center"
-                display="flex"
                 sx={{
                   display: "flex",
                   alignItems: "center",
                   bgcolor: "#F3F5FA",
-                  height: 25,
+                  height: { md: 35, sm: 20, xs: 15 },
                   px: 1,
-                  mt: 1,
                 }}>
                 <Typography variant="body2" color="primary" children={label} noWrap />
               </Box>
+
               <Box
                 key={label}
                 sx={{
                   bgcolor: color,
-                  width: 35,
-                  height: 35,
-                  borderRadius: 0,
-                  mb: 3,
+                  width: { md: 35, sm: 20, xs: 15 },
+                  height: { md: 35, sm: 20, xs: 15 },
+                  borderRadius: 1,
                   "&:hover": { bgcolor: color },
                   boxShadow: `2px 5px 0px 0px black ${label === "Wall" ? "inset" : ""}`,
                 }}

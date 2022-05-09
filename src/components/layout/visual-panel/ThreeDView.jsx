@@ -2,14 +2,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Stack } from "@mui/material";
 import TitleSlider from "../../common/TitleSlider";
-import { viewChanged } from "../../../store/board";
+import { uiChanged } from "../../../store/ui";
 
 let timeout;
-const BoardView = () => {
+const ThreeDView = () => {
   const dispatch = useDispatch();
   const { category } = useSelector(({ runtime }) => runtime.runningFunc);
   const { rotateX, rotateY, rotateZ, perspective, scale } = useSelector(
-    ({ board }) => board.view
+    ({ ui }) => ui.threeD
   );
 
   const handleChange = (e, label) => {
@@ -19,7 +19,7 @@ const BoardView = () => {
       let att;
       if (label === "Perspective" || label === "Scale") att = label.toLowerCase();
       else att = `rotate${label[label.length - 1]}`;
-      dispatch(viewChanged({ att, val: +value }));
+      dispatch(uiChanged({ prop: "threeD", att, val: +value }));
     }, 10);
   };
 
@@ -39,11 +39,7 @@ const BoardView = () => {
   ];
 
   return (
-    <Stack
-      sx={{
-        py: 2,
-        width: { md: "70%", sm: "100%", xs: "100%" },
-      }}>
+    <Stack width="100%">
       {sliders.map(({ label, defVal, min, max, step, unit }) => (
         <TitleSlider
           key={label}
@@ -61,4 +57,4 @@ const BoardView = () => {
   );
 };
 
-export default BoardView;
+export default ThreeDView;

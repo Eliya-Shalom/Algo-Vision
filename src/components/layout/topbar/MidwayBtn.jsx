@@ -4,7 +4,7 @@ import AddLocationIcon from "@mui/icons-material/AddLocation";
 import { runtimeChanged } from "../../../store/runtime";
 import ActionBtn from "../../common/ActionBtn";
 
-const MidwayBtn = ({ typoStyle }) => {
+const MidwayBtn = () => {
   const dispatch = useDispatch();
   const { midwayActive } = useSelector(({ runtime }) => runtime);
 
@@ -21,7 +21,7 @@ const MidwayBtn = ({ typoStyle }) => {
   return (
     <ActionBtn
       handleClick={handleClick}
-      typoStyle={{ ...typoStyle, fontWeight: midwayActive && "bold" }}
+      typoStyle={{ fontWeight: midwayActive && "bold" }}
       label="MIDWAY"
       tooltip={`When active, new midway nodes can be placed across the grid to be
                 reached by the algorithm. new points can be created before/during the animation.`}

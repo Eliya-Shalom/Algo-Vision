@@ -1,56 +1,23 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useRef } from "react";
+import { useSelector } from "react-redux";
 import Node from "./Node";
-import { boardResized } from "../../../store/board";
-import { initializeGrid } from "../../../utils/boardUtils";
-import { getSizeByRef } from "../../../utils/commonUtils";
+import useResizeGrid from "../../../hooks/useResizeGrid";
 import "./Board.css";
 
-let resizeTimeout;
-let tableTimeout;
-
 const Board = () => {
-  const dispatch = useDispatch();
-  const { dimensions, grid, view } = useSelector(({ board }) => board);
-  const { rotateX, rotateY, rotateZ, perspective, scale } = view;
-  const { height, width, nodeSize } = dimensions;
+  const { dimensions, grid } = useSelector(({ board }) => board);
+  const { rotateX, rotateY, rotateZ, perspective, scale } = useSelector(
+    ({ ui }) => ui.threeD
+  );
+  const { height, width } = dimensions;
+  const containerRef = useRef();
 
-  const tableContainerRef = useRef();
-
-  const resetTableSize = () => {
-    const [currentMaxHeight, currentMaxWidth] = getSizeByRef(tableContainerRef);
-    dispatch(boardResized({ height: currentMaxHeight, width: currentMaxWidth }));
-  };
-
-  window.addEventListener("resize", () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(resetTableSize, 200);
-  });
-
-  useEffect(() => {
-    resetTableSize();
-    return () => {
-      clearTimeout(resizeTimeout);
-      clearTimeout(tableTimeout);
-    };
-  }, [view.isReset]);
-
-  useEffect(() => {
-    clearTimeout(tableTimeout);
-    tableTimeout = setTimeout(
-      () => initializeGrid(height, width, nodeSize, dispatch),
-      100
-    );
-    return () => {
-      clearTimeout(tableTimeout);
-      clearTimeout(resizeTimeout);
-    };
-  }, [height, width, nodeSize]);
+  useResizeGrid(containerRef);
 
   return (
     <div
       id="table-container"
-      ref={tableContainerRef}
+      ref={containerRef}
       style={{
         height: "100%",
         width: "100%",
@@ -82,25 +49,35 @@ const Board = () => {
               <tbody>
                 {grid.map((row, i) => (
                   <tr key={i}>
-                    {row.map((node) => (
-                      <Node
-                        id={node.id}
-                        key={node.id}
-                        row={node.row}
-                        col={node.col}
-                        visitedDFS={node.visitedDFS}
-                        visitedBFS={node.visitedBFS}
-                        visitedMaze={node.visitedMaze}
-                        visitedDijkstra={node.visitedDijkstra}
-                        isWall={node.isWall}
-                        isMidway={node.isMidway}
-                        walls={node.walls}
-                        distanceFromStart={node.distanceFromStart}
-                        estimatedDistanceToEnd={node.estimatedDistanceToEnd}
-                        prevNode={node.prevNode}
-                        weight={node.weight}
-                      />
-                    ))}
+                    {row.map((node) => {
+                      const boundaryWall =
+                        node.row === 0 ||
+                        node.row === grid.length - 1 ||
+                        node.col === 0 ||
+                        node.col === grid[0].length - 1;
+                      return (
+                        <Node
+                          id={node.id}
+                          key={node.id}
+                          row={node.row}
+                          col={node.col}
+                          visitedDFS={node.visitedDFS}
+                          visitedBFS={node.visitedBFS}
+                          visitedMaze={node.visitedMaze}
+                          visitedDijkstra={node.visitedDijkstra}
+                          isWall={node.isWall}
+                          isMidway={node.isMidway}
+                          walls={node.walls}
+                          distanceFromStart={node.distanceFromStart}
+                          estimatedDistanceToEnd={node.estimatedDistanceToEnd}
+                          prevNode={node.prevNode}
+                          weight={node.weight}
+                          isStart={node.isStart}
+                          isFinish={node.isFinish}
+                          isBoundaryWall={boundaryWall}
+                        />
+                      );
+                    })}
                   </tr>
                 ))}
               </tbody>

@@ -1,7 +1,12 @@
+#sideMenu ::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar space */
+  background: transparent; /* Optional: just make scrollbar invisible */
+}
+
 .slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 100%;
+  width: 90%;
   height: 8px;
   background: #dadce0;
   outline: none;
@@ -9,12 +14,8 @@
   -webkit-transition: 0.2s;
   transition: opacity 0.2s;
   border-radius: 20px;
-  margin-top: 10px;
+  margin-top: 5px;
   pointer-events: none;
-}
-
-.slider:hover {
-  /* opacity: 0.8; */
 }
 
 .slider::-webkit-slider-thumb {

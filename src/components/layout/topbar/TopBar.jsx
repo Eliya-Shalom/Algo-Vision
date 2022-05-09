@@ -1,123 +1,159 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { Box, AppBar, Toolbar } from "@mui/material";
+import { AppBar, Toolbar, Grid, Divider, Box } from "@mui/material";
 import Timer from "./Timer";
 import Speed from "./Speed";
-import CodeBtn from "./CodeBtn";
 import MazeBtn from "./MazeBtn";
 import PlayBtn from "./PlayBtn";
 import PauseBtn from "./PauseBtn";
 import AbortBtn from "./AbortBtn";
 import CleanBtn from "./CleanBtn";
-import RealTime from "./RealTime";
+import Realtime from "./Realtime";
 import Distance from "./Distance";
 import MidwayBtn from "./MidwayBtn";
+import WeightBtn from "./WeightBtn";
 import ShuffleBtn from "./ShuffleBtn";
 import OpsCounter from "./OpsCounter";
+import SnippetBtn from "./SnippetBtn";
 import MouseChaseBtn from "./MouseChaseBtn";
 import InstantModeBtn from "./InstantModeBtn";
 import ProgressBarPath from "./ProgressBarPath";
 import ProgressBarSort from "./ProgressBarSort";
 import NodesOrSwapsCounter from "./NodesOrSwapsCounter";
 import TitleDivider from "../../common/TitleDivider";
-import WeightBtn from "./WeightBtn";
 
 const TopBar = () => {
   const { runningFunc, dynamicMode } = useSelector(({ runtime }) => runtime);
+  const { sideMenu, topBar, isMobile } = useSelector(({ ui }) => ui);
   const { category } = runningFunc;
-  const typoStyle = {
-    fontSize: 11,
-    display:
-      category === "path" && !dynamicMode
-        ? { xs: "none", sm: "none", md: "none", lg: "block", xl: "block" }
-        : category === "sort"
-        ? { xs: "none", sm: "none", md: "none", lg: "block", xl: "block" }
-        : dynamicMode
-        ? { xs: "none", sm: "none", md: "none", lg: "block", xl: "block" }
-        : { xs: "none", sm: "none", md: "block", lg: "block", xl: "block" },
-  };
 
-  const style = {
-    px:
-      category === "path" && !dynamicMode
-        ? { sm: "1vw", md: "0.5vw", lg: "0.8vw", xl: "1.5vw" }
-        : category === "sort"
-        ? { sm: "1vw", md: "1vw", lg: "1.5vw", xl: "2vw" }
-        : dynamicMode
-        ? { sm: "1vw", md: "1.5vw", lg: "2vw", xl: "2.8vw" }
-        : { sm: "1vw", md: "1.5vw", lg: "2vw", xl: "2.5vw" },
+  const styles = {
+    appBar: {
+      display: "flex",
+      position: "fixed",
+      width: `calc(100% - ${sideMenu.width}px)`,
+      height: `${topBar.height}px`,
+      bgcolor: "white",
+      transition: "all 0.5s",
+    },
+    gridContainer: {
+      display: "flex",
+      flexWrap: "nowrap",
+      pt: isMobile && 1,
+      width: { md: "100%", sm: "fit-content" },
+      overflowX: topBar.overflow,
+      overflowY: "hidden",
+    },
+    gridItem: {
+      display: { md: "initial", sm: "flex" },
+      justifyContent: "center",
+      alignItems: "start",
+      minWidth: "fit-content",
+      height: `${topBar.height}px`,
+    },
   };
 
   const actionItems = [
-    <PlayBtn type="Play" typoStyle={typoStyle} />,
-    <PauseBtn type="Pause" typoStyle={typoStyle} />,
-    <AbortBtn type="Abort" typoStyle={typoStyle} />,
-    dynamicMode && <MidwayBtn typoStyle={typoStyle} />,
-    dynamicMode && <MouseChaseBtn typoStyle={typoStyle} />,
-    category === "path" && !dynamicMode && <MazeBtn typoStyle={typoStyle} />,
-    category === "path" && <CleanBtn typoStyle={typoStyle} />,
-    category === "path" && !dynamicMode && <WeightBtn typoStyle={typoStyle} />,
-    category === "sort" && !dynamicMode && <ShuffleBtn typoStyle={typoStyle} />,
+    <PlayBtn type="Play" />,
+    <PauseBtn type="Pause" />,
+    <AbortBtn type="Abort" />,
+    dynamicMode && <MidwayBtn />,
+    dynamicMode && !isMobile && <MouseChaseBtn />,
+    category === "path" && !dynamicMode && <MazeBtn />,
+    category === "path" && <CleanBtn />,
+    category === "path" && !dynamicMode && <WeightBtn />,
+    category === "sort" && !dynamicMode && <ShuffleBtn />,
   ];
 
-  // const controllers = [
-  //   category === "path" && !dynamicMode && <ProgressBarPath />,
-  //   category !== "path" && !dynamicMode && <ProgressBarSort />,
-  //   <Speed />,
-  //   category === "path" && !dynamicMode && <InstantModeBtn typoStyle={typoStyle} />,
-  // ];
-
-  const indicators = [
+  const indicatorsItems = [
     <Timer />,
-    !dynamicMode && <RealTime />,
+    !dynamicMode && <Realtime />,
     !dynamicMode && <OpsCounter />,
     <NodesOrSwapsCounter />,
     category === "path" && !dynamicMode && <Distance />,
   ];
 
+  const controllersItems = [
+    category === "path" && !dynamicMode && <ProgressBarPath />,
+    category !== "path" && !dynamicMode && <ProgressBarSort />,
+    <Speed />,
+    category === "path" && !dynamicMode && <InstantModeBtn />,
+  ];
+
+  const toRender = {
+    actions: actionItems.filter((item) => item),
+    indicators: indicatorsItems.filter((item) => item),
+    controllers: controllersItems.filter((item) => item),
+  };
+  const len =
+    toRender.actions.length + toRender.indicators.length + toRender.controllers.length;
+  const xs = 12 / len;
+
+  const divider = isMobile && (
+    <Box display="flex" px={1}>
+      <Divider orientation="vertical" variant="middle" flexItem px={1} />
+    </Box>
+  );
+
   return (
-    <AppBar
-      elevation={1}
-      position="fixed"
-      sx={{
-        bgcolor: "white",
-        width: ({ custom }) => `calc(100% - ${custom.leftMenuWidth}px)`,
-      }}>
-      <Toolbar sx={{ height: ({ custom }) => custom.topBarHeight }}>
-        <Box display="flex" justifyContent="center" width="100%">
-          <TitleDivider title="Actions">
-            {actionItems.map((item, idx) => {
-              if (!item) return null;
-              return <Box key={idx} sx={style} children={item} />;
-            })}
-          </TitleDivider>
+    <AppBar elevation={1} sx={styles.appBar}>
+      <Toolbar sx={{ minHeight: `${topBar.height}px !important` }} disableGutters>
+        <Grid container sx={styles.gridContainer}>
+          <Grid item xs={xs * toRender.actions.length} sx={styles.gridItem}>
+            <TitleDivider title="Actions">
+              <Grid container justifyContent="center">
+                {toRender.actions.map((item, idx) => (
+                  <Grid item xs={12 / toRender.actions.length} key={idx}>
+                    {item}
+                  </Grid>
+                ))}
+              </Grid>
+            </TitleDivider>
+          </Grid>
 
-          <TitleDivider title="Controllers">
-            {!dynamicMode && (
-              <Box width="12.5vw">
-                {category === "path" && !dynamicMode && <ProgressBarPath />}
-                {category !== "path" && !dynamicMode && <ProgressBarSort />}
-              </Box>
-            )}
-            <Box pl={dynamicMode ? "2vw" : "1.5vw"}>
-              <Speed />
-            </Box>
-            <Box pl="1vw">
-              {category === "path" && !dynamicMode && (
-                <InstantModeBtn typoStyle={typoStyle} />
-              )}
-            </Box>
-          </TitleDivider>
+          {divider}
 
-          <TitleDivider title="Indicators">
-            {indicators.map((item, idx) => {
-              if (!item) return null;
-              return <Box key={idx} sx={style} children={item} />;
-            })}
-          </TitleDivider>
-        </Box>
+          <Grid
+            item
+            xs={xs * (toRender.controllers.length * 2)}
+            sx={styles.gridItem}
+            height="100%">
+            <TitleDivider title="Controllers">
+              {toRender.controllers.map((item, idx) => {
+                const thisLen = toRender.controllers.length;
+                return (
+                  <Grid
+                    item
+                    xs={idx === 0 && thisLen >= 2 ? 7 : true}
+                    key={idx}
+                    height="100%">
+                    {item}
+                  </Grid>
+                );
+              })}
+            </TitleDivider>
+          </Grid>
 
-        <CodeBtn typoStyle={typoStyle} />
+          {divider}
+
+          <Grid item xs={xs * toRender.indicators.length} sx={styles.gridItem}>
+            <TitleDivider title="Indicators">
+              <Grid container justifyContent="center">
+                {toRender.indicators.map((item, idx) => (
+                  <Grid item xs={12 / toRender.indicators.length} key={idx}>
+                    {item}
+                  </Grid>
+                ))}
+              </Grid>
+            </TitleDivider>
+          </Grid>
+
+          {divider}
+
+          <Grid item xs alignSelf="center" mr={1}>
+            <SnippetBtn />
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
   );

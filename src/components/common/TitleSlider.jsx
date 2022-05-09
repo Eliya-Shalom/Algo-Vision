@@ -6,32 +6,36 @@ const TitleSlider = ({
   min,
   max,
   step,
+  unit,
+  label,
+  disabled,
   handleChange,
   defaultValue,
-  label,
-  unit,
-  disabled,
 }) => {
-  const { isReset } = useSelector(({ board }) => board.view);
+  const { visualPanel, isMobile } = useSelector(({ ui }) => ui);
   const [val, setVal] = useState(defaultValue);
-  useEffect(() => setVal(defaultValue), [isReset]);
+  useEffect(() => setVal(defaultValue), [visualPanel.isReset]);
 
   return (
     <Box
+      width="100%"
       display="flex"
       alignItems="center"
-      width="100%"
-      sx={{ flexDirection: { md: "row", sm: "row", xs: "column" } }}>
-      <Box display="flex" width="30%" justifyContent="center">
-        <Typography
-          variant="button"
-          sx={{ fontSize: 13, color: "secondary.lighter" }}
-          noWrap>
-          {label}
-        </Typography>
-      </Box>
+      justifyContent="center"
+      flexDirection={isMobile && "column"}>
+      <Typography
+        variant="button"
+        noWrap={!isMobile}
+        sx={{
+          width: "30%",
+          fontSize: 13,
+          textAlign: "center",
+          color: "secondary.lighter",
+        }}>
+        {label}
+      </Typography>
 
-      <Box display="flex" width="70%" justifyContent="start">
+      <Box display="flex" width="70%" justifyContent={isMobile ? "center" : "start"}>
         <Slider
           step={step}
           min={min}
@@ -44,7 +48,7 @@ const TitleSlider = ({
           valueLabelDisplay="auto"
           value={val || defaultValue}
           valueLabelFormat={(label) => label + unit}
-          sx={{ width: { sm: "70%", xs: "100%" }, color: "secondary.lighter" }}
+          sx={{ width: "80%", color: "secondary.lighter" }}
         />
       </Box>
     </Box>

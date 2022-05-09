@@ -4,7 +4,7 @@ import { runtimeChanged } from "../../../store/runtime";
 import { weightGrid } from "../../../utils/boardUtils";
 import ActionBtn from "../../common/ActionBtn";
 
-const WeightBtn = ({ typoStyle }) => {
+const WeightBtn = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
   const { isMazeRunning, isRunning, isMaze } = useSelector(({ runtime }) => runtime);
@@ -23,7 +23,6 @@ const WeightBtn = ({ typoStyle }) => {
       children={<FitnessCenterRoundedIcon sx={iconStyle} />}
       disabled={disabled}
       handleClick={handleClick}
-      typoStyle={typoStyle}
       label="Weights"
       tooltip={`Fill the grid with random weights.
               To set single node weight, click on the middle mouse button.

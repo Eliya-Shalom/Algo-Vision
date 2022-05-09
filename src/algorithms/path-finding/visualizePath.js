@@ -30,8 +30,8 @@ export default function visualizePath(
   [visited, path, ops, realtime] = getAlgo(algo, type);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
-  dispatch(uiChanged({ att: "distance", val: distance }));
-  dispatch(uiChanged({ att: "opsCounter", val: ops }));
+  dispatch(uiChanged({ prop: 'topBar', att: "distance", val: distance }));
+  dispatch(uiChanged({ prop: 'topBar', att: "opsCounter", val: ops }));
   commUtils.setRealtime(realtime, dispatch);
 
   if (instantMode) {

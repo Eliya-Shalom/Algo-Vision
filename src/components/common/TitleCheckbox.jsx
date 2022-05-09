@@ -1,29 +1,38 @@
-import { Checkbox, Typography } from "@mui/material";
-import { Box } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
+import { Box, Checkbox, Typography } from "@mui/material";
 
 const TitleCheckbox = ({ label, disabled, handleCheck, checked }) => {
-  return (
-    <Box display="flex" width="100%">
-      <Box display="flex" width="30%" justifyContent="center" alignItems="center">
-        <Typography variant="button" sx={{ fontSize: 13, color: "secondary.lighter" }}>
-          {label}
-        </Typography>
-      </Box>
+  const { isMobile } = useSelector(({ ui }) => ui);
 
-      <Box display="flex" width="70%" justifyContent="start">
-        <Checkbox
-          disabled={disabled}
-          onClick={handleCheck}
-          checked={checked}
-          color="secondary"
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            color: "secondary.lighter",
-          }}
-        />
-      </Box>
+  return (
+    <Box
+      width="100%"
+      display="flex"
+      alignItems="center"
+      flexDirection={isMobile && "column"}>
+      <Typography
+        variant="button"
+        sx={{
+          fontSize: 13,
+          width: "30%",
+          color: "secondary.lighter",
+          textAlign: "center",
+        }}>
+        {label}
+      </Typography>
+
+      <Checkbox
+        disabled={disabled}
+        onClick={handleCheck}
+        checked={checked}
+        color="secondary"
+        sx={{
+          display: "flex",
+          justifyContent: isMobile ? "center" : "start",
+          color: "secondary.lighter",
+        }}
+      />
     </Box>
   );
 };
