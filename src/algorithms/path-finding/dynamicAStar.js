@@ -38,7 +38,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
   if (lastNode) paint(lastNode, isBorders, "node");
 
   const visitedInter = setInterval(() => {
-    if (window.targets.length) currentTarget = window.targets[0];
+    if (window.targetNodes.length) currentTarget = window.targetNodes[0];
     else currentTarget = window.finishNode;
 
     const currentNodeWithMinimumF = nodesToVisit.remove();
@@ -47,7 +47,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
     paint(currentNodeWithMinimumF, isBorders);
     countNodesOrSwapped(++visitedCount);
 
-    if (prevFinishNode !== window.finishNode && !window.targets.length) {
+    if (prevFinishNode !== window.finishNode && !window.targetNodes.length) {
       resetNodes(grid, currentNodeWithMinimumF, window.finishNode);
       prevFinishNode = window.finishNode;
     }
@@ -58,12 +58,12 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
       if (currentTarget === window.finishNode)
         return handleAbort(visitedInter, dispatch, true);
 
-      let { id } = window.targets.shift();
+      let { id } = window.targetNodes.shift();
       const targetEle = document.getElementById(id);
       targetEle.removeChild(targetEle.firstChild);
       dispatch(nodeChanged({ row: tRow, col: tCol, change: "midway" }));
 
-      if (window.targets.length) currentTarget = window.targets[0];
+      if (window.targetNodes.length) currentTarget = window.targetNodes[0];
       else currentTarget = window.finishNode;
 
       resetNodes(grid, currentNodeWithMinimumF, currentTarget);

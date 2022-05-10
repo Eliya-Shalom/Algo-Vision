@@ -106,18 +106,6 @@ export function setPathProgressBarValue(visitedIdx, pathIdx = 0) {
   progressEle.value = visitedIdx + pathIdx;
 }
 
-export function setPathProgressBarMax(visited, path) {
-  const progressEle = document.getElementById("progress-path");
-  if (!progressEle) return;
-  progressEle.max = visited.length - 1 + path.length - 1;
-}
-
-export function getProgressBarValue() {
-  const progressEle = document.getElementById("progress-path");
-  if (!progressEle) return;
-  return [+progressEle.value, +progressEle.max];
-}
-
 export function cleanAndResetGrid(grid, dispatch) {
   cleanPrevAlgo(grid, dispatch);
 

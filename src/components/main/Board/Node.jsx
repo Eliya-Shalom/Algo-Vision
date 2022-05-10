@@ -42,7 +42,7 @@ const Node = ({
     mouseChaseActive,
   } = useSelector(({ runtime }) => runtime);
 
-  useEffect(() => (targetNum = window.targets.length), [isDone, isPainted]);
+  useEffect(() => (targetNum = window.targetNodes.length), [isDone, isPainted]);
 
   const handleDragStart = () => {
     prevStartOrEnd = [row, col];
@@ -97,7 +97,7 @@ const Node = ({
     !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
     document.getElementById(id).appendChild(document.createTextNode(`${++targetNum}`));
     dispatch(nodeChanged({ row, col, att: "isMidway", val: !isMidway }));
-    window.targets.push({ ...grid[row][col] });
+    window.targetNodes.push({ ...grid[row][col] });
   }
 
   function handleChaseMouseEnter() {
@@ -105,8 +105,8 @@ const Node = ({
     document.getElementById(window.finishNode.id).className = "node";
     window.finishNode = grid[row][col];
     document.getElementById(window.finishNode.id).className = "finish";
-    if (!window.targets.length || !midwayActive) return;
-    const { id: tId } = window.targets[window.targets.length - 1];
+    if (!window.targetNodes.length || !midwayActive) return;
+    const { id: tId } = window.targetNodes[window.targetNodes.length - 1];
     document.getElementById(tId).className = "midway";
   }
 

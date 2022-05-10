@@ -55,14 +55,14 @@ const boardConfig = createSlice({
       };
     },
     removeMidways: (state) => {
-      if (!window.targets.length) return;
+      if (!window.targetNodes.length) return;
 
-      for (const { row, col, id } of window.targets) {
+      for (const { row, col, id } of window.targetNodes) {
         state.grid[row][col].isMidway = false;
         const nodeEle = document.getElementById(id);
         nodeEle.removeChild(nodeEle.firstChild);
       }
-      window.targets = [];
+      window.targetNodes = [];
     },
   },
 });

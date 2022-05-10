@@ -30,16 +30,21 @@ export default function visualizePath(
   [visited, path, ops, realtime] = getAlgo(algo, type);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
-  dispatch(uiChanged({ prop: 'topBar', att: "distance", val: distance }));
-  dispatch(uiChanged({ prop: 'topBar', att: "opsCounter", val: ops }));
   commUtils.setRealtime(realtime, dispatch);
+  dispatch(uiChanged({ prop: "topBar", att: "distance", val: distance }));
+  dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: ops }));
+  dispatch(
+    uiChanged({
+      prop: "topBar",
+      att: "progressBarMax",
+      val: visited.length + path.length - 2,
+    })
+  );
 
   if (instantMode) {
     commUtils.countNodesOrSwapped(visited.length - 1);
     return instantVisual();
   }
-
-  utils.setPathProgressBarMax(visited, path);
 
   animateVisitedNodes();
 }
@@ -51,7 +56,7 @@ function animateVisitedNodes() {
   }
 
   if (window.hasAborted) return handleAbort();
-  if (window.hasPaused || window.progressChanged) return handlePause();
+  if (window.hasPaused) return handlePause();
 
   const node = visited[visitedIdx];
   utils.paintNode(node, "visited");
@@ -69,7 +74,7 @@ function animatePath() {
   }
 
   if (window.hasAborted) return handleAbort();
-  if (window.hasPaused || window.progressChanged) return handlePause();
+  if (window.hasPaused) return handlePause();
 
   const node = path[pathIdx];
   utils.paintNode(node, "path");

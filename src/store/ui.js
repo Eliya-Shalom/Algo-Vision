@@ -22,6 +22,7 @@ const ui = createSlice({
       realtime: "0.000",
       height: isMobile ? 60 : 80,
       overflow: "auto",
+      progressBarMax: 0,
     },
     sideMenu: {
       width: isMobile ? 60 : 250,

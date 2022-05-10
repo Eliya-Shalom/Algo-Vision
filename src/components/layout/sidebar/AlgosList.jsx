@@ -55,7 +55,7 @@ const AlgosList = () => {
 
     batch(() => {
       dispatch(visualizingAborted());
-      isPainted && resetIndicators(dispatch);
+      resetIndicators(dispatch);
 
       if (algo === "dynamicMode") {
         dispatch(runtimeChanged({ att: "dynamicMode", val: true }));

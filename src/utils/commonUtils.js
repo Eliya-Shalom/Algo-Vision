@@ -74,6 +74,7 @@ export function resetIndicators(dispatch) {
   setAxleProgressBarValue(0);
   dispatch(uiChanged({ prop: "topBar", att: "distance", val: 0 }));
   dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: 0 }));
+  dispatch(uiChanged({ prop: "topBar", att: "progressBarMax", val: 0 }));
 }
 
 export function getRandomInt(min, max) {

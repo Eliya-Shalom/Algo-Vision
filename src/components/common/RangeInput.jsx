@@ -4,6 +4,7 @@ import { Stack, Typography } from "@mui/material";
 
 const RangeInput = ({ handleChange }) => {
   const { category } = useSelector(({ runtime }) => runtime.runningFunc);
+  const { progressBarMax } = useSelector(({ ui }) => ui.topBar);
   return (
     <Stack alignItems="center" width="100%" mt={0.5}>
       <Typography
@@ -18,7 +19,7 @@ const RangeInput = ({ handleChange }) => {
         id={`progress-${category}`}
         type="range"
         min="0"
-        max="0"
+        max={progressBarMax}
         step={1}
         onChange={handleChange}
       />

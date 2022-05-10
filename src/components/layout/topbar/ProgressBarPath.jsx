@@ -7,53 +7,67 @@ import RangeInput from "../../common/RangeInput";
 
 let timeout;
 let prevStep;
+let prevVisitedIdx = 0;
+let prevPathIdx = 0;
 
 const ProgressBar = () => {
   const dispatch = useDispatch();
   const { snapshot, isDone } = useSelector(({ runtime }) => runtime);
+  const { topBar, isMobile } = useSelector(({ ui }) => ui);
   const { visited, path } = snapshot.path;
 
   const handleChange = ({ target: { value } }) => {
-    window.progressChanged = true;
     window.hasPaused = true;
 
     if (!visited.length) return;
 
-    dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "hidden" }));
+    isMobile && dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "hidden" }));
 
     const currentStep = +value;
     const numOfVisited = visited.length - 1;
 
-    let className;
+    let className, pathIdx, visitedIdx, startVisited, endVisited, startPath, endPath;
+
     if (currentStep <= numOfVisited) {
-      className = currentStep < prevStep ? "node" : "visited";
-    } else className = currentStep < prevStep ? "visited" : "path";
-
-    const visitedIdx = currentStep <= numOfVisited ? currentStep : numOfVisited;
-    const pathIdx = currentStep > numOfVisited ? currentStep - numOfVisited : 0;
-
-    const start = Math.min(currentStep, prevStep);
-    const end = Math.max(currentStep, prevStep);
-
-    for (let i = start; i < end; i++) {
-      let idx = i <= numOfVisited ? i : i - numOfVisited;
-      const node = currentStep <= numOfVisited ? visited[idx] : path[idx];
-      if (!node) continue;
-      paintNode(node, className);
+      visitedIdx = currentStep;
+      pathIdx = 0;
+    } else {
+      visitedIdx = numOfVisited;
+      pathIdx = currentStep - numOfVisited;
     }
 
+    startVisited = Math.min(visitedIdx, prevVisitedIdx);
+    endVisited = Math.max(visitedIdx, prevVisitedIdx);
+    startPath = Math.min(pathIdx, prevPathIdx);
+    endPath = Math.max(pathIdx, prevPathIdx);
+
+    for (let i = startPath - 5; i <= endPath; i++) {
+      if (!path[i]) continue;
+      className = currentStep < prevStep ? "visited" : "path";
+      paintNode(path[i], className);
+    }
+
+    for (let i = startVisited - 5; i <= endVisited; i++) {
+      if (!visited[i]) continue;
+      className = currentStep < prevStep ? "node" : "visited";
+      paintNode(visited[i], className);
+    }
+
+    if (topBar.progressBarMax === currentStep)
+      for (let i = 0; i < pathIdx; i++) paintNode(path[i], "path");
+
+    [prevVisitedIdx, prevPathIdx] = [visitedIdx, pathIdx];
     prevStep = currentStep;
 
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      window.progressChanged = false;
       batch(() => {
         dispatch(runtimeChanged({ att: "isRunning", value: false }));
         dispatch(indicesChanged({ category: "path", val: [visitedIdx, pathIdx] }));
         isDone && dispatch(runtimeChanged({ att: "isDone", val: false }));
-        dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "auto" }));
+        isMobile && dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "auto" }));
       });
-    }, 700);
+    }, 250);
   };
 
   return <RangeInput handleChange={handleChange} />;

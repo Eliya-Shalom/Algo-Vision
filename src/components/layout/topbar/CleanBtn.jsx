@@ -21,11 +21,11 @@ const CleanBtn = () => {
     window.hasPaused = true;
     batch(() => {
       dispatch(runtimeChanged({ att: "isPainted", val: false }));
-      if (isDone || isRunning || pause || isMaze || abort) {
+      if (isRunning || isDone || pause || abort || isMaze || window.hasPaused) {
         !isDone && dispatch(visualizingAborted());
-        cleanAndResetGrid(grid, dispatch);
         isMaze && dispatch(runtimeChanged({ att: "isMaze", val: false }));
         resetIndicators(dispatch);
+        cleanAndResetGrid(grid, dispatch);
         window.hasAborted = true;
       } else {
         isPainted && cleanAndResetGrid(grid, dispatch);

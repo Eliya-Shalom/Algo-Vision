@@ -5,6 +5,7 @@ import { copyGrid, cleanAndResetGrid } from "../../../utils/boardUtils";
 import { runtimeChanged } from "../../../store/runtime";
 import dfsMaze from "../../../algorithms/dfsMaze";
 import ActionBtn from "../../common/ActionBtn";
+import { resetIndicators } from "../../../utils/commonUtils";
 
 const MazeBtn = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const MazeBtn = () => {
     batch(() => {
       isPainted && cleanAndResetGrid(grid, dispatch);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));
+      resetIndicators(dispatch)
     });
     dfsMaze(dispatch, copyGrid(grid), instantMode);
   };
