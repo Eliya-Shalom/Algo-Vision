@@ -126,6 +126,7 @@ function getFourNeighbors(node, grid, isMaze) {
       neighbors.push(grid[row - 1][col]);
     }
     if (row < grid.length - 1) {
+      ops++
       neighbors.push(grid[row + 1][col]);
     }
     if (col > 0) {

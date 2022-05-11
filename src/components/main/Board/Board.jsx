@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useSelector } from "react-redux";
 import Node from "./Node";
 import useResizeGrid from "../../../hooks/useResizeGrid";
+import { copyGrid } from "../../../utils/boardUtils";
 import "./Board.css";
 
 const Board = () => {
@@ -14,8 +15,7 @@ const Board = () => {
 
   useResizeGrid(containerRef);
 
-  // console.log('board render');
-  window.grid = grid;
+  window.grid = copyGrid(grid);
 
   return (
     <div

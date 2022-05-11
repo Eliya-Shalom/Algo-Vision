@@ -25,19 +25,23 @@ export default function visualizePath(
   isMaze = maze;
   path = window.snapshot.path.path;
   [visitedIdx, pathIdx] = window.snapshot.path.indices;
+
   [visited, path, ops, realtime] = getAlgo(algo, type);
+  console.log(path);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
   commUtils.setRealtime(realtime, dispatch);
-  dispatch(uiChanged({ prop: "topBar", att: "distance", val: distance }));
-  dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: ops }));
-  dispatch(
-    uiChanged({
-      prop: "topBar",
-      att: "progressBarMax",
-      val: visited.length + path.length - 2,
-    })
-  );
+  batch(() => {
+    dispatch(uiChanged({ prop: "topBar", att: "distance", val: distance }));
+    dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: ops }));
+    dispatch(
+      uiChanged({
+        prop: "topBar",
+        att: "progressBarMax",
+        val: visited.length + path.length - 2,
+      })
+    );
+  });
 
   if (instantMode) {
     commUtils.countNodesOrSwapped(visited.length - 1);
@@ -104,10 +108,8 @@ function handleAbort() {
 function handleFinish() {
   pauseTimer();
   if (!path.length) utils.paintNodes(visited, "not-found");
-  batch(() => {
-    dispatch(visualizingDone());
-    window.snapshot.path = { visited, path, indices: [0, 0] };
-  });
+  dispatch(visualizingDone());
+  window.snapshot.path = { visited, path, indices: [0, 0] };
   utils.setPathProgressBarValue(visitedIdx, pathIdx);
 }
 

@@ -20,15 +20,14 @@ const Node = ({
   col,
   weight,
   isWall,
-  isMidway,
-  isBoundaryWall,
   isStart,
   isFinish,
+  isMidway,
+  isBoundaryWall,
 }) => {
   const dispatch = useDispatch();
-  const grid = window.grid;
-  const { board, isMobile } = useSelector(({ ui }) => ui);
   const { nodeSize } = useSelector(({ board }) => board.dimensions);
+  const { board, isMobile } = useSelector(({ ui }) => ui);
   const { isDragging, isBorders } = board;
   const {
     isMaze,
@@ -60,10 +59,10 @@ const Node = ({
     let att;
 
     if (prevRow === sRow && prevCol === sCol) {
-      window.startNode = grid[row][col];
+      window.startNode = window.grid[row][col];
       att = "isStart";
     } else {
-      window.finishNode = grid[row][col];
+      window.finishNode = window.grid[row][col];
       att = "isFinish";
     }
     batch(() => {
@@ -74,7 +73,7 @@ const Node = ({
 
     if (dynamicMode) return;
 
-    cleanPrevAlgo(grid, dispatch);
+    isPainted && cleanPrevAlgo(window.grid, dispatch);
 
     if (!runningFunc.algo || window.hasPaused || window.hasAborted) return;
     batch(() => {
@@ -83,14 +82,14 @@ const Node = ({
     });
 
     const { algo, type } = runningFunc;
-    visualizePath(algo, type, grid, isMaze, dispatch, instantMode);
+    visualizePath(algo, type, window.grid, isMaze, dispatch, instantMode);
   };
 
   function handleClick() {
     if (!midwayActive || isUnclickable() || isWall) return;
     document.getElementById(id).appendChild(document.createTextNode(`${++targetNum}`));
     dispatch(nodeChanged({ row, col, att: "isMidway", val: !isMidway }));
-    window.targetNodes.push({ ...grid[row][col] });
+    window.targetNodes.push({ ...window.grid[row][col] });
   }
 
   function handleChaseMouseEnter() {
@@ -100,7 +99,7 @@ const Node = ({
     dispatch(nodeChanged({ row: fRow, col: fCol, att: "isFinish", val: false }));
     dispatch(nodeChanged({ row, col, att: "isFinish", val: true }));
 
-    window.finishNode = grid[row][col];
+    window.finishNode = window.grid[row][col];
 
     if (!window.targetNodes.length || !midwayActive) return;
     const { row: tRow, col: tCol } = window.targetNodes[window.targetNodes.length - 1];

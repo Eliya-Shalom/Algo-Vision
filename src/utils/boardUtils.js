@@ -1,3 +1,4 @@
+import { batch } from "react-redux";
 import { gridChanged, gridInitialized, removeMidways } from "../store/board";
 import { runtimeChanged } from "../store/runtime";
 import { getRandomInt } from "./commonUtils";
@@ -107,35 +108,37 @@ export function setPathProgressBarValue(visitedIdx, pathIdx = 0) {
 }
 
 export function cleanAndResetGrid(grid, dispatch) {
-  cleanPrevAlgo(grid, dispatch);
-
   const newGrid = [];
   for (let row = 0; row < grid.length; row++) {
     newGrid.push([]);
     for (let col = 0; col < grid[row].length; col++) {
-      const node = createNode(row, col, grid.length, grid[0].length);
-      cleanMazeWalls(node);
-      node.isWall = isBoundryWalls(row, col, grid);
-      node.isStart = row === window.startNode.row && col === window.startNode.col;
-      node.isFinish = row === window.finishNode.row && col === window.finishNode.col;
+      const prevNode = grid[row][col];
+      if (!prevNode.isStart && !prevNode.isFinish && !prevNode.isWall)
+        document.getElementById(prevNode.id).className = "node";
 
-      newGrid[row].push(node);
+      const newNode = createNode(row, col, grid.length, grid[0].length);
+      cleanMazeWalls(newNode);
+      newNode.isWall = isBoundryWalls(row, col, grid);
+      newNode.isStart = row === window.startNode.row && col === window.startNode.col;
+      newNode.isFinish = row === window.finishNode.row && col === window.finishNode.col;
+
+      newGrid[row].push(newNode);
     }
   }
-  dispatch(gridChanged(newGrid));
+  batch(() => {
+    dispatch(gridChanged(newGrid));
+    dispatch(removeMidways());
+  });
 }
 
 export function cleanPrevAlgo(grid, dispatch) {
-  const { startNode, finishNode } = window;
-
-  for (const node of grid.flat(1)) {
-    const isStart = node.row === startNode.row && node.col === startNode.col;
-    const isFinish = node.row === finishNode.row && node.col === finishNode.col;
-    if (!isStart && !isFinish && !node.isWall)
-      document.getElementById(node.id).className = "node";
+  for (const { id, isStart, isFinish, isWall } of grid.flat(1)) {
+    if (!isStart && !isFinish && !isWall) document.getElementById(id).className = "node";
   }
-  dispatch(runtimeChanged({ att: "midwayActive", val: false }));
-  dispatch(removeMidways());
+  batch(() => {
+    dispatch(runtimeChanged({ att: "midwayActive", val: false }));
+    dispatch(removeMidways());
+  });
 }
 
 export function cleanNode(node, grid) {
