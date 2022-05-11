@@ -1,6 +1,6 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { runtimeChanged, indicesChanged } from "../../../store/runtime";
+import { runtimeChanged } from "../../../store/runtime";
 import { uiChanged } from "../../../store/ui";
 import { paintNode } from "../../../utils/boardUtils";
 import RangeInput from "../../common/RangeInput";
@@ -12,11 +12,11 @@ let prevPathIdx = 0;
 
 const ProgressBar = () => {
   const dispatch = useDispatch();
-  const { snapshot, isDone } = useSelector(({ runtime }) => runtime);
+  const { isDone } = useSelector(({ runtime }) => runtime);
   const { topBar, isMobile } = useSelector(({ ui }) => ui);
-  const { visited, path } = snapshot.path;
 
   const handleChange = ({ target: { value } }) => {
+    const { visited, path } = window.snapshot.path;
     window.hasPaused = true;
 
     if (!visited.length) return;
@@ -41,13 +41,13 @@ const ProgressBar = () => {
     startPath = Math.min(pathIdx, prevPathIdx);
     endPath = Math.max(pathIdx, prevPathIdx);
 
-    for (let i = startPath - 5; i <= endPath; i++) {
+    for (let i = startPath; i <= endPath; i++) {
       if (!path[i]) continue;
       className = currentStep < prevStep ? "visited" : "path";
       paintNode(path[i], className);
     }
 
-    for (let i = startVisited - 5; i <= endVisited; i++) {
+    for (let i = startVisited; i <= endVisited + 5; i++) {
       if (!visited[i]) continue;
       className = currentStep < prevStep ? "node" : "visited";
       paintNode(visited[i], className);
@@ -59,11 +59,12 @@ const ProgressBar = () => {
     [prevVisitedIdx, prevPathIdx] = [visitedIdx, pathIdx];
     prevStep = currentStep;
 
+    window.snapshot.path.indices = [visitedIdx, pathIdx];
+
     clearTimeout(timeout);
     timeout = setTimeout(() => {
       batch(() => {
         dispatch(runtimeChanged({ att: "isRunning", value: false }));
-        dispatch(indicesChanged({ category: "path", val: [visitedIdx, pathIdx] }));
         isDone && dispatch(runtimeChanged({ att: "isDone", val: false }));
         isMobile && dispatch(uiChanged({ prop: "topBar", att: "overflow", val: "auto" }));
       });

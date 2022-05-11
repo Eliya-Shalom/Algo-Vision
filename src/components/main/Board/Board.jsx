@@ -14,6 +14,9 @@ const Board = () => {
 
   useResizeGrid(containerRef);
 
+  // console.log('board render');
+  window.grid = grid;
+
   return (
     <div
       id="table-container"
@@ -61,20 +64,14 @@ const Board = () => {
                           key={node.id}
                           row={node.row}
                           col={node.col}
-                          visitedDFS={node.visitedDFS}
-                          visitedBFS={node.visitedBFS}
-                          visitedMaze={node.visitedMaze}
-                          visitedDijkstra={node.visitedDijkstra}
+                          prevNode={node.prevNode}
+                          walls={node.walls}
                           isWall={node.isWall}
                           isMidway={node.isMidway}
-                          walls={node.walls}
-                          distanceFromStart={node.distanceFromStart}
-                          estimatedDistanceToEnd={node.estimatedDistanceToEnd}
-                          prevNode={node.prevNode}
                           weight={node.weight}
+                          isBoundaryWall={boundaryWall}
                           isStart={node.isStart}
                           isFinish={node.isFinish}
-                          isBoundaryWall={boundaryWall}
                         />
                       );
                     })}

@@ -5,7 +5,6 @@ import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 
 const Legend = () => {
   const { dynamicMode } = useSelector(({ runtime }) => runtime);
-  const { topBar } = useSelector(({ ui }) => ui);
   const [open, setOpen] = useState(false);
 
   const legend = [

@@ -10,15 +10,15 @@ import { resetIndicators } from "../../../utils/commonUtils";
 const MazeBtn = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
-  const { isMaze, isRunning, isPainted, instantMode, isMazeRunning } = useSelector(
+  const { isMaze, isRunning, instantMode, isMazeRunning } = useSelector(
     ({ runtime }) => runtime
   );
 
   const handleClick = () => {
     batch(() => {
-      isPainted && cleanAndResetGrid(grid, dispatch);
+      cleanAndResetGrid(grid, dispatch);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));
-      resetIndicators(dispatch)
+      resetIndicators(dispatch);
     });
     dfsMaze(dispatch, copyGrid(grid), instantMode);
   };

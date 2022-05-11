@@ -33,7 +33,6 @@ export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) 
   window.finishNode = newFinishNode;
 
   dispatch(gridChanged(grid));
-
   dispatch(boundryWallsReset());
 
   if (instantMode) return instantMaze(visitedNodes);

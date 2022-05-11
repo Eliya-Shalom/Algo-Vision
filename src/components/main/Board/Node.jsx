@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { resetTimer } from "../../layout/topbar/Timer";
 import { uiChanged } from "../../../store/ui";
-import { runtimeChanged, snapshotTook, visualizingPlayed } from "../../../store/runtime";
+import { runtimeChanged, visualizingPlayed } from "../../../store/runtime";
 import visualizePath from "../../../algorithms/path-finding/visualizePath";
 import { isPath, cleanPrevAlgo } from "../../../utils/boardUtils";
 import { nodeChanged } from "../../../store/board";
@@ -20,19 +20,19 @@ const Node = ({
   col,
   weight,
   isWall,
-  isStart,
-  isFinish,
   isMidway,
   isBoundaryWall,
+  isStart,
+  isFinish,
 }) => {
   const dispatch = useDispatch();
-  const { grid, dimensions } = useSelector(({ board }) => board);
+  const grid = window.grid;
   const { board, isMobile } = useSelector(({ ui }) => ui);
-  const { mousePressedWall, isDragging, isBorders } = board;
+  const { nodeSize } = useSelector(({ board }) => board.dimensions);
+  const { isDragging, isBorders } = board;
   const {
     isMaze,
     isDone,
-    snapshot,
     isPainted,
     isRunning,
     runningFunc,
@@ -46,15 +46,10 @@ const Node = ({
 
   const handleDragStart = () => {
     prevStartOrEnd = [row, col];
-    dispatch(uiChanged({ prop: "board", att: "isDragging", val: true }));
+    isMobile && dispatch(uiChanged({ prop: "board", att: "isDragging", val: true }));
 
     resetTimer();
-    dispatch(
-      snapshotTook({
-        category: "path",
-        val: { visited: [], path: [], indices: [0, 0] },
-      })
-    );
+    window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
   };
 
   const handleDrop = (e) => {
@@ -79,7 +74,7 @@ const Node = ({
 
     if (dynamicMode) return;
 
-    isPainted && cleanPrevAlgo(grid, dispatch);
+    cleanPrevAlgo(grid, dispatch);
 
     if (!runningFunc.algo || window.hasPaused || window.hasAborted) return;
     batch(() => {
@@ -88,13 +83,11 @@ const Node = ({
     });
 
     const { algo, type } = runningFunc;
-
-    visualizePath(algo, type, grid, snapshot.path, isMaze, dispatch, instantMode);
+    visualizePath(algo, type, grid, isMaze, dispatch, instantMode);
   };
 
   function handleClick() {
     if (!midwayActive || isUnclickable() || isWall) return;
-    !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
     document.getElementById(id).appendChild(document.createTextNode(`${++targetNum}`));
     dispatch(nodeChanged({ row, col, att: "isMidway", val: !isMidway }));
     window.targetNodes.push({ ...grid[row][col] });
@@ -102,16 +95,21 @@ const Node = ({
 
   function handleChaseMouseEnter() {
     if (isUnclickable() || isWall || isPath({ id }) || isDone) return;
-    document.getElementById(window.finishNode.id).className = "node";
+    const { row: fRow, col: fCol } = window.finishNode;
+
+    dispatch(nodeChanged({ row: fRow, col: fCol, att: "isFinish", val: false }));
+    dispatch(nodeChanged({ row, col, att: "isFinish", val: true }));
+
     window.finishNode = grid[row][col];
-    document.getElementById(window.finishNode.id).className = "finish";
+
     if (!window.targetNodes.length || !midwayActive) return;
-    const { id: tId } = window.targetNodes[window.targetNodes.length - 1];
-    document.getElementById(tId).className = "midway";
+    const { row: tRow, col: tCol } = window.targetNodes[window.targetNodes.length - 1];
+    dispatch(nodeChanged({ row: tRow, col: tCol, att: "isMidway", val: true }));
   }
 
   const handleWallMouseEnter = () => {
-    if (isUnclickable() || !mousePressedWall || (isRunning && !dynamicMode)) return;
+    if (isUnclickable() || !window.mousePressedWall || (isRunning && !dynamicMode))
+      return;
     dispatch(nodeChanged({ row, col, att: "isWall", val: !isWall }));
   };
 
@@ -119,7 +117,8 @@ const Node = ({
     if (button === 1) return;
 
     if (isUnclickable() || midwayActive || (isRunning && !dynamicMode)) return;
-    dispatch(uiChanged({ prop: "board", att: "mousePressedWall", val: true }));
+    window.mousePressedWall = true;
+
     if (mouseChaseActive) {
       dispatch(runtimeChanged({ att: "mouseChaseActive", val: false }));
       onChase = true;
@@ -131,10 +130,9 @@ const Node = ({
     if (button === 1) return;
 
     if (mouseChaseActive || midwayActive || (isRunning && !dynamicMode)) return;
-    !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
-    dispatch(uiChanged({ prop: "board", att: "mousePressedWall", val: false }));
     onChase && dispatch(runtimeChanged({ att: "mouseChaseActive", val: true }));
     onChase = false;
+    window.mousePressedWall = false;
   };
 
   function handleAuxClick() {
@@ -166,7 +164,8 @@ const Node = ({
     handleMouseUp(e);
   }
 
-  const isUnclickable = () => isBoundaryWall || isStart || isFinish || isMaze || isMidway;
+  const isUnclickable = () =>
+    (!isMaze && isBoundaryWall) || isStart || isFinish || isMidway;
   const className = isStart
     ? "start"
     : isFinish
@@ -195,8 +194,8 @@ const Node = ({
       onPointerUp={isMobile ? handlePointerUp : () => {}}
       style={{
         touchAction: "none",
-        width: dimensions.nodeSize,
-        height: dimensions.nodeSize,
+        width: nodeSize,
+        height: nodeSize,
         outline:
           isBorders && !isStart && !isFinish && !isMidway ? "0.5px solid #e0e0e0" : "0px",
         userSelect: "none",
@@ -216,4 +215,4 @@ const Node = ({
   );
 };
 
-export default Node;
+export default React.memo(Node);

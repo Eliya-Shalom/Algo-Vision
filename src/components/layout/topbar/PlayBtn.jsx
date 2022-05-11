@@ -50,7 +50,7 @@ const PlayBtn = () => {
       return dynamicAStar(copyGrid(grid), dynamicSnapshot, isBorders, dispatch);
 
     if (category === "path")
-      visualizePath(algo, type, grid, snapshot.path, isMaze, dispatch, instantMode);
+      visualizePath(algo, type, grid, isMaze, dispatch, instantMode);
     else visualizeSort(axle, algo, snapshot.sort, dispatch);
   };
 

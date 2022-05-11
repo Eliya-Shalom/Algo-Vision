@@ -68,10 +68,10 @@ const Home = () => {
       <Box
         sx={{
           position: "absolute",
-          left: 0,
+          left: -5,
           bottom: 0,
           height: "55%",
-          width: "100%",
+          width: "calc(100% + 5px)",
         }}>
         <AxleModel />
       </Box>

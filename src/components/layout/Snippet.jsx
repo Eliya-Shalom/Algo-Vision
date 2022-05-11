@@ -62,7 +62,7 @@ const SourceCode = () => {
         }}>
         <CodeMirror
           id="code"
-          style={{ fontSize: isMobile && 12 }}
+          style={{ fontSize: isMobile && 12, maxWidth: "100vw" }}
           value={getSnippet()}
           height={editorEle ? window.getComputedStyle(editorEle).height : "100%"}
           extensions={[javascript()]}

@@ -30,6 +30,7 @@ const runtimeConfig = createSlice({
     },
     snapshotTook: (state, { payload }) => {
       const { category, val } = payload;
+      console.log(val);
       for (const att of Object.keys(val)) state.snapshot[category][att] = val[att];
     },
     indicesChanged: (state, { payload }) => {
@@ -61,6 +62,7 @@ const runtimeConfig = createSlice({
         sort: { swaps: [], idx: 0 },
       };
       state.dynamicSnapshot = { heap: [], nodesIdsToIndicesMap: {} };
+      window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
     },
     visualizingDone: (state) => {
       state.isRunning = false;

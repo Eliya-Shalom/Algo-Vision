@@ -1,4 +1,3 @@
-import CancelIcon from "@mui/icons-material/Cancel";
 import LooksOneIcon from "@mui/icons-material/LooksOne";
 import LooksTwoIcon from "@mui/icons-material/LooksTwo";
 import Looks3Icon from "@mui/icons-material/Looks3";

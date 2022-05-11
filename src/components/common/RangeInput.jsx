@@ -5,6 +5,7 @@ import { Stack, Typography } from "@mui/material";
 const RangeInput = ({ handleChange }) => {
   const { category } = useSelector(({ runtime }) => runtime.runningFunc);
   const { progressBarMax } = useSelector(({ ui }) => ui.topBar);
+  
   return (
     <Stack alignItems="center" width="100%" mt={0.5}>
       <Typography

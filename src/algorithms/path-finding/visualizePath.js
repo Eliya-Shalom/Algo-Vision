@@ -6,7 +6,7 @@ import breadthFirstSearch from "./bfs";
 import * as utils from "../../utils/boardUtils";
 import * as commUtils from "../../utils/commonUtils";
 import { uiChanged } from "../../store/ui";
-import { snapshotTook, visualizingDone } from "../../store/runtime";
+import { visualizingDone } from "../../store/runtime";
 import { pauseTimer, resetTimer } from "../../components/layout/topbar/Timer";
 
 // global variables
@@ -16,7 +16,6 @@ export default function visualizePath(
   algo,
   type,
   tableGrid,
-  snapshot,
   maze,
   toDispatch,
   instantMode
@@ -24,9 +23,8 @@ export default function visualizePath(
   dispatch = toDispatch;
   grid = tableGrid;
   isMaze = maze;
-  path = snapshot.path;
-  [visitedIdx, pathIdx] = snapshot.indices;
-
+  path = window.snapshot.path.path;
+  [visitedIdx, pathIdx] = window.snapshot.path.indices;
   [visited, path, ops, realtime] = getAlgo(algo, type);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
@@ -43,6 +41,15 @@ export default function visualizePath(
 
   if (instantMode) {
     commUtils.countNodesOrSwapped(visited.length - 1);
+    setTimeout(
+      () => utils.setPathProgressBarValue(visited.length + path.length - 2),
+      250
+    );
+    window.snapshot.path = {
+      visited,
+      path,
+      indices: [visited.length - 1, path.length - 1],
+    };
     return instantVisual();
   }
 
@@ -87,12 +94,7 @@ function animatePath() {
 
 function handlePause() {
   pauseTimer();
-  dispatch(
-    snapshotTook({
-      category: "path",
-      val: { visited, path, indices: [visitedIdx, pathIdx] },
-    })
-  );
+  window.snapshot.path = { visited, path, indices: [visitedIdx, pathIdx] };
 }
 
 function handleAbort() {
@@ -104,7 +106,7 @@ function handleFinish() {
   if (!path.length) utils.paintNodes(visited, "not-found");
   batch(() => {
     dispatch(visualizingDone());
-    dispatch(snapshotTook({ category: "path", val: { visited, path, indices: [0, 0] } }));
+    window.snapshot.path = { visited, path, indices: [0, 0] };
   });
   utils.setPathProgressBarValue(visitedIdx, pathIdx);
 }

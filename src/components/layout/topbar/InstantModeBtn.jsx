@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BoltSharpIcon from "@mui/icons-material/BoltSharp";
-import { Box, Slider, Switch, Tooltip, Typography } from "@mui/material";
+import { Box, Switch, Tooltip, Typography } from "@mui/material";
 import { runtimeChanged } from "../../../store/runtime";
 
 const InstantModeBtn = () => {
