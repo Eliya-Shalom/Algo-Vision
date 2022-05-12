@@ -58,10 +58,8 @@ function reconstructPath(finishNode) {
   const pathNodes = [];
 
   let currentNode = finishNode;
-  let count = 0;
 
-  while (currentNode && count < 200) {
-    count++;
+  while (currentNode) {
     ops++;
 
     pathNodes.push(currentNode);
@@ -126,7 +124,7 @@ function getFourNeighbors(node, grid, isMaze) {
       neighbors.push(grid[row - 1][col]);
     }
     if (row < grid.length - 1) {
-      ops++
+      ops++;
       neighbors.push(grid[row + 1][col]);
     }
     if (col > 0) {

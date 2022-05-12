@@ -27,7 +27,6 @@ export default function visualizePath(
   [visitedIdx, pathIdx] = window.snapshot.path.indices;
 
   [visited, path, ops, realtime] = getAlgo(algo, type);
-  console.log(path);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
   commUtils.setRealtime(realtime, dispatch);

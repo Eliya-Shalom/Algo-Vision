@@ -34,7 +34,7 @@ const TableView = () => {
   const sliders = [
     { label: "Height", defVal: height, min: 100, max: maxHeight },
     { label: "Width", defVal: width, min: 100, max: maxWidth },
-    { label: "Cell Size", defVal: 35, min: 20, max: 50 },
+    { label: "Cell Size", defVal: 35, min: 15, max: 50 },
   ];
   return (
     <Stack width="100%">
