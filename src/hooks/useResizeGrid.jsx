@@ -17,16 +17,13 @@ const useResizeGrid = (containerRef) => {
   const resetTableSize = () => {
     if (isRunning) return;
 
-    new Promise((res) => setTimeout(() => res(getSizeByRef(containerRef)), 250)).then(
-      ([containerHeight, containerWidth]) => {
-        dispatch(
-          boardResized({
-            height: containerHeight,
-            width: Math.floor(containerWidth * 0.9),
-            maxWidth: containerWidth,
-          })
-        );
-      }
+    const [containerHeight, containerWidth] = getSizeByRef(containerRef);
+    dispatch(
+      boardResized({
+        height: containerHeight,
+        width: Math.floor(containerWidth * 0.9),
+        maxWidth: containerWidth,
+      })
     );
   };
 

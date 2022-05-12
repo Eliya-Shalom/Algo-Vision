@@ -197,11 +197,11 @@ const Node = ({
         height: nodeSize,
         outline:
           isBorders && !isStart && !isFinish && !isMidway
-            ? "0.5px solid rgba(179, 179, 179, .4)"
+            ? "0.5px solid rgba(179, 179, 179, .5)"
             : "0px",
         userSelect: "none",
         textAlign: "center",
-        fontSize: Math.floor(nodeSize / 2),
+        fontSize: `min(${Math.floor(nodeSize / 2)}px, 14px)`,
         cursor:
           !isUnclickable() && (!mouseChaseActive || isDone)
             ? "pointer"
@@ -211,7 +211,7 @@ const Node = ({
             ? "none"
             : "",
       }}>
-      {weight > 1 && weight}
+      <span style={{ opacity: 0.8 }}>{weight > 1 && weight}</span>
     </td>
   );
 };

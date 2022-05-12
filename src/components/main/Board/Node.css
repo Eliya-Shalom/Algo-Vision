@@ -1,3 +1,7 @@
+.table {
+  transition: all 1s;
+}
+
 .start {
   z-index: 4;
   border-radius: 2px;
@@ -23,10 +27,6 @@
   box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.7);
   border: 0.5px solid white;
   outline: 0.5px solid #e8e8e8;
-}
-
-.table {
-  transition: all 1s;
 }
 
 .wall {
@@ -57,27 +57,26 @@
 }
 
 .visited {
-  transition: all 0.5s;
   position: relative;
   z-index: 2;
   border-collapse: collapse;
   box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   animation-name: visited-animation;
-  animation-duration: 3s;
+  animation-duration: 2.5s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
   animation-fill-mode: forwards;
   animation-play-state: running;
-  animation-iteration-count: 1;
+  animation-iteration-count: 2;
 }
+
 .path {
   z-index: 4;
   position: relative;
   color: #e8e8e8;
   box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   border-collapse: collapse;
-  transition: all 1s;
   animation-duration: 1.5s;
   animation-name: path-animation;
   animation-timing-function: ease-out;
@@ -153,7 +152,7 @@
     background-color: #c6ceff;
   }
   50% {
-    background-color: #8b96e0;
+    background-color: #af9dff;
   }
   100% {
     background-color: #c6ceff;

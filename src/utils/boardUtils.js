@@ -49,6 +49,8 @@ export const initializeGrid = (height, width, nodeSize, dispatch) => {
 
   const initGrid = createGrid(rows, cols);
 
+  if (!initGrid.length) return;
+
   window.startNode = { ...initGrid[2][2] };
   window.finishNode = { ...initGrid[rows - 3][cols - 3] };
 
