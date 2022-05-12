@@ -196,10 +196,12 @@ const Node = ({
         width: nodeSize,
         height: nodeSize,
         outline:
-          isBorders && !isStart && !isFinish && !isMidway ? "0.5px solid #e0e0e0" : "0px",
+          isBorders && !isStart && !isFinish && !isMidway
+            ? "0.5px solid rgba(179, 179, 179, .4)"
+            : "0px",
         userSelect: "none",
         textAlign: "center",
-        fontSize: 12,
+        fontSize: Math.floor(nodeSize / 2),
         cursor:
           !isUnclickable() && (!mouseChaseActive || isDone)
             ? "pointer"

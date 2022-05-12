@@ -1,6 +1,5 @@
 .bar {
   box-shadow: 1px 0px 0 0px #4e5052;
-  /* background: linear-gradient(0deg, #28214d 0%, #735ed9 35%, #bcb4e4 100%); */
   background: linear-gradient(0deg, #28214d 10%, #735ed9 35%, #bcb4e4 100%);
 }
 
@@ -12,31 +11,27 @@
   background: linear-gradient(0deg, #28214d 0%, #50ef9d 35%, #bcb4e4 110%);
 }
 
-.sorted {
-  background: linear-gradient(0deg, #28214d 0%, #4caf50 35%, #bcb4e4 110%);
-}
-
-.sorted {
-  background: linear-gradient(0deg, #28214d 0%, #4caf50 35%, #bcb4e4 110%);
+/* .sorted {
+  background: linear-gradient(0deg, #214d39 0%, #4caf5e 35%, #4caf96 110%);
   box-shadow: 1px 0px 0 0px #4e5052;
-  /* animation-name: sorted-animation;
+  animation-name: sorted-animation;
   animation-duration: 2s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
-  animation-play-state: running; */
+  animation-play-state: running;
 }
 
 @keyframes sorted-animation {
   0% {
-    background: linear-gradient(0deg, #40367d 0%, #735ed9 35%, #bcb4e4 100%);
+    background: rgb(76, 175, 94, 0.);
   }
   50% {
-    background: linear-gradient(0deg, #bcb4e4 0%, #735ed9 35%, #40367d 100%);
+    background: rgb(76, 175, 94);
   }
   100% {
-    background: linear-gradient(0deg, #40367d 0%, #735ed9 35%, #bcb4e4 100%);
+    background: rgb(76, 175, 94);
   }
-}
+} */

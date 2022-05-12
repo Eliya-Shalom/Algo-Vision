@@ -51,9 +51,7 @@ export default function aStar(grid, startNode, finishNode, HEURISTIC, isMaze) {
 }
 
 function reconstructPath(finishNode) {
-  if (!finishNode.prevNode) {
-    return [];
-  }
+  if (!finishNode.prevNode) return [];
 
   const pathNodes = [];
 

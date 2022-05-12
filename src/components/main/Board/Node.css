@@ -4,7 +4,7 @@
   position: relative;
   background-color: #4caf50;
   color: #4caf50;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
 }
 
 .finish {
@@ -13,14 +13,14 @@
   position: relative;
   background-color: #ef5350;
   color: #ef5350;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
 }
 
 .node {
   z-index: 1;
   position: relative;
   background-color: white;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.7);
   border: 0.5px solid white;
   outline: 0.5px solid #e8e8e8;
 }
@@ -45,76 +45,54 @@
 .not-found {
   position: relative;
   z-index: 1;
-  box-shadow: 2px 2px 0px 1px #28292b;
+  box-shadow: 2px 2px 0px 1px rgb(24, 28, 47, 0.5);
   animation-name: not-found-animation;
-  animation-duration: 1.5s;
+  animation-duration: 0.75s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
-  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
+  animation-iteration-count: 3;
 }
 
 .visited {
-  outline: 0.5px solid #afbaff;
   transition: all 0.5s;
   position: relative;
   z-index: 2;
   border-collapse: collapse;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   animation-name: visited-animation;
   animation-duration: 3s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
-  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
+  animation-iteration-count: 1;
 }
 .path {
   z-index: 4;
   position: relative;
-  outline: 0.5px solid #9383e2;
   color: #e8e8e8;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   border-collapse: collapse;
   transition: all 1s;
-  animation-duration: 5s;
+  animation-duration: 1.5s;
   animation-name: path-animation;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
-  animation-iteration-count: 1;
   animation-fill-mode: forwards;
   animation-play-state: running;
-}
-
-.visited-opt {
-  outline: 0.5px solid #cdc7eb;
-  position: relative;
-  background-color: #bcb4e4;
-  box-shadow: 2px 2px 0px 1px #28292b;
-}
-
-.wall-opt {
-  outline: 0.5px solid #756cac;
-  background-color: #5b5194;
-}
-
-.path-opt {
-  outline: 0.5px solid #9383e2;
-  background-color: #735ed9;
-  box-shadow: 3px 3px 0px 1px #28292b;
+  animation-iteration-count: 3;
 }
 
 .chase {
   z-index: 4;
   position: relative;
-  outline: 0.5px solid #9383e2;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   border-collapse: collapse;
-  transition: all 0.5s;
   animation-name: chase-animation;
   animation-duration: 2s;
   animation-timing-function: ease-out;
@@ -131,7 +109,7 @@
   text-align: center;
   position: relative;
   background-color: #e87f29;
-  box-shadow: 2px 5px 0px 0px black;
+  box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
 }
 
 .maze {
@@ -147,18 +125,12 @@
 
 @keyframes not-found-animation {
   0% {
+    background-color: #c6ceff;
+  }
+  25% {
     background-color: #4caf50;
   }
-  20% {
-    background-color: #ef5350;
-  }
-  40% {
-    background-color: #919ffc;
-  }
-  60% {
-    background-color: #4caf50;
-  }
-  80% {
+  75% {
     background-color: #ef5350;
   }
   100% {
@@ -172,23 +144,16 @@
     opacity: 1;
   }
   100% {
-    /* background-color: #4a4565; */
     opacity: 0;
   }
 }
 
 @keyframes visited-animation {
   0% {
-    background-color: #919ffc;
-  }
-  25% {
     background-color: #c6ceff;
   }
   50% {
-    background-color: #c6ceff;
-  }
-  75% {
-    background-color: #919ffc;
+    background-color: #8b96e0;
   }
   100% {
     background-color: #c6ceff;
@@ -199,32 +164,8 @@
   0% {
     background-color: #4caf50;
   }
-  10% {
-    background-color: #ef5350;
-  }
-  20% {
-    background-color: #735ed9;
-  }
-  30% {
-    background-color: #4caf50;
-  }
-  40% {
-    background-color: #ef5350;
-  }
   50% {
-    background-color: #735ed9;
-  }
-  60% {
-    background-color: #4caf50;
-  }
-  70% {
     background-color: #ef5350;
-  }
-  80% {
-    background-color: #735ed9;
-  }
-  90% {
-    background-color: #4caf50;
   }
   100% {
     background-color: #735ed9;
@@ -233,20 +174,13 @@
 
 @keyframes chase-animation {
   0% {
-    background-color: #919ffc;
+    background-color: #735ed9;
     box-shadow: 0px 0px;
-  }
-  25% {
-    background-color: #c6ceff;
-    box-shadow: 1px 3px 0px 0px black;
+    box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   }
   50% {
     background-color: #c6ceff;
-    box-shadow: 2px 4px 0px 0px black;
-  }
-  75% {
-    background-color: #919ffc;
-    box-shadow: 2px 5px 0px 0px black;
+    box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.8);
   }
   100% {
     background-color: white;

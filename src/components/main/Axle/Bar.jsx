@@ -3,11 +3,11 @@ import { useSelector } from "react-redux";
 import "./Bar.css";
 
 const Bar = ({ id, height, width }) => {
-  // const { isSorted } = useSelector(({ runtime }) => runtime);
+  const { isSorted } = useSelector(({ runtime }) => runtime);
   const { transition } = useSelector(({ axle }) => axle);
   const [hover, setHover] = useState(false);
 
-  // const extraClass = isSorted ? "sorted" : "";
+  const extraClass = isSorted ? "sorted" : "";
 
   function handleHover() {
     setHover(true);
@@ -20,7 +20,7 @@ const Bar = ({ id, height, width }) => {
   return (
     <div
       id={id}
-      className={`bar`}
+      className={`bar ${extraClass}`}
       onMouseEnter={handleHover}
       onMouseOut={handleMouseOut}
       style={{

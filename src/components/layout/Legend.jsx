@@ -13,7 +13,7 @@ const Legend = () => {
     dynamicMode && { label: "Midway", color: "#e87f29" },
     { label: "Visited Node", color: "#c6ceff" },
     !dynamicMode && { label: "Path Node", color: "secondary.main" },
-    { label: "Wall", color: "#9995BC" },
+    { label: "Wall", color: "#8181B3" },
   ];
 
   function handleClick() {
@@ -70,7 +70,7 @@ const Legend = () => {
                   bgcolor: color,
                   width: { md: 35, sm: 20, xs: 15 },
                   height: { md: 35, sm: 20, xs: 15 },
-                  borderRadius: 1,
+                  borderRadius: "2px",
                   "&:hover": { bgcolor: color },
                   boxShadow: `2px 5px 0px 0px black ${label === "Wall" ? "inset" : ""}`,
                 }}

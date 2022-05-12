@@ -1,4 +1,3 @@
-
 .rect-container {
   transition: all 1s;
 }
@@ -16,13 +15,13 @@
 }
 
 .front {
-  /* border: 0px; */
+  background-color: rgba(74, 82, 159, 0.3);
   transform: rotateX(0deg) translateZ(0px);
   transition: all 1s;
 }
 .back {
   opacity: 0.5;
-  background-color: #40367d;
+  background-color: rgb(64, 54, 125);
   transform: rotateX(180deg) translateZ(30px);
   transition: all 1s;
 }
@@ -30,7 +29,7 @@
 .right {
   opacity: 0.7;
   width: 30px;
-  background-color: #40367d;
+  background-color: rgb(64, 54, 125);
   transform: rotateY(90deg) translateX(15px);
   transition: all 1s;
 }
@@ -38,7 +37,7 @@
 .left {
   opacity: 0.7;
   width: 30px;
-  background-color: #40367d;
+  background-color: rgb(64, 54, 125);
   transform: rotateY(-90deg) translateZ(15px) translateX(-15px);
   transition: all 1s;
 }
@@ -46,7 +45,7 @@
 .top {
   opacity: 0.7;
   height: 30px;
-  background-color: #40367d;
+  background-color: rgb(64, 54, 125);
   transform: rotateX(90deg) translateZ(15px) translateY(-15px);
   transition: all 1s;
 }
@@ -54,7 +53,7 @@
 .bottom {
   opacity: 0.7;
   height: 30px;
-  background-color: #40367d;
+  background-color: rgb(64, 54, 125);
   transform: rotateX(-90deg) translateY(15px);
   transition: all 1s;
 }

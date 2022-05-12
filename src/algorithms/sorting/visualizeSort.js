@@ -23,14 +23,16 @@ export default function visualizeSort(axle, algorithm, snapshot, toDispatch) {
   }
 
   commUtils.setRealtime(realTime, dispatch);
-  dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: ops }));
-  dispatch(
-    uiChanged({
-      prop: "topBar",
-      att: "progressBarMax",
-      val: swaps.length - 1,
-    })
-  );
+  batch(() => {
+    dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: ops }));
+    dispatch(
+      uiChanged({
+        prop: "topBar",
+        att: "progressBarMax",
+        val: swaps.length - 1,
+      })
+    );
+  });
   const toSwap = !["Merge Sort", "Radix Sort"].includes(algo);
 
   animateSort(swaps, toSwap);
