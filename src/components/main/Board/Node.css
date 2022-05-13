@@ -47,7 +47,7 @@
   z-index: 1;
   box-shadow: 2px 2px 0px 1px rgb(24, 28, 47, 0.5);
   animation-name: not-found-animation;
-  animation-duration: 0.75s;
+  animation-duration: 0.25s;
   animation-timing-function: ease-out;
   animation-delay: 0;
   animation-direction: alternate;
@@ -84,7 +84,7 @@
   animation-direction: alternate;
   animation-fill-mode: forwards;
   animation-play-state: running;
-  animation-iteration-count: 3;
+  animation-iteration-count: 4;
 }
 
 .chase {
@@ -126,11 +126,8 @@
   0% {
     background-color: #c6ceff;
   }
-  25% {
-    background-color: #4caf50;
-  }
-  75% {
-    background-color: #ef5350;
+  50% {
+    background-color: #f16562;
   }
   100% {
     background-color: #c6ceff;

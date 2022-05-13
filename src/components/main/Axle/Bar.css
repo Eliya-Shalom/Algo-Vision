@@ -3,6 +3,10 @@
   background: linear-gradient(0deg, #28214d 10%, #735ed9 35%, #bcb4e4 100%);
 }
 
+/* .bar:hover {
+  transform: scale(1.1) !important;
+} */
+
 .swap1 {
   background: linear-gradient(0deg, #28214d 0%, #ef50aa 35%, #bcb4e4 110%);
 }

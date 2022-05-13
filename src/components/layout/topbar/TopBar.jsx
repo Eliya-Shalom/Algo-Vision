@@ -21,6 +21,8 @@ import ProgressBarPath from "./ProgressBarPath";
 import ProgressBarSort from "./ProgressBarSort";
 import NodesOrSwapsCounter from "./NodesOrSwapsCounter";
 import TitleDivider from "../../common/TitleDivider";
+import TotalNodes from "./TotalNodes";
+import TotalBars from "./TotalBars";
 
 const TopBar = () => {
   const { runningFunc, dynamicMode } = useSelector(({ runtime }) => runtime);
@@ -71,6 +73,8 @@ const TopBar = () => {
     !dynamicMode && <OpsCounter />,
     <NodesOrSwapsCounter />,
     category === "path" && !dynamicMode && <Distance />,
+    category === "path" && <TotalNodes />,
+    category === "sort" && <TotalBars />,
   ];
 
   const controllersItems = [
