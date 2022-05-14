@@ -84,7 +84,7 @@
   animation-direction: alternate;
   animation-fill-mode: forwards;
   animation-play-state: running;
-  animation-iteration-count: 4;
+  animation-iteration-count: 3;
 }
 
 .chase {
@@ -158,6 +158,9 @@
 
 @keyframes path-animation {
   0% {
+    background-color: #735ed9;
+  }
+  25% {
     background-color: #4caf50;
   }
   50% {
