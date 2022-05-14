@@ -24,7 +24,8 @@ import ListHeader from "./ListHeader";
 const AlgosList = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
-  const { runningFunc, dynamicMode, isPainted } = useSelector(({ runtime }) => runtime);
+  const { runningFunc, dynamicMode, isPainted, midwayActive, mouseChaseActive } =
+    useSelector(({ runtime }) => runtime);
   const [open, setOpen] = useState(false);
 
   const styles = {
@@ -88,6 +89,9 @@ const AlgosList = () => {
           );
       }
       category === "path" && isPainted && cleanPrevAlgo(grid, dispatch);
+      midwayActive && dispatch(runtimeChanged({ att: "midwayActive", val: false }));
+      mouseChaseActive &&
+        dispatch(runtimeChanged({ att: "mouseChaseActive", val: false }));
     });
   };
 

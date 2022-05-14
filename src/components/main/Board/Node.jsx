@@ -119,10 +119,17 @@ const Node = ({
   const handleMouseDown = ({ button }) => {
     if (button === 1) return;
 
-    if (isUnclickable() || midwayActive || (isRunning && !dynamicMode)) return;
+    if (
+      (!mouseChaseActive && isFinish) ||
+      isStart ||
+      midwayActive ||
+      (isRunning && !dynamicMode)
+    )
+      return;
     window.mousePressedWall = true;
 
     if (mouseChaseActive) {
+
       dispatch(runtimeChanged({ att: "mouseChaseActive", val: false }));
       onChase = true;
     }
@@ -132,7 +139,7 @@ const Node = ({
   const handleMouseUp = ({ button }) => {
     if (button === 1) return;
 
-    if (mouseChaseActive || midwayActive || (isRunning && !dynamicMode)) return;
+    if (midwayActive || (isRunning && !dynamicMode)) return;
     onChase && dispatch(runtimeChanged({ att: "mouseChaseActive", val: true }));
     onChase = false;
     window.mousePressedWall = false;
@@ -186,7 +193,7 @@ const Node = ({
       id={id}
       onAuxClick={handleAuxClick}
       className={className}
-      draggable={isStart || isFinish}
+      draggable={(isStart || isFinish) && !onChase}
       onClick={handleClick}
       onMouseDown={handleMouseDown}
       onMouseEnter={mouseChaseActive ? handleChaseMouseEnter : handleWallMouseEnter}
@@ -211,7 +218,7 @@ const Node = ({
         cursor:
           !isUnclickable() && (!mouseChaseActive || isDone)
             ? "pointer"
-            : isStart || isFinish
+            : (isStart || isFinish) && !mouseChaseActive
             ? "grab"
             : mouseChaseActive
             ? "none"

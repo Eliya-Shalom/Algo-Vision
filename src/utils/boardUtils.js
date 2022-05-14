@@ -1,6 +1,5 @@
 import { batch } from "react-redux";
 import { gridChanged, gridInitialized, removeMidways } from "../store/board";
-import { runtimeChanged } from "../store/runtime";
 import { getRandomInt } from "./commonUtils";
 
 function createNode(row, col) {
@@ -134,14 +133,10 @@ export function cleanAndResetGrid(grid, dispatch) {
 }
 
 export function cleanPrevAlgo(grid, dispatch) {
-  console.log("A");
   for (const { id, isStart, isFinish, isWall } of grid.flat(1)) {
     if (!isStart && !isFinish && !isWall) document.getElementById(id).className = "node";
   }
-  batch(() => {
-    dispatch(runtimeChanged({ att: "midwayActive", val: false }));
-    dispatch(removeMidways());
-  });
+  dispatch(removeMidways());
 }
 
 export function cleanNode(node, grid) {
