@@ -11,8 +11,7 @@ import "./Node.css";
 let targetNum = 0;
 let onChase = false;
 let prevStartOrEnd = [0, 0];
-let pRow;
-let pCol;
+let prevNode = [0, 0];
 
 const Node = ({
   id,
@@ -86,7 +85,8 @@ const Node = ({
   };
 
   function handleClick() {
-    if (!midwayActive || isUnclickable() || isWall) return;
+    if (!midwayActive || isStart || isWall || (!mouseChaseActive && isFinish)) return;
+
     !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
 
     const nodeEle = document.getElementById(id);
@@ -145,8 +145,10 @@ const Node = ({
   // Mobile events
 
   function handlePointerDown(e) {
+    let [pRow, pCol] = prevNode;
+
     if (pRow === row && pCol === col) return;
-    [pRow, pCol] = [row, col];
+    prevNode = [row, col];
     e.target.releasePointerCapture(e.pointerId);
 
     if (isStart || isFinish) return handleDragStart(e);
