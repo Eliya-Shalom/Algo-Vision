@@ -61,7 +61,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
       let { id } = window.targetNodes.shift();
       const targetEle = document.getElementById(id);
       targetEle.removeChild(targetEle.firstChild);
-      dispatch(nodeChanged({ row: tRow, col: tCol, change: "midway" }));
+      dispatch(nodeChanged({ row: tRow, col: tCol, att: "midway", val: false }));
 
       if (window.targetNodes.length) currentTarget = window.targetNodes[0];
       else currentTarget = window.finishNode;

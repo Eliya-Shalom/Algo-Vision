@@ -134,6 +134,7 @@ export function cleanAndResetGrid(grid, dispatch) {
 }
 
 export function cleanPrevAlgo(grid, dispatch) {
+  console.log("A");
   for (const { id, isStart, isFinish, isWall } of grid.flat(1)) {
     if (!isStart && !isFinish && !isWall) document.getElementById(id).className = "node";
   }

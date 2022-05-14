@@ -87,7 +87,11 @@ const Node = ({
 
   function handleClick() {
     if (!midwayActive || isUnclickable() || isWall) return;
-    document.getElementById(id).appendChild(document.createTextNode(`${++targetNum}`));
+    !isPainted && dispatch(runtimeChanged({ att: "isPainted", val: true }));
+
+    const nodeEle = document.getElementById(id);
+    if (nodeEle.firstChild) nodeEle.removeChild(nodeEle.firstChild);
+    nodeEle.appendChild(document.createTextNode(`${++targetNum}`));
     dispatch(nodeChanged({ row, col, att: "isMidway", val: !isMidway }));
     window.targetNodes.push({ ...window.grid[row][col] });
   }
@@ -211,7 +215,7 @@ const Node = ({
             ? "none"
             : "",
       }}>
-      <span style={{ opacity: 0.8 }}>{weight > 1 && weight}</span>
+      {weight > 1 && weight}
     </td>
   );
 };
