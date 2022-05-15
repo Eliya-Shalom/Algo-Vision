@@ -32,7 +32,7 @@ const Logo = () => {
   return (
     <Box display="flex" justifyContent="center">
       <div
-        onClick={() => navigate("/")}
+        onClick={() => navigate("/Algo-Vision")}
         style={{
           mr: sideMenu.open && 0.5,
           width: sideMenu.open ? "100%" : 0,

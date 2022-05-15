@@ -21,22 +21,25 @@ ReactDOM.render(
       <Provider store={store}>
         <App>
           <Routes>
-            <Route path="/" element={<Main />}>
+            <Route path="/Algo-Vision" element={<Main />}>
               <Route path="" element={<Home />} />
-              <Route path="/Path-finding" element={<Board />} />
-              {snippets.map(
-                ({ algo }) =>
-                  !algo.includes("Sort") && (
-                    <Route key={algo} path={`Path-finding/${algo}`} element={<Board />} />
-                  )
-              )}
-              <Route path="Sorting" element={<Axle />} />
-              {snippets.map(
-                ({ algo }) =>
-                  algo.includes("Sort") && (
-                    <Route key={algo} path={`Sorting/${algo}`} element={<Axle />} />
-                  )
-              )}
+              <Route path="Path-finding" element={<Board />}>
+                {snippets.map(
+                  ({ algo }) =>
+                    !algo.includes("Sort") && (
+                      <Route key={algo} path={`${algo}`} element={<Board />} />
+                    )
+                )}
+              </Route>
+
+              <Route path="Sorting" element={<Axle />}>
+                {snippets.map(
+                  ({ algo }) =>
+                    algo.includes("Sort") && (
+                      <Route key={algo} path={`${algo}`} element={<Axle />} />
+                    )
+                )}
+              </Route>
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
