@@ -3,14 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Stack } from "@mui/material";
 import TitleSlider from "../../common/TitleSlider";
 import { uiChanged } from "../../../store/ui";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 let timeout;
 const ThreeDView = () => {
   const dispatch = useDispatch();
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
   const { rotateX, rotateY, rotateZ, perspective, scale } = useSelector(
     ({ ui }) => ui.threeD
   );
+  const [category] = useGetCategoryAndAlgo();
 
   const handleChange = (e, label) => {
     const { value } = e.target;

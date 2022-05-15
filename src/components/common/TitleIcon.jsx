@@ -1,10 +1,7 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import { Stack, Tooltip, Typography } from "@mui/material";
 
 const TitleIcon = ({ icon, tooltip, label }) => {
-  const { isMobile } = useSelector(({ ui }) => ui);
-
   return (
     <Stack alignItems="center" px={0.5}>
       <Tooltip title={tooltip}>{icon}</Tooltip>

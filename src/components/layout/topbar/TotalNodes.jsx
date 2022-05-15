@@ -6,8 +6,7 @@ import GridOnOutlinedIcon from "@mui/icons-material/GridOnOutlined";
 
 const TotalNodes = () => {
   const { grid } = useSelector(({ board }) => board);
-
-  const totalNodes = grid.length * grid[0].length;
+  const totalNodes = grid ? grid.length * grid[0].length : 0;
   const tooltip = (
     <div style={{ maxWidth: 210 }}>
       <div style={{ textAlign: "center" }}>Total-Nodes</div>

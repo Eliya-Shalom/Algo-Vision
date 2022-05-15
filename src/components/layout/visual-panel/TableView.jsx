@@ -5,19 +5,21 @@ import { dimensionsChanged } from "../../../store/board";
 import TitleSlider from "../../common/TitleSlider";
 import TitleCheckbox from "../../common/TitleCheckbox";
 import { uiChanged } from "../../../store/ui";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 let timeout;
 const TableView = () => {
   const dispatch = useDispatch();
   const { dimensions } = useSelector(({ board }) => board);
   const { isBorders } = useSelector(({ ui }) => ui.board);
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
+  const { isRunning } = useSelector(({ runtime }) => runtime);
+  const [category] = useGetCategoryAndAlgo();
+
   const { height, width, maxHeight, maxWidth } = dimensions;
 
   function handleCheck() {
     dispatch(uiChanged({ prop: "board", att: "isBorders", val: !isBorders }));
   }
-  const { isRunning, runningFunc } = useSelector(({ runtime }) => runtime);
 
   const handleChange = (e, label) => {
     const { value } = e.target;
@@ -30,7 +32,7 @@ const TableView = () => {
     }, 100);
   };
 
-  const disabled = isRunning || !runningFunc.category;
+  const disabled = isRunning || !category;
   const sliders = [
     { label: "Height", defVal: height, min: 100, max: maxHeight },
     { label: "Width", defVal: width, min: 100, max: maxWidth },

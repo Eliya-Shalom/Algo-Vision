@@ -7,19 +7,22 @@ import CodeMirror from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { uiChanged } from "../../store/ui";
 import snippets from "../../algorithms/snippets";
+import useGetCategoryAndAlgo from "../../hooks/useGetCategoryAndAlgo";
 
-const SourceCode = () => {
+const Snippet = () => {
   const dispatch = useDispatch();
-  const { runningFunc } = useSelector(({ runtime }) => runtime);
   const { snippet, isMobile } = useSelector(({ ui }) => ui);
-  const { algo, type } = runningFunc;
+  const [, algo] = useGetCategoryAndAlgo();
 
   const editorEle = document.getElementById("editor");
 
   function getSnippet() {
     if (!algo) return "";
+
     const snippet = snippets.find((snippet) => snippet.algo === algo);
-    if (algo === "aStar") return snippet[type].code;
+
+    if (!snippet) return;
+
     return snippet.code;
   }
 
@@ -74,4 +77,4 @@ const SourceCode = () => {
   );
 };
 
-export default SourceCode;
+export default Snippet;

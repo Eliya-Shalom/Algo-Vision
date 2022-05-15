@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 import { runtimeChanged, snapshotTook } from "../../../store/runtime";
 import { uiChanged } from "../../../store/ui";
 import { copySwaps, swapAndPaint } from "../../../utils/axleUtils";
@@ -12,11 +13,10 @@ let copied;
 
 const ProgressBar = () => {
   const dispatch = useDispatch();
-  const { snapshot, runningFunc, isSorted, isDone } = useSelector(
-    ({ runtime }) => runtime
-  );
+  const { snapshot, isSorted, isDone } = useSelector(({ runtime }) => runtime);
+  const [, algo] = useGetCategoryAndAlgo();
 
-  useEffect(() => (copied = false), [runningFunc.algo]);
+  useEffect(() => (copied = false), [algo]);
 
   function handleChange({ target: { value } }) {
     const { swaps } = snapshot.sort;
@@ -33,7 +33,7 @@ const ProgressBar = () => {
     }
 
     const step = +value;
-    const toSwap = !["Merge Sort", "Radix Sort"].includes(runningFunc.algo);
+    const toSwap = !["Merge-Sort", "Radix-Sort"].includes(algo);
 
     applyChanges(swapsCopy, swaps, step, prevStep, toSwap);
     prevStep = step;

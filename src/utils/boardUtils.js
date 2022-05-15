@@ -103,7 +103,7 @@ export function isPath(id) {
 }
 
 export function setPathProgressBarValue(visitedIdx, pathIdx = 0) {
-  const progressEle = document.getElementById("progress-path");
+  const progressEle = document.getElementById("progress-Path-finding");
   if (!progressEle) return;
   progressEle.value = visitedIdx + pathIdx;
 }

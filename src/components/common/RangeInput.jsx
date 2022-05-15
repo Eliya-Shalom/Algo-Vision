@@ -1,11 +1,11 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { Stack, Typography } from "@mui/material";
+import useGetCategoryAndAlgo from "../../hooks/useGetCategoryAndAlgo";
 
 const RangeInput = ({ handleChange }) => {
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
   const { progressBarMax } = useSelector(({ ui }) => ui.topBar);
-  
+  const [category] = useGetCategoryAndAlgo();
   return (
     <Stack alignItems="center" width="100%" mt={0.5}>
       <Typography

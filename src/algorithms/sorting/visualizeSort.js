@@ -33,7 +33,7 @@ export default function visualizeSort(axle, algorithm, snapshot, toDispatch) {
       })
     );
   });
-  const toSwap = !["Merge Sort", "Radix Sort"].includes(algo);
+  const toSwap = !["Merge-Sort", "Radix-Sort"].includes(algo);
 
   animateSort(swaps, toSwap);
 }
@@ -57,13 +57,13 @@ function animateSort(swaps, toSwap) {
 }
 
 function getAlgo(algo, axle) {
-  if (algo === "Insertion Sort") return insertionSort(axle);
-  if (algo === "Selection Sort") return selectionSort(axle);
-  if (algo === "Bubble Sort") return bubbleSort(axle);
-  if (algo === "Quick Sort") return quickSort(axle);
-  if (algo === "Merge Sort") return mergeSort(axle);
-  if (algo === "Heap Sort") return heapSort(axle);
-  if (algo === "Radix Sort") return radixSort(axle);
+  if (algo === "Insertion-Sort") return insertionSort(axle);
+  if (algo === "Selection-Sort") return selectionSort(axle);
+  if (algo === "Bubble-Sort") return bubbleSort(axle);
+  if (algo === "Quick-Sort") return quickSort(axle);
+  if (algo === "Merge-Sort") return mergeSort(axle);
+  if (algo === "Heap-Sort") return heapSort(axle);
+  if (algo === "Radix-Sort") return radixSort(axle);
 }
 
 function handlePause(dispatch, swaps, idx) {

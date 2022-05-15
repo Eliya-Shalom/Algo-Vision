@@ -21,8 +21,9 @@ const ShuffleBtn = () => {
       dispatch(runtimeChanged({ att: "isShuffling", val: true }));
       isDone && dispatch(runtimeChanged({ att: "isDone", val: false }));
     });
-
-    const shuffled = await animateShuffleAxle(axle);
+    
+    window.hasAborted = false;
+    const shuffled = await animateShuffleAxle(axle, dispatch);
 
     batch(() => {
       dispatch(axleChanged({ att: "axle", val: shuffled }));

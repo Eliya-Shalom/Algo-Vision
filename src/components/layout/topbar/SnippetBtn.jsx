@@ -1,12 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CodeIcon from "@mui/icons-material/Code";
 import { uiChanged } from "../../../store/ui";
 import ActionBtn from "../../common/ActionBtn";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const SnippetBtn = ({ typoStyle }) => {
   const dispatch = useDispatch();
-  const { algo } = useSelector(({ runtime }) => runtime.runningFunc);
+  const [, algo] = useGetCategoryAndAlgo();
 
   function handleClick() {
     dispatch(uiChanged({ prop: "snippet", att: "open", val: true }));

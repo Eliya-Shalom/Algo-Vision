@@ -1,11 +1,11 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import TitleIcon from "../../common/TitleIcon";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const NodesOrSwapsCounter = () => {
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
+  const [category] = useGetCategoryAndAlgo();
 
   const iconStyle = { color: "secondary.main", fontSize: 30 };
   const tooltip = category === "path" ? "Visited-Nodes" : "Swaps";

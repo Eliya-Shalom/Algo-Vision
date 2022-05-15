@@ -15,6 +15,8 @@ const MazeBtn = () => {
   );
 
   const handleClick = () => {
+  window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
+
     batch(() => {
       cleanAndResetGrid(grid, dispatch);
       dispatch(runtimeChanged({ att: "isMaze", val: true }));

@@ -10,7 +10,7 @@ const boardConfig = createSlice({
       maxWidth: null,
       nodeSize: 35,
     },
-    grid: [],
+    grid: [[]],
   },
   reducers: {
     boardChanged: (state, { payload }) => {

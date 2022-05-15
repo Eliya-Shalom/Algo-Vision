@@ -1,16 +1,18 @@
 import { useSelector } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
+import { Link, useLocation } from "react-router-dom";
 
 const ListButton = ({ label, handleClick, startIcon = null, endIcon = null }) => {
-  const { runningFunc, dynamicMode } = useSelector(({ runtime }) => runtime);
+  const location = useLocation();
   const { sideMenu } = useSelector(({ ui }) => ui);
-  const { algo, type } = runningFunc;
 
-  const isDynamicMode = label === "Dynamic Path-Finding";
-  const isAStar = ["Manhattan Distance", "Diagonal Distance"].includes(label);
-  const isActive =
-    algo === label || type + " Distance" === label || (isDynamicMode && dynamicMode);
+  const category = label.includes("Sort") ? "Sorting" : "Path-finding";
+  const [, , algo] = location.pathname.split("/");
+
+  const dynamicMode = algo === "Dynamic-Path-finding" && label === "Dynamic-Path-finding";
+  const isAStar = ["Manhattan-Distance", "Diagonal-Distance"].includes(label);
+  const isActive = algo === label || algo === "A*-Algorithm-" + label || dynamicMode;
   const specialTag = (
     <Box
       sx={{
@@ -28,43 +30,50 @@ const ListButton = ({ label, handleClick, startIcon = null, endIcon = null }) =>
   );
 
   return (
-    <ListItemButton
-      onClick={handleClick}
-      sx={{
-        display: "flex",
-        "&:hover": {
-          bgcolor: isAStar && !isActive ? "primary.lighter" : "primary.dark",
-          color: "secondary.light",
-        },
-        bgcolor: isActive ? "primary.dark" : isAStar ? "primary.light" : "primary.main",
-        color: isActive ? "secondary.light" : "grey.100",
-        transition: "0.3s",
-        borderLeft: isActive ? "5px solid" : "",
-        borderColor: "secondary.main",
-      }}>
-      {isDynamicMode && !isActive && specialTag}
-      <Box display="flex" alignItems="center" children={startIcon} />
-      <Typography
-        noWrap
+    <Link
+      to={
+        label === "A*-Algorithm"
+          ? location.pathname
+          : `/${category}/${isAStar ? "A*-Algorithm-" + label : label}`
+      }>
+      <ListItemButton
+        onClick={() => handleClick(label)}
         sx={{
-          fontWeight: 200,
-          fontSize: 14,
-          p: 1,
-          pl: 1.5,
-          opacity: sideMenu.open ? 1 : 0,
-          transition: "opacity 0.5s",
-        }}>
-        {label}
-      </Typography>
-      <div
-        style={{
           display: "flex",
-          marginLeft: "auto",
-          order: 2,
+          "&:hover": {
+            bgcolor: isAStar && !isActive ? "primary.lighter" : "primary.dark",
+            color: "secondary.light",
+          },
+          bgcolor: isActive ? "primary.dark" : isAStar ? "primary.light" : "primary.main",
+          color: isActive ? "secondary.light" : "grey.100",
+          transition: "0.3s",
+          borderLeft: isActive ? "5px solid" : "",
+          borderColor: "secondary.main",
         }}>
-        {sideMenu.open && endIcon}
-      </div>
-    </ListItemButton>
+        {dynamicMode && !isActive && specialTag}
+        <Box display="flex" alignItems="center" children={startIcon} />
+        <Typography
+          noWrap
+          sx={{
+            fontWeight: 200,
+            fontSize: 14,
+            p: 1,
+            pl: 1.5,
+            opacity: sideMenu.open ? 1 : 0,
+            transition: "opacity 0.5s",
+          }}>
+          {label}
+        </Typography>
+        <div
+          style={{
+            display: "flex",
+            marginLeft: "auto",
+            order: 2,
+          }}>
+          {sideMenu.open && endIcon}
+        </div>
+      </ListItemButton>
+    </Link>
   );
 };
 

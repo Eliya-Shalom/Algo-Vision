@@ -1,4 +1,6 @@
+import { batch } from "react-redux";
 import { axleChanged } from "../store/axle";
+import { runtimeChanged, snapshotTook } from "../store/runtime";
 import { getRandomInt } from "./commonUtils";
 
 export function initAxle(numOfBars, dispatch = null) {
@@ -33,31 +35,53 @@ export function shuffleAxle(axle) {
     visited[j] = true;
 
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+
+    const bar1Ele = document.getElementById(shuffled[i].id);
+    const bar2Ele = document.getElementById(shuffled[j].id);
+
+    setTimeout(() => {
+      if (bar1Ele) bar1Ele.className = "bar";
+      if (bar2Ele) bar2Ele.className = "bar";
+    }, 100);
   }
 
   return shuffled;
 }
 
-export function animateShuffleAxle(axle) {
-  const copy = copyAxle(axle);
+export function animateShuffleAxle(axle, dispatch) {
+  const shuffled = copyAxle(axle);
   const visited = {};
   let i = 0;
   let j = -1;
   visited[j] = true;
   return new Promise((res) => {
-    const inter = setInterval(() => {
+    let interval = setInterval(() => {
+      if (window.hasAborted) {
+        clearInterval(interval);
+        batch(() => {
+          dispatch(axleChanged({ att: "axle", val: shuffled }));
+          dispatch(snapshotTook({ category: "sort", val: { swaps: [], idx: 0 } }));
+          dispatch(runtimeChanged({ category: "sort", att: "isShuffling", val: false }));
+        });
+      }
+
       if (!(i in visited)) {
         visited[i] = true;
 
         while (j in visited) j = Math.floor(getRandomInt(i, axle.length - 1));
         visited[j] = true;
 
-        swapHeights(copy[i], copy[j]);
+        swapHeights(shuffled[i], shuffled[j]);
 
         if (Object.keys(visited).length >= axle.length - 1) {
-          clearInterval(inter);
-          res(copy);
+          clearInterval(interval);
+          res(shuffled);
         }
+
+        const bar1Ele = document.getElementById(shuffled[i].id);
+        const bar2Ele = document.getElementById(shuffled[j].id);
+        if (bar1Ele) bar1Ele.className = "bar";
+        if (bar2Ele) bar2Ele.className = "bar";
       }
       i++;
     }, 1);
@@ -97,14 +121,9 @@ export function copySwaps(swaps) {
 }
 
 export function setAxleProgressBarValue(value) {
-  const progressEle = document.getElementById("progress-sort");
+  const progressEle = document.getElementById("progress-Sorting");
   if (!progressEle) return;
   progressEle.value = value;
-}
-
-export function setAxleProgressBarMax(max) {
-  const progressEle = document.getElementById("progress-sort");
-  progressEle.max = max;
 }
 
 export function swap(bar1, bar2) {

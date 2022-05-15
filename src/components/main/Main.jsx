@@ -1,22 +1,20 @@
 import React, { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 import { batch, useDispatch, useSelector } from "react-redux";
 import { Box } from "@mui/material";
-import Home from "./home/Home";
-import Board from "./Board/Board";
-import Axle from "./Axle/Axle";
 import Tutorial from "../tutorial/Tutorial";
-import Legend from "../layout/Legend";
 import { uiChanged } from "../../store/ui";
+import useGetCategoryAndAlgo from "../../hooks/useGetCategoryAndAlgo";
 
 let prevCategory;
 const Main = () => {
   const dispatch = useDispatch();
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
   const { sideMenu, topBar, visualPanel, threeD } = useSelector(({ ui }) => ui);
   const { scale, rotateX } = threeD;
+  const [category] = useGetCategoryAndAlgo();
 
   useEffect(() => {
-    if (category === "sort" && prevCategory !== "sort") {
+    if (category === "Sorting" && prevCategory !== "Sorting") {
       batch(() => {
         rotateX !== 0 && dispatch(uiChanged({ prop: "threeD", att: "rotateX", val: 0 }));
         scale !== 1 && dispatch(uiChanged({ prop: "threeD", att: "scale", val: 1 }));
@@ -44,8 +42,7 @@ const Main = () => {
         position: "relative",
         mb: `${visualPanel.panelHeight - 5}px`,
       }}>
-      {category === "sort" ? <Axle /> : category === "path" ? <Board /> : <Home />}
-      {category === "path" && <Legend />}
+      <Outlet />
       <Tutorial />
     </Box>
   );

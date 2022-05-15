@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import NodeModel from "./NodeModel";
-import { runtimeChanged } from "../../../store/runtime";
 import useResizeGrid from "../../../hooks/useResizeGrid";
 import "./Board.css";
+import { useNavigate } from "react-router-dom";
 
 let animFrame;
 let deg = 0;
 
 const Board = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { grid, dimensions } = useSelector(({ board }) => board);
   const { perspective } = useSelector(({ ui }) => ui.threeD);
   const { isMobile, screen } = useSelector(({ ui }) => ui);
@@ -33,12 +33,7 @@ const Board = () => {
   }
 
   function handleClick() {
-    dispatch(
-      runtimeChanged({
-        att: "runningFunc",
-        val: { algo: "", type: "", category: "path" },
-      })
-    );
+    navigate("Path-finding");
   }
 
   return (

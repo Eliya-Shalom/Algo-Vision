@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import BarModel from "./BarModel";
 import { initAxle } from "../../../utils/axleUtils";
-import { runtimeChanged } from "../../../store/runtime";
 import { getRandomInt } from "../../../utils/commonUtils";
+import { useNavigate } from "react-router-dom";
 
 let i = 0;
 let inter;
 
 const Axle = () => {
-  const dispatch = useDispatch();
   const [axleModel, setAxleModel] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const shuffledAxle = initAxle(100);
@@ -41,12 +41,7 @@ const Axle = () => {
   }
 
   function handleClick() {
-    dispatch(
-      runtimeChanged({
-        att: "runningFunc",
-        val: { algo: "", type: "", category: "sort" },
-      })
-    );
+    navigate("Sorting");
   }
 
   return (

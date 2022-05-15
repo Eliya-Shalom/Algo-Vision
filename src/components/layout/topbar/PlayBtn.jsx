@@ -8,6 +8,7 @@ import visualizeSort from "../../../algorithms/sorting/visualizeSort";
 import visualizePath from "../../../algorithms/path-finding/visualizePath";
 import dynamicAStar from "../../../algorithms/path-finding/dynamicAStar";
 import ActionBtn from "../../common/ActionBtn";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const PlayBtn = () => {
   const dispatch = useDispatch();
@@ -20,23 +21,21 @@ const PlayBtn = () => {
     snapshot,
     isPainted,
     isRunning,
-    runningFunc,
     instantMode,
-    dynamicMode,
     isMazeRunning,
     dynamicSnapshot,
     isShuffling,
   } = useSelector(({ runtime }) => runtime);
+  const [category, algo] = useGetCategoryAndAlgo();
+
+  const dynamicMode = algo === "Dynamic-Path-finding";
 
   const handleClick = () => {
     if (isMazeRunning) return;
-    const { algo, type, category } = runningFunc;
 
     isDone && resetTimer();
-    if (isPainted) {
-      if (category === "path" && !dynamicMode && !window.hasPaused)
-        cleanPrevAlgo(grid, dispatch);
-    }
+    if (isPainted && category === "Path-finding" && !dynamicMode && !window.hasPaused)
+      cleanPrevAlgo(grid, dispatch);
 
     if (!instantMode) {
       startTimer();
@@ -49,13 +48,12 @@ const PlayBtn = () => {
     if (dynamicMode)
       return dynamicAStar(copyGrid(grid), dynamicSnapshot, isBorders, dispatch);
 
-    if (category === "path")
-      visualizePath(algo, type, grid, isMaze, dispatch, instantMode);
+    if (category === "Path-finding")
+      visualizePath(algo, grid, isMaze, dispatch, instantMode);
     else visualizeSort(axle, algo, snapshot.sort, dispatch);
   };
 
-  const disabled =
-    ((isRunning || !runningFunc.algo || isMazeRunning) && !dynamicMode) || isShuffling;
+  const disabled = ((isRunning || !algo || isMazeRunning) && !dynamicMode) || isShuffling;
 
   const iconStyle = {
     fontSize: 30,

@@ -11,12 +11,11 @@ const runtimeConfig = createSlice({
     isPainted: false,
     isRunning: false,
     isShuffling: false,
-    dynamicMode: false,
+    // dynamicMode: false,
     midwayActive: false,
     isMazeRunning: false,
     mouseChaseActive: false,
     instantMode: false,
-    runningFunc: { algo: "", type: "", category: "" },
     snapshot: {
       path: { visited: [], path: [], indices: [0, 0] },
       sort: { swaps: [], idx: 0 },
@@ -30,7 +29,6 @@ const runtimeConfig = createSlice({
     },
     snapshotTook: (state, { payload }) => {
       const { category, val } = payload;
-      console.log(val);
       for (const att of Object.keys(val)) state.snapshot[category][att] = val[att];
     },
     indicesChanged: (state, { payload }) => {
@@ -57,12 +55,8 @@ const runtimeConfig = createSlice({
       state.isPainted = false;
       state.realtime = "0.000";
       state.distance = 0;
-      state.snapshot = {
-        path: { visited: [], path: [], indices: [0, 0] },
-        sort: { swaps: [], idx: 0 },
-      };
+      state.snapshot = { sort: { swaps: [], idx: 0 } };
       state.dynamicSnapshot = { heap: [], nodesIdsToIndicesMap: {} };
-      window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
     },
     visualizingDone: (state) => {
       state.isRunning = false;

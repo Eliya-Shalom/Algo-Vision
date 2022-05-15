@@ -12,21 +12,14 @@ import { pauseTimer, resetTimer } from "../../components/layout/topbar/Timer";
 // global variables
 let dispatch, grid, visited, path, visitedIdx, pathIdx, ops, realtime, isMaze;
 
-export default function visualizePath(
-  algo,
-  type,
-  tableGrid,
-  maze,
-  toDispatch,
-  instantMode
-) {
+export default function visualizePath(algo, tableGrid, maze, toDispatch, instantMode) {
   dispatch = toDispatch;
   grid = tableGrid;
   isMaze = maze;
   path = window.snapshot.path.path;
   [visitedIdx, pathIdx] = window.snapshot.path.indices;
 
-  [visited, path, ops, realtime] = getAlgo(algo, type);
+  [visited, path, ops, realtime] = getAlgo(algo);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
   commUtils.setRealtime(realtime, dispatch);
@@ -101,6 +94,7 @@ function handlePause() {
 }
 
 function handleAbort() {
+  window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
   resetTimer();
 }
 
@@ -117,13 +111,14 @@ function instantVisual() {
   utils.paintNodes(path, "path");
 }
 
-function getAlgo(algo, type) {
+function getAlgo(algo) {
   const gridCopy = utils.copyGrid(grid);
 
   const { startNode, finishNode } = window;
-  if (algo === "aStar") {
+  if (algo.includes("A*")) {
+    let type = algo.includes("Manhattan") ? "Manhattan" : "Diagonal";
     return aStar(gridCopy, { ...startNode }, { ...finishNode }, type, isMaze);
-  } else if (algo === "Dijkstra Algorithm") {
+  } else if (algo === "Dijkstra-Algorithm") {
     return dijkstra(gridCopy, { ...startNode }, { ...finishNode }, isMaze);
   } else if (algo === "Depth-First-Search") {
     return depthFirstSearch(gridCopy, { ...startNode }, { ...finishNode }, isMaze);

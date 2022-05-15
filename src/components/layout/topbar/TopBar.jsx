@@ -23,11 +23,13 @@ import NodesOrSwapsCounter from "./NodesOrSwapsCounter";
 import TitleDivider from "../../common/TitleDivider";
 import TotalNodes from "./TotalNodes";
 import TotalBars from "./TotalBars";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const TopBar = () => {
-  const { runningFunc, dynamicMode } = useSelector(({ runtime }) => runtime);
   const { sideMenu, topBar, isMobile } = useSelector(({ ui }) => ui);
-  const { category } = runningFunc;
+  const [category, algo] = useGetCategoryAndAlgo();
+
+  const dynamicMode = algo === "Dynamic-Path-finding";
 
   const styles = {
     appBar: {
@@ -61,10 +63,10 @@ const TopBar = () => {
     <AbortBtn type="Abort" />,
     dynamicMode && <MidwayBtn />,
     dynamicMode && !isMobile && <MouseChaseBtn />,
-    category === "path" && !dynamicMode && <MazeBtn />,
-    category === "path" && <CleanBtn />,
-    category === "path" && !dynamicMode && <WeightBtn />,
-    category === "sort" && !dynamicMode && <ShuffleBtn />,
+    category === "Path-finding" && !dynamicMode && <MazeBtn />,
+    category === "Path-finding" && <CleanBtn />,
+    category === "Path-finding" && !dynamicMode && <WeightBtn />,
+    category === "Sorting" && !dynamicMode && <ShuffleBtn />,
   ];
 
   const indicatorsItems = [
@@ -72,16 +74,16 @@ const TopBar = () => {
     !dynamicMode && <Realtime />,
     !dynamicMode && <OpsCounter />,
     <NodesOrSwapsCounter />,
-    category === "path" && !dynamicMode && <Distance />,
-    category === "path" && <TotalNodes />,
-    category === "sort" && <TotalBars />,
+    category === "Path-finding" && !dynamicMode && <Distance />,
+    category === "Path-finding" && <TotalNodes />,
+    category === "Sorting" && <TotalBars />,
   ];
 
   const controllersItems = [
-    category === "path" && !dynamicMode && <ProgressBarPath />,
-    category !== "path" && !dynamicMode && <ProgressBarSort />,
+    category === "Path-finding" && !dynamicMode && <ProgressBarPath />,
+    category !== "Path-finding" && !dynamicMode && <ProgressBarSort />,
     <Speed />,
-    category === "path" && !dynamicMode && <InstantModeBtn />,
+    category === "Path-finding" && !dynamicMode && <InstantModeBtn />,
   ];
 
   const toRender = {

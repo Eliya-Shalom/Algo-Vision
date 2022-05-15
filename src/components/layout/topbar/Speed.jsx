@@ -3,9 +3,13 @@ import { useSelector } from "react-redux";
 import { Typography, IconButton, Divider, Stack, Box } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const Speed = () => {
-  const { isMazeRunning, isRunning, dynamicMode } = useSelector(({ runtime }) => runtime);
+  const { isMazeRunning, isRunning } = useSelector(({ runtime }) => runtime);
+  const [, algo] = useGetCategoryAndAlgo();
+
+  const dynamicMode = algo === "Dynamic-Path-finding";
 
   const [speed, setSpeed] = useState(1);
   const [scale, setScale] = useState("scale(1)");

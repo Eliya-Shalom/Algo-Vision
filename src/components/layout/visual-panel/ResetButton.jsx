@@ -4,24 +4,27 @@ import { Button, Divider, Stack, Typography } from "@mui/material";
 import ReplayIcon from "@mui/icons-material/Replay";
 import { boardDimensionsReset } from "../../../store/board";
 import { visualSettingsReset } from "../../../store/ui";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const ResetButton = () => {
   const dispatch = useDispatch();
   const { isMobile } = useSelector(({ ui }) => ui);
-  const { runningFunc, isRunning } = useSelector(({ runtime }) => runtime);
+  const { isRunning } = useSelector(({ runtime }) => runtime);
   const [rotateDeg, setRotateDeg] = useState(360);
+
+  const [category] = useGetCategoryAndAlgo()
 
   const resetAll = () => {
     setRotateDeg(rotateDeg + 360);
     batch(() => {
-      dispatch(visualSettingsReset(runningFunc.category));
-      if (runningFunc.category === "path") {
+      dispatch(visualSettingsReset(category));
+      if (category === "path") {
         dispatch(boardDimensionsReset());
       }
     });
   };
 
-  const disabled = isRunning && runningFunc.category === "path";
+  const disabled = isRunning && category === "path";
 
   return (
     <Divider

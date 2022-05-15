@@ -7,6 +7,7 @@ import visualizePath from "../../../algorithms/path-finding/visualizePath";
 import { isPath, cleanPrevAlgo } from "../../../utils/boardUtils";
 import { nodeChanged } from "../../../store/board";
 import "./Node.css";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 let targetNum = 0;
 let onChase = false;
@@ -33,12 +34,13 @@ const Node = ({
     isDone,
     isPainted,
     isRunning,
-    runningFunc,
     instantMode,
-    dynamicMode,
     midwayActive,
     mouseChaseActive,
   } = useSelector(({ runtime }) => runtime);
+  const [, algo] = useGetCategoryAndAlgo();
+
+  const dynamicMode = algo === "Dynamic-Path-finding";
 
   useEffect(() => (targetNum = window.targetNodes.length), [isDone, isPainted]);
 
@@ -74,14 +76,13 @@ const Node = ({
 
     isPainted && cleanPrevAlgo(window.grid, dispatch);
 
-    if (!runningFunc.algo || window.hasPaused || window.hasAborted) return;
+    if (!algo || window.hasPaused || window.hasAborted) return;
     batch(() => {
       dispatch(visualizingPlayed());
       instantMode && dispatch(runtimeChanged({ att: "isRunning", val: false }));
     });
 
-    const { algo, type } = runningFunc;
-    visualizePath(algo, type, window.grid, isMaze, dispatch, instantMode);
+    visualizePath(algo, window.grid, isMaze, dispatch, instantMode);
   };
 
   function handleClick() {
@@ -129,7 +130,6 @@ const Node = ({
     window.mousePressedWall = true;
 
     if (mouseChaseActive) {
-
       dispatch(runtimeChanged({ att: "mouseChaseActive", val: false }));
       onChase = true;
     }

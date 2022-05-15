@@ -6,10 +6,11 @@ import TableView from "./TableView";
 import AxleView from "./AxleView";
 import DrawerButton from "./DrawerButton";
 import ResetButton from "./ResetButton";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const VisualPanel = () => {
   const { isMobile, sideMenu, visualPanel } = useSelector(({ ui }) => ui);
-  const { category } = useSelector(({ runtime }) => runtime.runningFunc);
+  const [category] = useGetCategoryAndAlgo();
 
   const [open, setOpen] = useState(false);
 
@@ -55,8 +56,8 @@ const VisualPanel = () => {
           {isMobile && <Divider variant="middle" sx={{ mb: 2, mt: -3 }} />}
 
           <Grid item xs sx={styles.gridItem}>
-            {category !== "sort" && <TableView />}
-            {category === "sort" && <AxleView />}
+            {category !== "Sorting" && <TableView />}
+            {category === "Sorting" && <AxleView />}
           </Grid>
         </Grid>
       </Drawer>

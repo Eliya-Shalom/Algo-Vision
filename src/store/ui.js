@@ -20,7 +20,7 @@ const ui = createSlice({
       swapsCounter: 0,
       visitedCounter: 0,
       realtime: "0.000",
-      height: isMobile ? 60 : 80,
+      height: isMobile ? 60 : 85,
       overflow: "auto",
       progressBarMax: 0,
     },

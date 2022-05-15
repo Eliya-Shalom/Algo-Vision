@@ -6,24 +6,26 @@ import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import { visualizingAborted } from "../../../store/runtime";
 import { resetIndicators } from "../../../utils/commonUtils";
 import ActionBtn from "../../common/ActionBtn";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const AbortBtn = () => {
   const dispatch = useDispatch();
   const { grid } = useSelector(({ board }) => board);
-  const { isRunning, isMazeRunning, runningFunc, pause, abort } = useSelector(
+  const { isRunning, isMazeRunning, pause, abort } = useSelector(
     ({ runtime }) => runtime
   );
+  const [category] = useGetCategoryAndAlgo();
 
   function handleClick() {
-    if (isRunning && pause) return;
-
     window.hasAborted = true;
+    window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
+
     setTimeout(() => resetTimer(), 100);
 
     batch(() => {
       resetIndicators(dispatch);
       dispatch(visualizingAborted());
-      runningFunc.category === "path" && cleanPrevAlgo(grid, dispatch);
+      category === "Path-finding" && cleanPrevAlgo(grid, dispatch);
     });
   }
   const disabled = (!isRunning && !pause) || isMazeRunning || abort;

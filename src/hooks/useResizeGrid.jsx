@@ -12,6 +12,7 @@ const useResizeGrid = (containerRef) => {
   const { dimensions } = useSelector(({ board }) => board);
   const { isRunning } = useSelector(({ runtime }) => runtime);
   const { isReset } = useSelector(({ ui }) => ui.visualPanel);
+
   const { height, width, nodeSize } = dimensions;
 
   const resetTableSize = () => {

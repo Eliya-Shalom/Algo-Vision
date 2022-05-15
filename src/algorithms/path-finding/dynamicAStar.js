@@ -141,7 +141,7 @@ function paint({ row, col, id }, isBorders, className = "chase") {
   setTimeout(() => (nodeEle.className = className), 50);
   setTimeout(() => {
     nodeEle.className = "node";
-    nodeEle.style.outline = isBorders && "0.5px solid #e0e0e0";
+    nodeEle.style.outline = isBorders && "0.5px solid rgba(179, 179, 179, .5)";
   }, 2000);
 }
 
