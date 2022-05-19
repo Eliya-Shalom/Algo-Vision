@@ -8,7 +8,7 @@ const ListButton = ({ label, handleClick, startIcon = null, endIcon = null }) =>
   const { sideMenu } = useSelector(({ ui }) => ui);
 
   const category = label.includes("Sort") ? "Sorting" : "Path-finding";
-  const [, , , algo] = location.pathname.split("/");
+  const [, , algo] = location.pathname.split("/");
 
   const dynamicMode = algo === "Dynamic-Path-finding" && label === "Dynamic-Path-finding";
   const isAStar = ["Manhattan-Distance", "Diagonal-Distance"].includes(label);

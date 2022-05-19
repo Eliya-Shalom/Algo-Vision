@@ -92,10 +92,10 @@ const AlgosList = () => {
       />
 
       <Collapse in={open}>
-        {["Manhattan", "Diagonal"].map((huristic, i) => (
+        {["Manhattan", "Diagonal"].map((heuristic, i) => (
           <ListButton
-            key={huristic}
-            label={huristic + "-Distance"}
+            key={heuristic}
+            label={heuristic + "-Distance"}
             startIcon={
               <OpenWithIcon sx={{ ...styles.icon, transform: i && "rotate(45deg)" }} />
             }
