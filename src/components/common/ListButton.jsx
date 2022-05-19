@@ -28,13 +28,13 @@ const ListButton = ({ label, handleClick, startIcon = null, endIcon = null }) =>
       }}
     />
   );
-  
+
   return (
     <Link
       to={
         label === "A*-Algorithm"
           ? location.pathname
-          : `/Algo-Vision/${category}/${isAStar ? "A*-Algorithm-" + label : label}`
+          : `/${category}/${isAStar ? "A*-Algorithm-" + label : label}`
       }>
       <ListItemButton
         onClick={() => handleClick(label)}

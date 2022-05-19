@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes, HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import rootReducer from "./store/rootReducer";
 import { configureStore } from "@reduxjs/toolkit";
@@ -17,11 +17,11 @@ const store = configureStore({ reducer: rootReducer });
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Provider store={store}>
         <App>
           <Routes>
-            <Route path="/Algo-Vision" element={<Main />}>
+            <Route path="/" element={<Main />}>
               <Route path="" element={<Home />} />
               <Route path="Path-finding" element={<Board />}>
                 {snippets.map(
@@ -45,7 +45,7 @@ ReactDOM.render(
           </Routes>
         </App>
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>,
   document.getElementById("root")
 );
