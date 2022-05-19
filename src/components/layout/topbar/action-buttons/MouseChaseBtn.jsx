@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import MouseIcon from "@mui/icons-material/Mouse";
-import { runtimeChanged } from "../../../store/runtime";
-import ActionBtn from "../../common/ActionBtn";
+import { runtimeChanged } from "../../../../store/runtime";
+import ActionBtn from "../../../common/ActionBtn";
 
 const MouseChaseBtn = () => {
   const dispatch = useDispatch();

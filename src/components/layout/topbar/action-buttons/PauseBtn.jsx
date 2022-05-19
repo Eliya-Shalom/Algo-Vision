@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PauseCircleOutlineIcon from "@mui/icons-material/PauseCircleOutline";
-import { visualizingPaused } from "../../../store/runtime";
-import ActionBtn from "../../common/ActionBtn";
+import { visualizingPaused } from "../../../../store/runtime";
+import ActionBtn from "../../../common/ActionBtn";
 
 const PauseBtn = () => {
   const dispatch = useDispatch();

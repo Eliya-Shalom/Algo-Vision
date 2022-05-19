@@ -15,7 +15,7 @@
 }
 
 .front {
-  background-color: rgba(74, 82, 159, 0.3);
+  background-color: rgb(115, 94, 217, 0.5);
   transform: rotateX(0deg) translateZ(0px);
   transition: all 1s;
 }
@@ -27,7 +27,6 @@
 }
 
 .right {
-  opacity: 0.7;
   width: 30px;
   background-color: rgb(64, 54, 125);
   transform: rotateY(90deg) translateX(15px);
@@ -35,15 +34,14 @@
 }
 
 .left {
-  opacity: 0.7;
   width: 30px;
   background-color: rgb(64, 54, 125);
+
   transform: rotateY(-90deg) translateZ(15px) translateX(-15px);
   transition: all 1s;
 }
 
 .top {
-  opacity: 0.7;
   height: 30px;
   background-color: rgb(64, 54, 125);
   transform: rotateX(90deg) translateZ(15px) translateY(-15px);
@@ -51,9 +49,9 @@
 }
 
 .bottom {
-  opacity: 0.7;
   height: 30px;
   background-color: rgb(64, 54, 125);
+
   transform: rotateX(-90deg) translateY(15px);
   transition: all 1s;
 }

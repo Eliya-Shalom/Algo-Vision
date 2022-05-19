@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { resetTimer } from "../../layout/topbar/Timer";
+import { useTheme } from "@mui/material";
+import { resetTimer } from "../../layout/topbar/indicators/Timer";
 import { uiChanged } from "../../../store/ui";
 import { runtimeChanged, visualizingPlayed } from "../../../store/runtime";
 import visualizePath from "../../../algorithms/path-finding/visualizePath";
 import { isPath, cleanPrevAlgo } from "../../../utils/boardUtils";
 import { nodeChanged } from "../../../store/board";
-import "./Node.css";
 import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
+import "./Node.css";
 
 let targetNum = 0;
 let onChase = false;
@@ -28,6 +29,7 @@ const Node = ({
   const dispatch = useDispatch();
   const { nodeSize } = useSelector(({ board }) => board.dimensions);
   const { board, isMobile } = useSelector(({ ui }) => ui);
+  const { custom } = useTheme();
   const { isDragging, isBorders } = board;
   const {
     isMaze,
@@ -66,6 +68,7 @@ const Node = ({
       window.finishNode = window.grid[row][col];
       att = "isFinish";
     }
+
     batch(() => {
       dispatch(nodeChanged({ row, col, att, val: true }));
       dispatch(nodeChanged({ row: prevRow, col: prevCol, att, val: false }));
@@ -208,9 +211,10 @@ const Node = ({
         touchAction: "none",
         width: nodeSize,
         height: nodeSize,
+        backgroundColor: className === "node" && custom.node.color,
         outline:
           isBorders && !isStart && !isFinish && !isMidway
-            ? "0.5px solid rgba(179, 179, 179, .5)"
+            ? "0.5px solid rgba(179, 179, 179, .3)"
             : "0px",
         userSelect: "none",
         textAlign: "center",

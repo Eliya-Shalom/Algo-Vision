@@ -1,9 +1,9 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { runtimeChanged } from "../../../store/runtime";
-import { uiChanged } from "../../../store/ui";
-import { paintNode } from "../../../utils/boardUtils";
-import RangeInput from "../../common/RangeInput";
+import { runtimeChanged } from "../../../../store/runtime";
+import { uiChanged } from "../../../../store/ui";
+import { paintNode } from "../../../../utils/boardUtils";
+import RangeInput from "../../../common/RangeInput";
 
 let timeout;
 let prevStep;

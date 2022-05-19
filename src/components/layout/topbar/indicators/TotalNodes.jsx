@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import TitleIcon from "../../common/TitleIcon";
+import TitleIcon from "../../../common/TitleIcon";
 
 import GridOnOutlinedIcon from "@mui/icons-material/GridOnOutlined";
 

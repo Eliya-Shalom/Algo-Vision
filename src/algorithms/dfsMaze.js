@@ -1,8 +1,13 @@
-import { boundryWallsReset, gridChanged } from "../store/board";
+import { boundaryWallsReset, gridChanged } from "../store/board";
 import { runtimeChanged } from "../store/runtime";
 
 let dispatch, grid;
-export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) {
+export default function dfsMaze(
+  dispatchAction,
+  tableGrid,
+  mazeWallColor,
+  instantMode = false
+) {
   dispatch = dispatchAction;
   grid = tableGrid;
 
@@ -33,14 +38,14 @@ export default function dfsMaze(dispatchAction, tableGrid, instantMode = false) 
   window.finishNode = newFinishNode;
 
   dispatch(gridChanged(grid));
-  dispatch(boundryWallsReset());
+  dispatch(boundaryWallsReset());
 
-  if (instantMode) return instantMaze(visitedNodes);
+  if (instantMode) return instantMaze(visitedNodes, mazeWallColor);
 
-  animateMaze(visitedNodes);
+  animateMaze(visitedNodes, mazeWallColor);
 }
 
-function animateMaze(visitedNodes) {
+function animateMaze(visitedNodes, mazeWallColor) {
   dispatch(runtimeChanged({ att: "isMazeRunning", val: true }));
 
   let i = 0;
@@ -49,21 +54,25 @@ function animateMaze(visitedNodes) {
       dispatch(runtimeChanged({ att: "isMazeRunning", val: false }));
       return clearInterval(inter);
     }
-    paintMazeWalls(visitedNodes[i++]);
+    paintMazeWalls(visitedNodes[i++], mazeWallColor);
   }, 1);
 }
 
-function instantMaze(visitedNodes) {
-  for (const node of visitedNodes) paintMazeWalls(node);
+function instantMaze(visitedNodes, mazeWallColor) {
+  for (const node of visitedNodes) paintMazeWalls(node, mazeWallColor);
 }
 
-export function paintMazeWalls({ row, col, id, walls }) {
+export function paintMazeWalls({ id, walls }, mazeWallColor) {
   const nodeEle = document.getElementById(id);
 
-  if (walls.top) nodeEle.style.borderTop = "5px solid #4f477e";
-  if (walls.right) nodeEle.style.borderRight = "5px solid #4f477e";
-  if (walls.bottom) nodeEle.style.borderBottom = "5px solid #4f477e";
-  if (walls.left) nodeEle.style.borderLeft = "5px solid #4f477e";
+  if (nodeEle.className === "start" || nodeEle.className === "finish") return;
+
+  for (const side of Object.keys(walls)) {
+    if (walls[side]) {
+      const borderSide = `border${side[0].toUpperCase() + side.slice(1)}`;
+      nodeEle.style[borderSide] = `5px solid${mazeWallColor}`;
+    }
+  }
 }
 
 function getNeighbor(node, grid) {

@@ -2,7 +2,7 @@ import React from "react";
 import { Box } from "@mui/material";
 import AssessmentOutlinedIcon from "@mui/icons-material/AssessmentOutlined";
 import { useSelector } from "react-redux";
-import TitleIcon from "../../common/TitleIcon";
+import TitleIcon from "../../../common/TitleIcon";
 
 const OpsCounter = () => {
   const { opsCounter } = useSelector(({ ui }) => ui.topBar);

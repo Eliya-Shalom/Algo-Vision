@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/material";
 import SpeedIcon from "@mui/icons-material/Speed";
-import TitleIcon from "../../common/TitleIcon";
+import TitleIcon from "../../../common/TitleIcon";
 
 const Realtime = () => {
   const { realtime } = useSelector(({ ui }) => ui.topBar);

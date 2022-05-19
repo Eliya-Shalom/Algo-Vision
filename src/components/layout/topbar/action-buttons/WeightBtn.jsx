@@ -1,8 +1,8 @@
 import FitnessCenterRoundedIcon from "@mui/icons-material/FitnessCenterRounded";
 import { useDispatch, useSelector } from "react-redux";
-import { runtimeChanged } from "../../../store/runtime";
-import { weightGrid } from "../../../utils/boardUtils";
-import ActionBtn from "../../common/ActionBtn";
+import { runtimeChanged } from "../../../../store/runtime";
+import { weightGrid } from "../../../../utils/boardUtils";
+import ActionBtn from "../../../common/ActionBtn";
 
 const WeightBtn = () => {
   const dispatch = useDispatch();

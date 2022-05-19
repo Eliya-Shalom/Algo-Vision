@@ -1,33 +1,41 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { AppBar, Toolbar, Grid, Divider, Box } from "@mui/material";
-import Timer from "./Timer";
-import Speed from "./Speed";
-import MazeBtn from "./MazeBtn";
-import PlayBtn from "./PlayBtn";
-import PauseBtn from "./PauseBtn";
-import AbortBtn from "./AbortBtn";
-import CleanBtn from "./CleanBtn";
-import Realtime from "./Realtime";
-import Distance from "./Distance";
-import MidwayBtn from "./MidwayBtn";
-import WeightBtn from "./WeightBtn";
-import ShuffleBtn from "./ShuffleBtn";
-import OpsCounter from "./OpsCounter";
+import { useTheme } from "@mui/material";
 import SnippetBtn from "./SnippetBtn";
-import MouseChaseBtn from "./MouseChaseBtn";
-import InstantModeBtn from "./InstantModeBtn";
-import ProgressBarPath from "./ProgressBarPath";
-import ProgressBarSort from "./ProgressBarSort";
-import NodesOrSwapsCounter from "./NodesOrSwapsCounter";
+import DarkModeBtn from "./DarkModeBtn";
+
+import MazeBtn from "./action-buttons/MazeBtn";
+import PlayBtn from "./action-buttons/PlayBtn";
+import PauseBtn from "./action-buttons/PauseBtn";
+import AbortBtn from "./action-buttons/AbortBtn";
+import CleanBtn from "./action-buttons/CleanBtn";
+import MidwayBtn from "./action-buttons/MidwayBtn";
+import WeightBtn from "./action-buttons/WeightBtn";
+import ShuffleBtn from "./action-buttons/ShuffleBtn";
+import MouseChaseBtn from "./action-buttons/MouseChaseBtn";
+
+import Speed from "./controllers/Speed";
+import ProgressBarPath from "./controllers/ProgressBarPath";
+import ProgressBarSort from "./controllers/ProgressBarSort";
+import InstantModeBtn from "./controllers/InstantModeBtn";
+
+import Timer from "./indicators/Timer";
+import Realtime from "./indicators/Realtime";
+import Distance from "./indicators/Distance";
+import TotalBars from "./indicators/TotalBars";
+import OpsCounter from "./indicators/OpsCounter";
+import TotalNodes from "./indicators/TotalNodes";
+import NodesOrSwapsCounter from "./indicators/NodesOrSwapsCounter";
+
 import TitleDivider from "../../common/TitleDivider";
-import TotalNodes from "./TotalNodes";
-import TotalBars from "./TotalBars";
 import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const TopBar = () => {
   const { sideMenu, topBar, isMobile } = useSelector(({ ui }) => ui);
   const [category, algo] = useGetCategoryAndAlgo();
+
+  const { custom } = useTheme();
 
   const dynamicMode = algo === "Dynamic-Path-finding";
 
@@ -37,8 +45,9 @@ const TopBar = () => {
       position: "fixed",
       width: `calc(100% - ${sideMenu.width}px)`,
       height: `${topBar.height}px`,
-      bgcolor: "white",
-      transition: "all 0.5s",
+      bgcolor: custom.topBar.background,
+      color: custom.topBar.textColor,
+      transition: "all 0.3s",
     },
     gridContainer: {
       display: "flex",
@@ -160,6 +169,7 @@ const TopBar = () => {
             <SnippetBtn />
           </Grid>
         </Grid>
+        <DarkModeBtn />
       </Toolbar>
     </AppBar>
   );

@@ -79,13 +79,15 @@ export function cleanPaint(nodes, className, idx = 0) {
 export function paintNodes(nodes, className) {
   for (const { row, col, id } of nodes) {
     if (isStartOrFinish({ row, col })) continue;
-    document.getElementById(id).className = className;
+    const nodeEle = document.getElementById(id);
+    nodeEle.className = className;
   }
 }
 
 export function paintNode({ row, col, id }, className) {
   if (isStartOrFinish({ row, col })) return;
-  document.getElementById(id).className = className;
+  const nodeEle = document.getElementById(id);
+  nodeEle.className = className;
 }
 
 export function isStartOrFinish({ row, col }) {
@@ -119,7 +121,7 @@ export function cleanAndResetGrid(grid, dispatch) {
 
       const newNode = createNode(row, col, grid.length, grid[0].length);
       cleanMazeWalls(newNode);
-      newNode.isWall = isBoundryWalls(row, col, grid);
+      newNode.isWall = isBoundaryWalls(row, col, grid);
       newNode.isStart = row === window.startNode.row && col === window.startNode.col;
       newNode.isFinish = row === window.finishNode.row && col === window.finishNode.col;
 
@@ -140,10 +142,10 @@ export function cleanPrevAlgo(grid, dispatch) {
 }
 
 export function cleanNode(node, grid) {
-  if (isBoundryWalls(node.row, node.col, grid)) node.isWall = true;
+  if (isBoundaryWalls(node.row, node.col, grid)) node.isWall = true;
 }
 
-function isBoundryWalls(row, col, grid) {
+function isBoundaryWalls(row, col, grid) {
   return row === 0 || row === grid.length - 1 || col === 0 || col === grid[0].length - 1;
 }
 

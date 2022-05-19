@@ -7,12 +7,18 @@ import * as utils from "../../utils/boardUtils";
 import * as commUtils from "../../utils/commonUtils";
 import { uiChanged } from "../../store/ui";
 import { visualizingDone } from "../../store/runtime";
-import { pauseTimer, resetTimer } from "../../components/layout/topbar/Timer";
+import { pauseTimer, resetTimer } from "../../components/layout/topbar/indicators/Timer";
 
 // global variables
 let dispatch, grid, visited, path, visitedIdx, pathIdx, ops, realtime, isMaze;
 
-export default function visualizePath(algo, tableGrid, maze, toDispatch, instantMode) {
+export default function visualizePath(
+  algo,
+  tableGrid,
+  maze,
+  toDispatch,
+  instantMode,
+) {
   dispatch = toDispatch;
   grid = tableGrid;
   isMaze = maze;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import RouteIcon from "@mui/icons-material/Route";
-import TitleIcon from "../../common/TitleIcon";
+import TitleIcon from "../../../common/TitleIcon";
 
 const Distance = () => {
   const { distance } = useSelector(({ ui }) => ui.topBar);

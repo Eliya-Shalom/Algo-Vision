@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import BoltSharpIcon from "@mui/icons-material/BoltSharp";
 import { Box, Switch, Tooltip, Typography } from "@mui/material";
-import { runtimeChanged } from "../../../store/runtime";
+import { runtimeChanged } from "../../../../store/runtime";
 
 const InstantModeBtn = () => {
   const dispatch = useDispatch();
@@ -29,15 +29,26 @@ const InstantModeBtn = () => {
         <Typography
           sx={{ fontSize: 11, lineHeight: 1.4 }}
           variant="button"
-          color="primary.light"
+          color="inherit"
           textAlign="center">
           {"Instant"} <br /> {"Mode"}
         </Typography>
         <Switch
+          size="small"
           color="secondary"
           checked={instantMode}
           onChange={handleChange}
           disabled={isRunning}
+          sx={{
+            transform: "rotate(90deg)",
+            position: "relative",
+            ml: -1,
+            width: 44,
+            bottom: -4,
+            "& .MuiSwitch-track": {
+              backgroundColor: "secondary.main",
+            },
+          }}
           icon={
             <BoltSharpIcon
               sx={{
@@ -56,14 +67,6 @@ const InstantModeBtn = () => {
               }}
             />
           }
-          size="small"
-          sx={{
-            transform: "rotate(90deg)",
-            position: "relative",
-            ml: -1,
-            width: 44,
-            bottom: -4,
-          }}
         />
       </Box>
     </Tooltip>

@@ -1,13 +1,14 @@
 import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import Tutorial from "../tutorial/Tutorial";
 import { uiChanged } from "../../store/ui";
 import useGetCategoryAndAlgo from "../../hooks/useGetCategoryAndAlgo";
 
 let prevCategory;
 const Main = () => {
+  const { custom } = useTheme();
   const dispatch = useDispatch();
   const { sideMenu, topBar, visualPanel, threeD } = useSelector(({ ui }) => ui);
   const { scale, rotateX } = threeD;
@@ -32,7 +33,7 @@ const Main = () => {
   return (
     <Box
       sx={{
-        bgcolor: "#F3F5FA",
+        bgcolor: custom.main.background,
         display: "flex",
         alignSelf: "flex-end",
         justifyContent: "center",

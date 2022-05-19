@@ -10,7 +10,7 @@ const RangeInput = ({ handleChange }) => {
     <Stack alignItems="center" width="100%" mt={0.5}>
       <Typography
         variant="button"
-        color="initial"
+        color="inherit"
         sx={{ fontSize: 11 }}
         children="Progress"
       />

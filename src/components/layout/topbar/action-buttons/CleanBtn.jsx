@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import RotateLeftIcon from "@mui/icons-material/RotateLeft";
-import { resetTimer } from "./Timer";
-import ActionBtn from "../../common/ActionBtn";
-import { runtimeChanged, visualizingAborted } from "../../../store/runtime";
-import { cleanAndResetGrid } from "../../../utils/boardUtils";
-import { resetIndicators } from "../../../utils/commonUtils";
+import { resetTimer } from "../indicators/Timer";
+import ActionBtn from "../../../common/ActionBtn";
+import { runtimeChanged, visualizingAborted } from "../../../../store/runtime";
+import { cleanAndResetGrid } from "../../../../utils/boardUtils";
+import { resetIndicators } from "../../../../utils/commonUtils";
 
 const CleanBtn = () => {
   const dispatch = useDispatch();

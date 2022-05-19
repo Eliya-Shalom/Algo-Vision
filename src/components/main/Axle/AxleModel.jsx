@@ -18,7 +18,10 @@ const Axle = () => {
 
     animWave(shuffledAxle);
 
-    return () => clearInterval(inter);
+    return () => {
+      clearInterval(inter);
+      i = 0;
+    };
   }, []);
 
   function animWave(axle) {

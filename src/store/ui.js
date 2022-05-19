@@ -5,6 +5,7 @@ const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 const ui = createSlice({
   name: "UI",
   initialState: {
+    colorMode: "light",
     isMobile,
     screen: {
       orientation: "portrait",

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
-import { axleChanged } from "../../../store/axle";
-import { runtimeChanged, snapshotTook } from "../../../store/runtime";
-import { animateShuffleAxle } from "../../../utils/axleUtils";
-import { resetIndicators } from "../../../utils/commonUtils";
-import ActionBtn from "../../common/ActionBtn";
+import { axleChanged } from "../../../../store/axle";
+import { runtimeChanged, snapshotTook } from "../../../../store/runtime";
+import { animateShuffleAxle } from "../../../../utils/axleUtils";
+import { resetIndicators } from "../../../../utils/commonUtils";
+import ActionBtn from "../../../common/ActionBtn";
 
 const ShuffleBtn = () => {
   const dispatch = useDispatch();

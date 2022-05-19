@@ -17,7 +17,7 @@ const ActionBtn = ({
         </IconButton>
         <Typography
           variant="button"
-          color="primary.light"
+          color="inherit"
           noWrap
           children={label}
           sx={{ ...typoStyle, pt: 0.5, fontSize: 11 }}

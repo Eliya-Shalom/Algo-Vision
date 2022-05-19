@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Typography, IconButton, Divider, Stack, Box } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
-import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
+import useGetCategoryAndAlgo from "../../../../hooks/useGetCategoryAndAlgo";
 
 const Speed = () => {
   const { isMazeRunning, isRunning } = useSelector(({ runtime }) => runtime);
@@ -31,9 +31,9 @@ const Speed = () => {
   };
 
   const getSpeed = () => {
-    if (speed === 1 || speed === 2) return `x${speed}.00`;
-    else if (speed === 0.5 || speed === 1.5) return `x${speed}0`;
-    return "x" + speed;
+    if (speed === 1 || speed === 2) return `${speed}.00`;
+    else if (speed === 0.5 || speed === 1.5) return `${speed}0`;
+    return speed;
   };
 
   const disabled = isMazeRunning || (isRunning && dynamicMode);
@@ -49,11 +49,14 @@ const Speed = () => {
         mt: 0.5,
       }}>
       <Stack mr={1}>
-        <Typography variant="button" color="primary.light" fontSize={11}>
+        <Typography
+          variant="button"
+          color="inherit"
+          fontSize={11}
+          sx={{ transition: "all 0.3s" }}>
           Speed
         </Typography>
         <Typography
-          color="primary.light"
           variant="caption"
           sx={{
             position: "absolute",
@@ -61,9 +64,11 @@ const Speed = () => {
             mt: 2,
             ml: -1,
             transform: scale,
-            transition: "1s",
-            color: "primary.main",
+            transition: "all 0.3s",
+            color: "inherit",
+            fontWeight: 500,
           }}>
+          <span style={{ fontSize: 16 }}>x</span>
           <span id="speed">{getSpeed()}</span>
         </Typography>
       </Stack>

@@ -38,7 +38,7 @@ const Logo = () => {
           width: sideMenu.open ? "100%" : 0,
           opacity: sideMenu.open ? 1 : 0,
           visibility: sideMenu.open ? "initial" : "hidden",
-          transition: "all 0.5s",
+          transition: "all 0.3s",
         }}>
         <Typography
           variant="h5"

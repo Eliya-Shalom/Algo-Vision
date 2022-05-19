@@ -1,6 +1,6 @@
 import { setAxleProgressBarValue } from "./axleUtils";
 import { setPathProgressBarValue } from "./boardUtils";
-import { resetTimer } from "../components/layout/topbar/Timer";
+import { resetTimer } from "../components/layout/topbar/indicators/Timer";
 import { uiChanged } from "../store/ui";
 
 export function getSpeed() {
@@ -10,14 +10,14 @@ export function getSpeed() {
 
   const speed = speedSpan.textContent;
 
-  if (speed === "x0.25") return 1000;
-  if (speed === "x0.50") return 500;
-  if (speed === "x0.75") return 250;
-  if (speed === "x1.00") return 100;
-  if (speed === "x1.25") return 75;
-  if (speed === "x1.50") return 50;
-  if (speed === "x1.75") return 10;
-  if (speed === "x2.00") return 1;
+  if (speed === "0.25") return 1000;
+  if (speed === "0.50") return 500;
+  if (speed === "0.75") return 250;
+  if (speed === "1.00") return 100;
+  if (speed === "1.25") return 75;
+  if (speed === "1.50") return 50;
+  if (speed === "1.75") return 10;
+  if (speed === "2.00") return 1;
 
   return speed;
 }

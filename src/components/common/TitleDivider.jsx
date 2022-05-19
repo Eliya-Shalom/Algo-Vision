@@ -9,11 +9,7 @@ const TitleDivider = ({ title, children }) => {
       {!isMobile && (
         <Box>
           <Divider flexItem variant="middle">
-            <Typography
-              variant="button"
-              color="secondary.dark"
-              textAlign="center"
-              fontSize={10}>
+            <Typography variant="button" color="inherit" textAlign="center" fontSize={10}>
               {title}
             </Typography>
           </Divider>

@@ -38,7 +38,7 @@ const boardConfig = createSlice({
       const { row, col, att, val } = payload;
       state.grid[row][col][att] = val;
     },
-    boundryWallsReset: (state) => {
+    boundaryWallsReset: (state) => {
       state.grid[0].map((node) => (node.isWall = false));
       state.grid[state.grid.length - 1].map((node) => (node.isWall = false));
       for (let i = 1; i < state.grid.length - 1; i++) {
@@ -78,6 +78,6 @@ export const {
   dimensionsChanged,
   gridInitialized,
   boardDimensionsReset,
-  boundryWallsReset,
+  boundaryWallsReset,
   removeMidways,
 } = boardConfig.actions;

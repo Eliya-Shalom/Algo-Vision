@@ -1,6 +1,6 @@
 import { calculateDiagonalDistance, getEightNeighbors, MinHeap } from "./aStar";
 import { countNodesOrSwapped, getSpeed } from "../../utils/commonUtils";
-import { pauseTimer, resetTimer } from "../../components/layout/topbar/Timer";
+import { pauseTimer, resetTimer } from "../../components/layout/topbar/indicators/Timer";
 import {
   dynamicSnapshotTook,
   visualizingAborted,

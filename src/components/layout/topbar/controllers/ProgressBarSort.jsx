@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
-import { runtimeChanged, snapshotTook } from "../../../store/runtime";
-import { uiChanged } from "../../../store/ui";
-import { copySwaps, swapAndPaint } from "../../../utils/axleUtils";
-import RangeInput from "../../common/RangeInput";
+import useGetCategoryAndAlgo from "../../../../hooks/useGetCategoryAndAlgo";
+import { runtimeChanged, snapshotTook } from "../../../../store/runtime";
+import { uiChanged } from "../../../../store/ui";
+import { copySwaps, swapAndPaint } from "../../../../utils/axleUtils";
+import RangeInput from "../../../common/RangeInput";
 
 let timeout;
 let prevStep = 0;

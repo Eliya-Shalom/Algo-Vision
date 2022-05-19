@@ -1,12 +1,12 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
 import StopCircleOutlinedIcon from "@mui/icons-material/StopCircleOutlined";
-import { resetTimer } from "./Timer";
-import { cleanPrevAlgo } from "../../../utils/boardUtils";
-import { visualizingAborted } from "../../../store/runtime";
-import { resetIndicators } from "../../../utils/commonUtils";
-import ActionBtn from "../../common/ActionBtn";
-import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
+import { resetTimer } from "../indicators/Timer";
+import { cleanPrevAlgo } from "../../../../utils/boardUtils";
+import { visualizingAborted } from "../../../../store/runtime";
+import { resetIndicators } from "../../../../utils/commonUtils";
+import ActionBtn from "../../../common/ActionBtn";
+import useGetCategoryAndAlgo from "../../../../hooks/useGetCategoryAndAlgo";
 
 const AbortBtn = () => {
   const dispatch = useDispatch();

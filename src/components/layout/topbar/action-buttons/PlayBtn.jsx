@@ -1,18 +1,19 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
-import { resetTimer, startTimer } from "./Timer";
-import { runtimeChanged, visualizingPlayed } from "../../../store/runtime";
-import { cleanPrevAlgo, copyGrid } from "../../../utils/boardUtils";
-import visualizeSort from "../../../algorithms/sorting/visualizeSort";
-import visualizePath from "../../../algorithms/path-finding/visualizePath";
-import dynamicAStar from "../../../algorithms/path-finding/dynamicAStar";
-import ActionBtn from "../../common/ActionBtn";
-import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
+import { resetTimer, startTimer } from "../indicators/Timer";
+import { runtimeChanged, visualizingPlayed } from "../../../../store/runtime";
+import { cleanPrevAlgo, copyGrid } from "../../../../utils/boardUtils";
+import visualizeSort from "../../../../algorithms/sorting/visualizeSort";
+import visualizePath from "../../../../algorithms/path-finding/visualizePath";
+import dynamicAStar from "../../../../algorithms/path-finding/dynamicAStar";
+import ActionBtn from "../../../common/ActionBtn";
+import useGetCategoryAndAlgo from "../../../../hooks/useGetCategoryAndAlgo";
 
 const PlayBtn = () => {
   const dispatch = useDispatch();
   const { isBorders } = useSelector(({ ui }) => ui.board);
+  const { colorMode } = useSelector(({ ui }) => ui);
   const { grid } = useSelector(({ board }) => board);
   const { axle } = useSelector(({ axle }) => axle);
   const {
@@ -49,7 +50,7 @@ const PlayBtn = () => {
       return dynamicAStar(copyGrid(grid), dynamicSnapshot, isBorders, dispatch);
 
     if (category === "Path-finding")
-      visualizePath(algo, grid, isMaze, dispatch, instantMode);
+      visualizePath(algo, grid, isMaze, dispatch, instantMode, colorMode);
     else visualizeSort(axle, algo, snapshot.sort, dispatch);
   };
 

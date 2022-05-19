@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import AddLocationIcon from "@mui/icons-material/AddLocation";
-import { runtimeChanged } from "../../../store/runtime";
-import ActionBtn from "../../common/ActionBtn";
+import { runtimeChanged } from "../../../../store/runtime";
+import ActionBtn from "../../../common/ActionBtn";
 
 const MidwayBtn = () => {
   const dispatch = useDispatch();

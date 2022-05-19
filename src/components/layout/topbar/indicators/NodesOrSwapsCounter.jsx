@@ -1,8 +1,8 @@
 import React from "react";
 import CompareArrowsIcon from "@mui/icons-material/CompareArrows";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
-import TitleIcon from "../../common/TitleIcon";
-import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
+import TitleIcon from "../../../common/TitleIcon";
+import useGetCategoryAndAlgo from "../../../../hooks/useGetCategoryAndAlgo";
 
 const NodesOrSwapsCounter = () => {
   const [category] = useGetCategoryAndAlgo();

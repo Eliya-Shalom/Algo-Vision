@@ -8,7 +8,7 @@ import heapSort from "./heap";
 import radixSort from "./radix";
 import * as utils from "../../utils/axleUtils";
 import * as commUtils from "../../utils/commonUtils";
-import { pauseTimer } from "../../components/layout/topbar/Timer";
+import { pauseTimer } from "../../components/layout/topbar/indicators/Timer";
 import { snapshotTook, visualizingDone } from "../../store/runtime";
 import { uiChanged } from "../../store/ui";
 

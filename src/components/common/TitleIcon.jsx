@@ -6,7 +6,7 @@ const TitleIcon = ({ icon, tooltip, label }) => {
     <Stack alignItems="center" px={0.5}>
       <Tooltip title={tooltip}>{icon}</Tooltip>
       <Typography
-        color="primary.light"
+        color="inherit"
         variant="button"
         textAlign="center"
         children={label}

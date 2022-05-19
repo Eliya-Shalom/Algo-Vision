@@ -1,6 +1,6 @@
 import React from "react";
 import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
-import TitleIcon from "../../common/TitleIcon";
+import TitleIcon from "../../../common/TitleIcon";
 
 let timerTimeout;
 let currentTime = 0;
