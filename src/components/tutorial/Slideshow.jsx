@@ -1,7 +1,7 @@
 import { Box, IconButton, Slide, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import slides from "./slides";
+import getSlides from "./slides";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import DoneIcon from "@mui/icons-material/Done";
 import { grey } from "@mui/material/colors";
@@ -10,10 +10,19 @@ import { uiChanged } from "../../store/ui";
 import Button from "./Button";
 
 const Slideshow = () => {
-  const { tutorial } = useSelector(({ ui }) => ui);
   const dispatch = useDispatch();
-
+  const { tutorial, isMobile } = useSelector(({ ui }) => ui);
   const [step, setStep] = useState(0);
+  const [slides, setSlides] = useState([
+    {
+      label: "",
+      icon: "",
+      description: "",
+      img: "",
+    },
+  ]);
+
+  useEffect(() => setSlides(getSlides(isMobile)), []);
 
   const handleNext = () => {
     setStep((prevActiveStep) => prevActiveStep + 1);

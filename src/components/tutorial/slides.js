@@ -22,51 +22,57 @@ const styles = {
   },
 };
 
-const slides = [
-  {
-    label: "Algorithm",
-    icon: <LooksOneIcon sx={styles.icon} />,
-    description: `Choose Path-Finding / Sorting algorithm.`,
-    img: algoImg,
-  },
-  {
-    label: "Action Buttons",
-    icon: <LooksTwoIcon sx={styles.icon} />,
-    description: `Use the Action-Buttons to perform various actions related to the
+function getSlides(isMobile) {
+  return [
+    {
+      label: "Algorithm",
+      icon: <LooksOneIcon sx={styles.icon} />,
+      description: `Choose Path-Finding / Sorting algorithm.`,
+      img: algoImg,
+    },
+    {
+      label: "Action Buttons",
+      icon: <LooksTwoIcon sx={styles.icon} />,
+      description: `Use the Action-Buttons to perform various actions related to the
     visualization animation & environment. `,
-    img: actionsImg,
-  },
-  {
-    label: "Control Buttons",
-    icon: <Looks3Icon sx={styles.icon} />,
-    description: `Control the visualization progress and speed.`,
-    img: controllersImg,
-  },
-  {
-    label: "Indicators",
-    icon: <Looks4Icon sx={styles.icon} />,
-    description: `Get live information about the visualiztion progress.\n
-                  *Hover with your mouse on the icons for description.`,
-    img: indicatorsImg,
-  },
-  {
-    label: "Sorce-Code",
-    icon: <Looks5Icon sx={styles.icon} />,
-    description: `Look at the algorithm code implementation in JavaScript.`,
-    img: sourceImg,
-  },
-  {
-    label: "Visual-Settings",
-    icon: <Looks6Icon sx={styles.icon} />,
-    description: `Adjust the environment style to your flavor.`,
-    img: settingsImg,
-  },
-  {
-    label: "Enjoy!",
-    icon: <EmojiEmotionsIcon sx={styles.icon} />,
-    description: `Have fun and good learning experience.`,
-    img: expImg,
-  },
-];
+      img: actionsImg,
+    },
+    {
+      label: "Control Buttons",
+      icon: <Looks3Icon sx={styles.icon} />,
+      description: `Control the visualization progress and speed.`,
+      img: controllersImg,
+    },
+    {
+      label: "Indicators",
+      icon: <Looks4Icon sx={styles.icon} />,
+      description: `Get live information about the visualization progress.
+                  ${
+                    !isMobile
+                      ? "*Hover with your mouse on the icons for description."
+                      : "*Hold your finger on the icons for description."
+                  }`,
+      img: indicatorsImg,
+    },
+    {
+      label: "Source-Code",
+      icon: <Looks5Icon sx={styles.icon} />,
+      description: `Look at the algorithm code implementation in JavaScript.`,
+      img: sourceImg,
+    },
+    {
+      label: "Visual-Settings",
+      icon: <Looks6Icon sx={styles.icon} />,
+      description: `Adjust the environment style to your flavor.`,
+      img: settingsImg,
+    },
+    {
+      label: "Enjoy!",
+      icon: <EmojiEmotionsIcon sx={styles.icon} />,
+      description: `Have fun and good learning experience.`,
+      img: expImg,
+    },
+  ];
+}
 
-export default slides;
+export default getSlides;

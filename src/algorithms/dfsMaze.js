@@ -70,7 +70,7 @@ export function paintMazeWalls({ id, walls }, mazeWallColor) {
   for (const side of Object.keys(walls)) {
     if (walls[side]) {
       const borderSide = `border${side[0].toUpperCase() + side.slice(1)}`;
-      nodeEle.style[borderSide] = `5px solid${mazeWallColor}`;
+      nodeEle.style[borderSide] = `5px solid ${mazeWallColor}`;
     }
   }
 }

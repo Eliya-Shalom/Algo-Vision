@@ -1,3 +1,6 @@
+### Update - Dark-Mode Added 19.05.2022
+> - Check out AlgoVision in dark-mode colors - button at the top-right corner.
+> 
 ### Update - Changelog :clipboard: 09.05.2022
 
 > - AlgoVision is now fully mobile-responsive for all its features !

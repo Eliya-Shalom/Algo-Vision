@@ -80,8 +80,8 @@ export default function getTheme(mode) {
         background: isLightMode ? "#F3F5FA" : "#151221",
       },
       node: {
-        color: isLightMode ? "#FFFFFF" : "#4f477e",
-        mazeWallColor: !isLightMode ? "#bcb4e4" : "#4f477e",
+        color: isLightMode ? "#FFFFFF" : "#5c5393",
+        mazeWallColor: !isLightMode ? "#2E2659" : "#2E2659",
       },
       topBar: {
         background: isLightMode ? "#FFFFFF" : "#232843",
