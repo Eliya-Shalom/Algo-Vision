@@ -39,7 +39,7 @@ const Main = () => {
         justifyContent: "center",
         width: `calc(100% - ${sideMenu.width}px)`,
         height: `calc(100% - ${topBar.height + visualPanel.panelHeight - 5}px)`,
-        transition: "all 0.5s",
+        transition: "all 0.3s",
         position: "relative",
         mb: `${visualPanel.panelHeight - 5}px`,
       }}>

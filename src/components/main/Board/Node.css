@@ -24,6 +24,7 @@
   z-index: 1;
   position: relative;
   background-color: white;
+  color: #b8aaff;
   box-shadow: 2px 4px 0px 0px rgb(24, 28, 47, 0.7);
   transition: border 0.2s, background-color 0.3s;
 }

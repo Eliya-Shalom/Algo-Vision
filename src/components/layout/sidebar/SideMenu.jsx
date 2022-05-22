@@ -20,7 +20,7 @@ const SideMenu = () => {
           border: 0,
           width: sideMenu.width,
           height: `calc(100% - ${sideMenu.creditHeight}px)`,
-          transition: "width 0.5s",
+          transition: "width 0.3s",
           msOverflowStyle: "none",
           scrollbarWidth: "none",
         },

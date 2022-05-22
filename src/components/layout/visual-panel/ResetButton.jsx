@@ -18,13 +18,13 @@ const ResetButton = () => {
     setRotateDeg(rotateDeg + 360);
     batch(() => {
       dispatch(visualSettingsReset(category));
-      if (category === "path") {
+      if (category === "Path-finding") {
         dispatch(boardDimensionsReset());
       }
     });
   };
 
-  const disabled = isRunning && category === "path";
+  const disabled = isRunning && category === "Path-finding";
 
   return (
     <Divider

@@ -15,7 +15,7 @@ const Toolbar = () => {
         display: "flex",
         position: "fixed",
         alignItems: "center",
-        transition: "all 0.5s",
+        transition: "all 0.3s",
         justifyContent: "center",
         bgcolor: "secondary.main",
         height: `${topBar.height}px`,
