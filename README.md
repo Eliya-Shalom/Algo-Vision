@@ -1,6 +1,7 @@
 ### Update - Dark-Mode Added 19.05.2022
-> - Check out AlgoVision in dark-mode colors - button at the top-right corner.
-> 
+
+> - Dark-Mode added - button at the top-right corner.
+
 ### Update - Changelog :clipboard: 09.05.2022
 
 > - AlgoVision is now fully mobile-responsive for all its features !
@@ -45,16 +46,16 @@ Here are some features that my application has to offer:
 >
 > For example, if we compare Merge-sort with Selection sort, in array of 100 items, the animation time (on max speed) is:
 >
-> [![compare-time.jpg](https://i.postimg.cc/8kRnBV9D/compare-time.jpg)](https://postimg.cc/DmzgnR7Y)
+> ![compare_time](https://user-images.githubusercontent.com/104057898/171574335-9846ee3c-2172-4222-8506-439e7db4cb5c.jpg)
 >
 > But the Operations Counter proves the opposite:
 >
-> [![compare-ops.jpg](https://i.postimg.cc/2ykd7gL8/compare-ops.jpg)](https://postimg.cc/Q9zWX4qR)
-
-This app was built with: React, Redux, and Material-UI.
+> ![compare_ops](https://user-images.githubusercontent.com/104057898/171574259-903f8107-7e89-4a3f-939d-c8e4ac98442c.jpg)
+>
+> This app was built with: React, Redux, and Material-UI.
 
 I hope you will enjoy it! :blush: [Algo-Vision on Git-Pages](https://eliya-shalom.github.io/Algo-Vision/)
 
 [Link to YouTube video presentation](https://www.youtube.com/watch?v=3FV6WjjJI78)
 
-[![board.png](https://i.postimg.cc/MGnwnFr1/board.png)](https://postimg.cc/94HKSJ2f)
+![board](https://user-images.githubusercontent.com/104057898/171574231-17c1d9e4-c62f-4f58-b68e-028d4d19238e.png)

@@ -5,6 +5,7 @@ import { Box, useTheme } from "@mui/material";
 import Tutorial from "../tutorial/Tutorial";
 import { uiChanged } from "../../store/ui";
 import useGetCategoryAndAlgo from "../../hooks/useGetCategoryAndAlgo";
+import Legend from "../layout/Legend";
 
 let prevCategory;
 const Main = () => {
@@ -45,6 +46,7 @@ const Main = () => {
       }}>
       <Outlet />
       <Tutorial />
+      {category !== "Sorting" && <Legend />}
     </Box>
   );
 };

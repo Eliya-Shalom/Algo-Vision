@@ -49,8 +49,8 @@ function getSlides(isMobile) {
       description: `Get live information about the visualization progress.
                   ${
                     !isMobile
-                      ? "*Hover with your mouse on the icons for description."
-                      : "*Hold your finger on the icons for description."
+                      ? "*Hover your mouse over the icons for description."
+                      : "*Hold your finger over the icons for description."
                   }`,
       img: indicatorsImg,
     },

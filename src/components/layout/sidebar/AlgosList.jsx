@@ -15,14 +15,14 @@ import CallMergeOutlinedIcon from "@mui/icons-material/CallMergeOutlined";
 import ArrowDropUpOutlinedIcon from "@mui/icons-material/ArrowDropUpOutlined";
 import BubbleChartOutlinedIcon from "@mui/icons-material/BubbleChartOutlined";
 import HighlightAltOutlinedIcon from "@mui/icons-material/HighlightAltOutlined";
-import { runtimeChanged, snapshotTook, visualizingAborted } from "../../../store/runtime";
 import ListHeader from "./ListHeader";
-import { resetIndicators } from "../../../utils/commonUtils";
-import { cleanPrevAlgo } from "../../../utils/boardUtils";
 import ListButton from "../../common/ListButton";
-import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
-import { axleChanged } from "../../../store/axle";
 import { shuffleAxle } from "../../../utils/axleUtils";
+import { cleanPrevAlgo } from "../../../utils/boardUtils";
+import { resetIndicators } from "../../../utils/commonUtils";
+import { axleChanged } from "../../../store/axle";
+import { runtimeChanged, snapshotTook, visualizingAborted } from "../../../store/runtime";
+import useGetCategoryAndAlgo from "../../../hooks/useGetCategoryAndAlgo";
 
 const AlgosList = () => {
   const dispatch = useDispatch();
@@ -35,9 +35,7 @@ const AlgosList = () => {
 
   const [open, setOpen] = useState(false);
 
-  const styles = {
-    icon: { fontSize: 20 },
-  };
+  const styles = { icon: { fontSize: 20 } };
 
   const pathAlgos = [
     { algo: "Dijkstra-Algorithm", icon: <ApiIcon sx={styles.icon} /> },
@@ -55,21 +53,22 @@ const AlgosList = () => {
     { algo: "Selection-Sort", icon: <SwipeOutlinedIcon sx={styles.icon} /> },
   ];
 
-  const setAlgo = (label) => {
+  const prepareAlgo = (label) => {
     if (label === "A*-Algorithm") return;
 
     window.hasAborted = true;
     window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
 
     batch(() => {
+      dispatch(visualizingAborted());
+      resetIndicators(dispatch);
+
       if (category === "Sorting" && isPainted) {
         const shuffledAxle = shuffleAxle(axle);
         dispatch(axleChanged({ att: "axle", val: shuffledAxle }));
         dispatch(snapshotTook({ category: "sort", val: { swaps: [], idx: 0 } }));
         dispatch(runtimeChanged({ att: "isPainted", val: false }));
       }
-      dispatch(visualizingAborted());
-      resetIndicators(dispatch);
 
       category === "Path-finding" && isPainted && cleanPrevAlgo(grid, dispatch);
       midwayActive && dispatch(runtimeChanged({ att: "midwayActive", val: false }));
@@ -99,19 +98,19 @@ const AlgosList = () => {
             startIcon={
               <OpenWithIcon sx={{ ...styles.icon, transform: i && "rotate(45deg)" }} />
             }
-            handleClick={setAlgo}
+            handleClick={prepareAlgo}
           />
         ))}
       </Collapse>
 
       {pathAlgos.map(({ algo, icon }) => (
-        <ListButton key={algo} label={algo} startIcon={icon} handleClick={setAlgo} />
+        <ListButton key={algo} label={algo} startIcon={icon} handleClick={prepareAlgo} />
       ))}
 
       <ListHeader label="Sorting" />
 
       {sortAlgos.map(({ algo, icon }) => (
-        <ListButton key={algo} label={algo} startIcon={icon} handleClick={setAlgo} />
+        <ListButton key={algo} label={algo} startIcon={icon} handleClick={prepareAlgo} />
       ))}
 
       <ListHeader label="Special" />
@@ -121,7 +120,7 @@ const AlgosList = () => {
           <ListButton
             label="Dynamic-Path-finding"
             startIcon={<TimelineIcon sx={{ ...styles.icon, fontSize: 24 }} />}
-            handleClick={setAlgo}
+            handleClick={prepareAlgo}
           />
         </Box>
       </Tooltip>

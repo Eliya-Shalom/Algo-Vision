@@ -1,6 +1,6 @@
 import React from "react";
 import { batch, useDispatch, useSelector } from "react-redux";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import FitbitIcon from "@mui/icons-material/Fitbit";
 import { uiChanged } from "../../store/ui";
 import { useNavigate } from "react-router-dom";
@@ -50,9 +50,11 @@ const Logo = () => {
           <strong style={{ fontSize: 34 }}>Vision</strong>
         </Typography>
       </div>
-      <IconButton onClick={handleClick} sx={{ p: 0 }}>
-        <FitbitIcon sx={{ color: "white", fontSize: !isMobile ? 50 : 40 }} />
-      </IconButton>
+      <Tooltip title="Click to close / open the menu.">
+        <IconButton onClick={handleClick} sx={{ p: 0 }}>
+          <FitbitIcon sx={{ color: "white", fontSize: !isMobile ? 50 : 40 }} />
+        </IconButton>
+      </Tooltip>
     </Box>
   );
 };

@@ -8,9 +8,9 @@ const NodesOrSwapsCounter = () => {
   const [category] = useGetCategoryAndAlgo();
 
   const iconStyle = { color: "secondary.main", fontSize: 30 };
-  const tooltip = category === "path" ? "Visited-Nodes" : "Swaps";
+  const tooltip = category === "Path-finding" ? "Visited-Nodes" : "Swaps";
   const icon =
-    category === "path" ? (
+    category === "Path-finding" ? (
       <CheckCircleOutlineRoundedIcon sx={iconStyle} />
     ) : (
       <CompareArrowsIcon sx={iconStyle} />
