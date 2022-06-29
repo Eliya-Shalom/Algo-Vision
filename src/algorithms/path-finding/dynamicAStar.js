@@ -1,4 +1,4 @@
-import { calculateDiagonalDistance, getEightNeighbors, MinHeap } from "./aStar";
+import { calculateDiagonalDistance } from "./aStar";
 import { countNodesOrSwapped, getSpeed } from "../../utils/commonUtils";
 import { pauseTimer, resetTimer } from "../../components/layout/topbar/indicators/Timer";
 import {
@@ -7,13 +7,14 @@ import {
   visualizingDone,
 } from "../../store/runtime";
 import { nodeChanged } from "../../store/board";
+import { getEightNeighbors, MinHeap } from "./utils";
 
 let lastNode;
 
 export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
   const { heap, nodesIdsToIndicesMap } = snapshot;
 
-  let nodesToVisit = new MinHeap([]);
+  let nodesToVisit = new MinHeap([], "estimatedDistanceToEnd");
   const startNode = { ...window.startNode };
   if (!heap.length) {
     startNode.distanceFromStart = 0;
@@ -27,7 +28,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
     nodesToVisit.heap = heap.map((node) => {
       return { ...node };
     });
-    nodesToVisit.nodesIdsToIndicesMap = { ...nodesIdsToIndicesMap };
+    nodesToVisit.nodesMap = { ...nodesIdsToIndicesMap };
   }
 
   let prevFinishNode = window.finishNode;
@@ -69,7 +70,7 @@ export default function dynamicAStar(grid, snapshot, isBorders, dispatch) {
       resetNodes(grid, currentNodeWithMinimumF, currentTarget);
     }
 
-    const neighbors = getEightNeighbors(currentNodeWithMinimumF, grid, false);
+    const [neighbors] = getEightNeighbors(currentNodeWithMinimumF, grid, false);
     for (const neighbor of neighbors) {
       const { row: nRow, col: nCol } = neighbor;
       if (isWall(neighbor) || (isMidway(neighbor) && (nRow !== tRow || nCol !== tCol)))

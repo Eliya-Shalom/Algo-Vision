@@ -1,7 +1,7 @@
-let ops;
+import { getFourNeighbors, reconstructPath } from "./utils";
 
 export default function breadthFirstSearch(grid, startNode, finishNode, isMaze) {
-  ops = 0;
+  let ops = 0;
   let start = performance.now();
 
   const visitedNodes = [];
@@ -16,9 +16,12 @@ export default function breadthFirstSearch(grid, startNode, finishNode, isMaze) 
     const currentNode = queue.shift();
     visitedNodes.push(currentNode);
 
-    const neighbors = getUnvisitedNeighbors(currentNode, grid, isMaze);
+    const [neighbors, getNeighborsOps] = getFourNeighbors(currentNode, grid, isMaze);
+    ops += getNeighborsOps;
 
     for (const neighbor of neighbors) {
+      if (neighbor.visitedBFS || neighbor.isWall) continue;
+
       ops++;
       neighbor.visitedBFS = true;
       neighbor.distanceFromStart = currentNode.distanceFromStart + neighbor.weight;
@@ -34,70 +37,11 @@ export default function breadthFirstSearch(grid, startNode, finishNode, isMaze) 
       } else queue.push(neighbor);
     }
   }
-  const pathNodes = reconstructPath(finishNode);
+  const [pathNodes, reconstructPathOps] = reconstructPath(finishNode);
+
+  ops += reconstructPathOps;
 
   let end = performance.now();
 
   return [visitedNodes, pathNodes, ops, end - start];
-}
-
-function getUnvisitedNeighbors(node, grid, isMaze) {
-  const neighbors = [];
-  const { row, col, walls } = node;
-
-  if (isMaze) {
-    if (row < grid.length - 1 && !walls.bottom) {
-      ops++;
-      const nodeAtBottom = grid[row + 1][col];
-      if (!nodeAtBottom.visitedBFS && !nodeAtBottom.isWall) neighbors.push(nodeAtBottom);
-    }
-    if (col < grid[0].length - 1 && !walls.right) {
-      ops++;
-      const nodeAtRight = grid[row][col + 1];
-      if (!nodeAtRight.visitedBFS && !nodeAtRight.isWall) neighbors.push(nodeAtRight);
-    }
-    if (row > 0 && !walls.top) {
-      ops++;
-      const nodeAtTop = grid[row - 1][col];
-      if (!nodeAtTop.visitedBFS && !nodeAtTop.isWall) neighbors.push(nodeAtTop);
-    }
-    if (col > 0 && !walls.left) {
-      ops++;
-      const nodeAtLeft = grid[row][col - 1];
-      if (!nodeAtLeft.visitedBFS && !nodeAtLeft.isWall) neighbors.push(nodeAtLeft);
-    }
-  } else {
-    if (row < grid.length - 1) {
-      ops++;
-      const nodeAtBottom = grid[row + 1][col];
-      if (!nodeAtBottom.visitedBFS && !nodeAtBottom.isWall) neighbors.push(nodeAtBottom);
-    }
-    if (col < grid[0].length - 1) {
-      ops++;
-      const nodeAtRight = grid[row][col + 1];
-      if (!nodeAtRight.visitedBFS && !nodeAtRight.isWall) neighbors.push(nodeAtRight);
-    }
-    if (row > 0) {
-      ops++;
-      const nodeAtTop = grid[row - 1][col];
-      if (!nodeAtTop.visitedBFS && !nodeAtTop.isWall) neighbors.push(nodeAtTop);
-    }
-    if (col > 0) {
-      ops++;
-      const nodeAtLeft = grid[row][col - 1];
-      if (!nodeAtLeft.visitedBFS && !nodeAtLeft.isWall) neighbors.push(nodeAtLeft);
-    }
-  }
-  return neighbors;
-}
-
-function reconstructPath(finishNode) {
-  if (!finishNode.prevNode) return [];
-  const pathNodes = [];
-  let currentNode = finishNode;
-  while (currentNode) {
-    pathNodes.push(currentNode);
-    currentNode = currentNode.prevNode;
-  }
-  return pathNodes.reverse();
 }

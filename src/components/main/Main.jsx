@@ -46,7 +46,7 @@ const Main = () => {
       }}>
       <Outlet />
       <Tutorial />
-      {category !== "Sorting" && <Legend />}
+      {category === "Path-finding" && <Legend />}
     </Box>
   );
 };
