@@ -55,9 +55,8 @@ export default function aStar(grid, startNode, finishNode, HEURISTIC, isMaze) {
 }
 
 function calculateHeuristic(currentNode, finishNode, HEURISTIC) {
-  if (HEURISTIC === "Manhattan")
-    return calculateManhattanDistance(currentNode, finishNode);
-  else return calculateDiagonalDistance(currentNode, finishNode);
+  if (HEURISTIC === "Manhattan") return calculateManhattanDistance(currentNode, finishNode);
+  return calculateDiagonalDistance(currentNode, finishNode);
 }
 
 function calculateManhattanDistance(currentNode, finishNode) {
@@ -82,5 +81,5 @@ export function calculateDiagonalDistance(currentNode, finishNode) {
 
 function getNodeNeighbors(node, grid, HEURISTIC, isMaze) {
   if (HEURISTIC === "Manhattan") return getFourNeighbors(node, grid, isMaze);
-  else return getEightNeighbors(node, grid, isMaze);
+  return getEightNeighbors(node, grid, isMaze);
 }

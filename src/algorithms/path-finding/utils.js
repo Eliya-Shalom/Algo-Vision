@@ -117,36 +117,35 @@ export function getFourNeighbors(node, grid, isMaze) {
       neighbors.push(grid[row][col + 1]);
     }
   }
-
   return [neighbors, ops];
 }
 
 export function getEightNeighbors(node, grid, isMaze) {
-  let [fourNeighbors, operations] = getFourNeighbors(node, grid, isMaze);
+  let [fourNeighbors, ops] = getFourNeighbors(node, grid, isMaze);
 
   const diagonallyNeighbors = [];
   const { row, col } = node;
 
-  if (isMaze) return fourNeighbors;
+  if (isMaze) return [fourNeighbors, ops];
 
   if (row > 0 && col > 0) {
-    operations++;
+    ops++;
     diagonallyNeighbors.push(grid[row - 1][col - 1]);
   }
   if (row > 0 && col < grid[0].length - 1) {
-    operations++;
+    ops++;
     diagonallyNeighbors.push(grid[row - 1][col + 1]);
   }
   if (row < grid.length - 1 && col < grid[0].length - 1) {
-    operations++;
+    ops++;
     diagonallyNeighbors.push(grid[row + 1][col + 1]);
   }
   if (row < grid.length - 1 && col > 0) {
-    operations++;
+    ops++;
     diagonallyNeighbors.push(grid[row + 1][col - 1]);
   }
 
-  return [fourNeighbors.concat(diagonallyNeighbors), operations];
+  return [fourNeighbors.concat(diagonallyNeighbors), ops];
 }
 
 export function reconstructPath(finishNode) {
@@ -161,6 +160,7 @@ export function reconstructPath(finishNode) {
     ops++;
 
     pathNodes.push(currentNode);
+
     currentNode = currentNode.prevNode;
   }
   return [pathNodes.reverse(), ops];
