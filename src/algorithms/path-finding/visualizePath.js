@@ -12,13 +12,7 @@ import { pauseTimer, resetTimer } from "../../components/layout/topbar/indicator
 // global variables
 let dispatch, grid, visited, path, visitedIdx, pathIdx, ops, realtime, isMaze;
 
-export default function visualizePath(
-  algo,
-  tableGrid,
-  maze,
-  toDispatch,
-  instantMode,
-) {
+export default function visualizePath(algo, tableGrid, maze, toDispatch, instantMode) {
   dispatch = toDispatch;
   grid = tableGrid;
   isMaze = maze;
@@ -28,30 +22,18 @@ export default function visualizePath(
   [visited, path, ops, realtime] = getAlgo(algo);
 
   const distance = path.length ? path[path.length - 1].prevNode.distanceFromStart : 0;
+  const progressBarMax = visited.length + path.length - 2;
   commUtils.setRealtime(realtime, dispatch);
   batch(() => {
     dispatch(uiChanged({ prop: "topBar", att: "distance", val: distance }));
     dispatch(uiChanged({ prop: "topBar", att: "opsCounter", val: ops }));
-    dispatch(
-      uiChanged({
-        prop: "topBar",
-        att: "progressBarMax",
-        val: visited.length + path.length - 2,
-      })
-    );
+    dispatch(uiChanged({ prop: "topBar", att: "progressBarMax", val: progressBarMax }));
   });
 
   if (instantMode) {
     commUtils.countNodesOrSwapped(visited.length - 1);
-    setTimeout(
-      () => utils.setPathProgressBarValue(visited.length + path.length - 2),
-      250
-    );
-    window.snapshot.path = {
-      visited,
-      path,
-      indices: [visited.length - 1, path.length - 1],
-    };
+    setTimeout(utils.setPathProgressBarValue, 250, progressBarMax);
+    window.snapshot.path = { visited, path, indices: [visited.length - 1, path.length - 1] };
     return instantVisual();
   }
 
@@ -78,10 +60,7 @@ function animateVisitedNodes() {
 }
 
 function animatePath() {
-  if (!path.length || pathIdx >= path.length - 1) {
-    return handleFinish();
-  }
-
+  if (!path.length || pathIdx >= path.length - 1) return handleFinish();
   if (window.hasAborted) return handleAbort();
   if (window.hasPaused) return handlePause();
 
@@ -100,8 +79,8 @@ function handlePause() {
 }
 
 function handleAbort() {
-  window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
   resetTimer();
+  window.snapshot.path = { visited: [], path: [], indices: [0, 0] };
 }
 
 function handleFinish() {
@@ -122,8 +101,8 @@ function getAlgo(algo) {
 
   const { startNode, finishNode } = window;
   if (algo.includes("A*")) {
-    let type = algo.includes("Manhattan") ? "Manhattan" : "Diagonal";
-    return aStar(gridCopy, { ...startNode }, { ...finishNode }, type, isMaze);
+    let heuristic = algo.includes("Manhattan") ? "Manhattan" : "Diagonal";
+    return aStar(gridCopy, { ...startNode }, { ...finishNode }, heuristic, isMaze);
   } else if (algo === "Dijkstra-Algorithm") {
     return dijkstra(gridCopy, { ...startNode }, { ...finishNode }, isMaze);
   } else if (algo === "Depth-First-Search") {

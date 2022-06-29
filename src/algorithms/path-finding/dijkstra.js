@@ -14,7 +14,7 @@ export default function dijkstra(grid, startNode, finishNode, isMaze) {
 
   while (!nodesToVisit.isEmpty()) {
     ops++;
-  
+
     const currentNodeWithMinDistance = nodesToVisit.remove();
 
     currentNodeWithMinDistance.visitedDijkstra = true;
@@ -36,7 +36,8 @@ export default function dijkstra(grid, startNode, finishNode, isMaze) {
       if (neighbor.isWall || neighbor.visitedDijkstra) continue;
       ops++;
 
-      const neighborTentativeMinDistance = currentNodeWithMinDistance.distanceFromStart + neighbor.weight;
+      const neighborTentativeMinDistance =
+        currentNodeWithMinDistance.distanceFromStart + neighbor.weight;
 
       if (neighborTentativeMinDistance >= neighbor.distanceFromStart) continue;
 
